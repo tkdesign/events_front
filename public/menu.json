@@ -1,0 +1,160 @@
+{
+  "menu": [
+    {
+      "name": "home",
+      "title": "Home",
+      "page_title": "Home",
+      "alias": "/",
+      "component": "HomeView",
+      "visible": true
+    },
+    {
+      "name": "speakers",
+      "title": "Speakers",
+      "page_title": "Speakers",
+      "alias": "/speakers",
+      "component": "SpeakersView",
+      "visible": true
+    },
+    {
+      "name": "schedule",
+      "title": "Schedule",
+      "page_title": "Schedule",
+      "alias": "/schedule",
+      "component": "ScheduleView",
+      "visible": true
+    },
+    {
+      "name": "sponsors",
+      "title": "Sponsors",
+      "page_title": "Sponsors",
+      "alias": "/sponsors",
+      "component": "SponsorsView",
+      "visible": true
+    },
+    {
+      "name": "gallery",
+      "title": "Gallery",
+      "page_title": "Gallery",
+      "alias": "/gallery",
+      "component": "GalleryView",
+      "visible": true
+    },
+    {
+      "name": "gallery_year",
+      "title": "Gallery",
+      "page_title": "Gallery by year",
+      "alias": "/gallery/:year",
+      "component": "GalleryView",
+      "visible": false
+    },
+    {
+      "name": "contacts",
+      "title": "Contacts",
+      "page_title": "Contacts",
+      "alias": "/contacts",
+      "component": "ContactsView",
+      "visible": true
+    },
+    {
+      "name": "sign-in",
+      "title": "Sign in",
+      "page_title": "Login page",
+      "alias": "/sign-in",
+      "component": "SignInView",
+      "visible": true
+    },
+    {
+      "name": "sign-up",
+      "title": "Sign up",
+      "page_title": "Registration page",
+      "alias": "/sign-up",
+      "component": "SignUpView",
+      "visible": true
+    }
+  ],
+  "bottom_menu": [
+    {
+      "type": "subheader",
+      "title": "Main",
+      "visible": true
+    },
+    {
+      "name": "speakers",
+      "title": "Speakers",
+      "page_title": "Speakers",
+      "alias": "/speakers",
+      "component": "SpeakersView",
+      "visible": true
+    },
+    {
+      "name": "schedule",
+      "title": "Schedule",
+      "page_title": "Schedule",
+      "alias": "/schedule",
+      "component": "ScheduleView",
+      "visible": true
+    },
+    {
+      "name": "sponsors",
+      "title": "Sponsors",
+      "page_title": "Sponsors",
+      "alias": "/sponsors",
+      "component": "SponsorsView",
+      "visible": true
+    },
+    {
+      "name": "gallery",
+      "title": "Gallery",
+      "page_title": "Gallery",
+      "alias": "/gallery",
+      "component": "GalleryView",
+      "visible": true
+    },
+    {
+      "name": "contacts",
+      "title": "Contacts",
+      "page_title": "Contacts",
+      "alias": "/contacts",
+      "component": "ContactsView",
+      "visible": true
+    },
+    {
+      "type": "subheader",
+      "title": "Additional",
+      "visible": true
+    },
+    {
+      "name": "about",
+      "title": "About",
+      "page_title": "About",
+      "alias": "/about",
+      "component": "CustomPageView",
+      "visible": true
+    },
+    {
+      "name": "faq",
+      "title": "FAQ",
+      "page_title": "FAQ",
+      "alias": "/faq",
+      "component": "CustomPageView",
+      "visible": true
+    },
+    {
+      "name": "terms",
+      "title": "Terms",
+      "page_title": "Terms",
+      "alias": "/terms",
+      "component": "CustomPageView",
+      "visible": true
+    },
+    {
+      "name": "privacy",
+      "title": "Privacy",
+      "page_title": "Privacy",
+      "alias": "/privacy",
+      "component": "CustomPageView",
+      "visible": true
+    }
+  ]
+}

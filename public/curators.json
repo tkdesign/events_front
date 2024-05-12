@@ -1,0 +1,28 @@
+{
+  "curators": [
+    {
+      "type": "subheader",
+      "title": "Curators"
+    },
+    {
+      "image": "https://cdn.vuetifyjs.com/images/lists/1.jpg",
+      "title": "PAVOL KOLLAR",
+      "company": "UKF",
+      "role": "Organizer",
+      "phone": "+421 596 355 32",
+      "email": "pavel_kollar@ukf.sk"
+    },
+    {
+      "type": "divider",
+      "inset": true
+    },
+    {
+      "image": "https://cdn.vuetifyjs.com/images/lists/4.jpg",
+      "title": "INGRID KOLLAR",
+      "company": "UKF",
+      "role": "Planer",
+      "phone": "+421 596 355 32",
+      "email": "ingrid_kollar@ukf.sk"
+    }
+  ]
+}
