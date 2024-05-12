@@ -2,8 +2,8 @@
   <v-footer class="w-100 d-block">
     <v-row no-gutters class="bg-grey-darken-4 px-5 m-0 bottom-menu-row">
       <v-container>
-        <v-row class="bottom-menu-ribbon">
-          <div class="d-flex flex-column logo-container justify-center">
+        <v-row class="bottom-menu-ribbon" :class="mobile_row">
+          <div class="d-flex flex-column logo-container justify-center" :class="mobile_column">
             <!--          Здесь нужно разместить блок с названием конференции (как бы логотипом в текстовом виде), кратким описанием конференции, иконки соцсетей -->
             <h5 class="text-h5 mb-2">{{ event?.title }}</h5>
             <div>{{ event?.desc }}</div>
@@ -22,6 +22,7 @@
               v-for="(subheader, index) in subheaders"
               :key="'subheader-' + index"
               class="menu-column"
+              :class="mobile_column"
           >
             <v-list flat bg-color="transparent">
               <v-list-subheader color="grey">{{ subheader.title }}</v-list-subheader>
@@ -80,6 +81,20 @@ export default {
   computed: {
     isMobile() {
       return this.$vuetify.display.mobile;
+    },
+    mobile_column() {
+      if (this.$vuetify.display.mobile) {
+        return 'w-100';
+      } else {
+        return '';
+      }
+    },
+    mobile_row() {
+      if(this.$vuetify.display.mobile) {
+        return 'mh-300';
+      } else {
+        return '';
+      }
     },
     visibleMenuItems() {
       return this.topMenuStore.bottom_menu.filter(item => item.visible !== false);
@@ -146,5 +161,10 @@ export default {
 
 .bottom-menu-ribbon .v-list-item {
   /*padding: 5px 0;*/ /* Добавляем немного отступа между элементами списка */
+}
+
+.mh-300 {
+  min-height: 300px;
+  height: auto;
 }
 </style>
