@@ -81,7 +81,12 @@ export default {
     PageHeader,
     BaseHeader,
     BaseFooter,
-  }
+  },
+  data() {
+    return {
+      visible: false,
+    };
+  },
 };
 </script>
 

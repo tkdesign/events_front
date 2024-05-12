@@ -71,7 +71,14 @@ export default {
     PageHeader,
     BaseHeader,
     BaseFooter,
-  }
+  },
+  data: () => ({
+    first: null,
+    last: null,
+    email: null,
+    password: null,
+    terms: false,
+  }),
 };
 </script>
 

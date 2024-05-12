@@ -20,8 +20,7 @@
       <ScheduleStages :day="day" :stages="stages" v-if="!!stages.length"/>
     </v-container>
   </v-main>
-  <BaseFooter
-  />
+  <BaseFooter/>
 </template>
 
 <script>

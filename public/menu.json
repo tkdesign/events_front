@@ -133,10 +133,10 @@
       "visible": true
     },
     {
-      "name": "faq",
-      "title": "FAQ",
-      "page_title": "FAQ",
-      "alias": "/faq",
+      "name": "workshops",
+      "title": "Workshops",
+      "page_title": "Workshops",
+      "alias": "/workshops",
       "component": "CustomPageView",
       "visible": true
     },
