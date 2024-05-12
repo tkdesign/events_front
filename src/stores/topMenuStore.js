@@ -15,7 +15,8 @@ export const useTopMenuStore = defineStore('topMenuStore',
         },
         actions: {
             fetchMenu() {
-                axios.get('/menu.json').then(response => {
+                // axios.get('/menu.json').then(response => {
+                axios.get('http://localhost/events/backend/public/api/get-menu').then(response => {
                     this.$patch({
                         menu: response.data.menu,
                         bottom_menu: response.data.bottom_menu,
