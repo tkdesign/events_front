@@ -5,8 +5,8 @@
         <v-row class="bottom-menu-ribbon">
           <div class="d-flex flex-column logo-container justify-center">
             <!--          Здесь нужно разместить блок с названием конференции (как бы логотипом в текстовом виде), кратким описанием конференции, иконки соцсетей -->
-            <div>WEB DEV 2024</div>
-            <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus, enim hic impedit iusto maiores, maxime molestias natus odio, optio porro sapiente ullam veritatis voluptates? Animi distinctio dolores odio perferendis sint.</div>
+            <h5 class="text-h5 mb-2">{{ event?.title }}</h5>
+            <div>{{ event?.desc }}</div>
             <div class="d-flex">
               <v-btn
                   v-for="icon in social_icons"
@@ -66,12 +66,13 @@
 </template>
 <script>
 import {inject} from "vue";
-
 export default {
   data() {
     const topMenuStore = inject('topMenuStore');
+    const eventStore = inject('eventStore');
     return {
       topMenuStore,
+      eventStore,
       currentYear: new Date().getFullYear(),
       social_icons: ['mdi-facebook', 'mdi-twitter', 'mdi-instagram', 'mdi-linkedin'],
     };
@@ -86,6 +87,9 @@ export default {
     subheaders() {
       return this.visibleMenuItems.filter(item => item.type === 'subheader');
     },
+    event() {
+      return this.eventStore.event;
+    }
   },
   methods: {
     isActive(path) {
@@ -100,6 +104,9 @@ export default {
   created() {
     if (this.topMenuStore.bottom_menu.length === 0) {
       this.topMenuStore.init();
+    }
+    if (!this.eventStore.event || !!!this.eventStore.event.hasOwnProperty('event_id')) {
+      this.eventStore.init();
     }
   },
 }

@@ -1,7 +1,7 @@
 <template>
   <v-app-bar app color="" scroll-behavior="elevate" :elevation="1" class="d-flex w-100 sticky-top">
     <v-app-bar-nav-icon @click="drawer = !drawer" v-if="isMobile"></v-app-bar-nav-icon>
-    <v-toolbar-title>WEB DEV 2024</v-toolbar-title>
+    <v-toolbar-title>{{ event.title }}</v-toolbar-title>
     <v-spacer></v-spacer>
     <template v-slot:append v-if="!isMobile">
       <v-tabs>
@@ -38,8 +38,10 @@ import {inject} from "vue";
 export default {
   data() {
     const topMenuStore = inject('topMenuStore');
+    const eventStore = inject('eventStore');
     return {
       topMenuStore,
+      eventStore,
       drawer: false,
     }
   },
@@ -50,6 +52,9 @@ export default {
     visibleMenuItems() {
       return this.topMenuStore.menu.filter(item => item.visible !== false);
     },
+    event() {
+      return this.eventStore.event;
+    }
   },
   methods: {
     isActive(path) {
@@ -59,6 +64,9 @@ export default {
   created() {
     if (this.topMenuStore.menu.length === 0) {
       this.topMenuStore.init();
+    }
+    if (!this.eventStore.event || !!!this.eventStore.event.hasOwnProperty('event_id')) {
+      this.eventStore.init();
     }
   },
 }

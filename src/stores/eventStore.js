@@ -4,7 +4,7 @@ import axios from 'axios';
 export const useEventStore = defineStore('eventStore',
     {
         state: () => ({
-            event: [],
+            event: Object,
         }),
         getters: {
             getEvent: (state) => state.event,
