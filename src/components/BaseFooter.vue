@@ -117,12 +117,9 @@ export default {
     },
   },
   created() {
-    if (this.topMenuStore.bottom_menu.length === 0) {
-      this.topMenuStore.init();
-    }
-    if (!this.eventStore.event || !!!this.eventStore.event.hasOwnProperty('event_id')) {
-      this.eventStore.init();
-    }
+    // if (!this.eventStore.event || !!!this.eventStore.event.hasOwnProperty('event_id')) {
+    //   this.eventStore.init();
+    // }
   },
 }
 </script>

@@ -1,11 +1,16 @@
 import {createRouter, createWebHistory} from 'vue-router';
 import {useTopMenuStore} from "@/stores/topMenuStore.js";
+import {useEventStore} from "@/stores/eventStore.js";
 
 export function createMyRouter() {
 
     const topMenuStore = useTopMenuStore();
     if (topMenuStore.routes.length === 0) {
         topMenuStore.init();
+    }
+    const eventStore = useEventStore();
+    if (!eventStore.event || !!!eventStore.event.hasOwnProperty('event_id')) {
+      eventStore.init();
     }
     function convertPathToComponentName(path) {
         path = path.replace(/^\/|\/$/g, '');
