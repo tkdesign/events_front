@@ -50,34 +50,42 @@ export default {
   watch: {
     articlesStore: {
       handler() {
-        this.article = this.articlesStore.getArticleByMenuItemName(this.$route.name);
+        this.article = this.articlesStore.article;
       },
       deep: true,
     },
-    $route(to, from) {
-      this.article = this.articlesStore.getArticleByMenuItemName(to.params.name);
-    },
+    // $route(to, from) {
+    //   this.article = this.articlesStore.getArticleByMenuItemName(to.params.name);
+    // },
   },
   mounted() {
-    if (this.articlesStore.articles.length === 0) {
+    if (this.articlesStore.article.length === 0) {
       if(!this.wasCreated) {
-        this.articlesStore.init();
+        this.articlesStore.init(this.$route.name);
       }
     } else {
-      this.article = this.articlesStore.getArticleByMenuItemName(this.$route.name);
+      if (this.articlesStore.article.hasOwnProperty('name') && this.articlesStore.article.name !== this.$route.name) {
+        this.articlesStore.init(this.$route.name);
+      } else {
+        this.article = this.articlesStore.article;
+      }
     }
     this.wasMounted = true;
   },
   beforeUpdate() {
     if (!this.wasMounted) {
-      this.articlesStore.init();
+      this.articlesStore.init(this.$route.name);
     } else {
-      this.article = this.articlesStore.getArticleByMenuItemName(this.$route.name);
+      if (this.articlesStore.article.hasOwnProperty('name') && this.articlesStore.article.name !== this.$route.name) {
+        this.articlesStore.init(this.$route.name);
+      } else {
+        this.article = this.articlesStore.article;
+      }
     }
   },
   created() {
-    if (this.articlesStore.articles.length === 0) {
-      this.articlesStore.init();
+    if (!this.articlesStore.article || !this.articlesStore.article.hasOwnProperty('article_id')) {
+      this.articlesStore.init(this.$route.name);
     }
     this.wasCreated = true;
   },

@@ -4,26 +4,24 @@ import axios from 'axios';
 export const useArticlesStore = defineStore('articlesStore',
     {
         state: () => ({
-            articles: [],
+            article: Object,
         }),
         getters: {
-            getArticles: (state) => state.articles,
-            getArticleByMenuItemName: (state) => (menuItemName) => {
-                return state.articles.find(article => article.menu_item_name === menuItemName);
-            }
+            getArticle: (state) => state.article,
         },
         actions: {
-            fetchArticles() {
-                axios.get('/articles.json').then(response => {
+            fetchArticle(menuItemName) {
+                // axios.get('/articles.json').then(response => {
+                axios.get(`http://localhost/events/backend/public/api/get-article/${menuItemName}`).then(response => {
                     this.$patch({
-                        articles: response.data.articles,
+                        article: response.data,
                     });
                 }).catch(error => {
                     console.error("Can't load data.", error);
                 });
             },
-            init() {
-                this.fetchArticles();
+            init(menuItemName) {
+                this.fetchArticle(menuItemName);
             },
         }
     });

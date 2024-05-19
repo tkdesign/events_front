@@ -67,6 +67,14 @@ export default {
     }
   },
   watch: {
+    // yy: {
+    //   handler() {
+    //     if (this.yy) {
+    //       this.$router.push({name: 'gallery_year', params: {year: this.yy}});
+    //     }
+    //   },
+    //   deep: true,
+    // },
     galleriesStore: {
       handler() {
         if (this.year) {

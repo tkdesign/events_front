@@ -11,7 +11,8 @@ export const useEventStore = defineStore('eventStore',
         },
         actions: {
             fetchEvent() {
-                axios.get('/event.json').then(response => {
+                // axios.get('/event.json').then(response => {
+                axios.get('http://localhost/events/backend/public/api/get-current-event').then(response => {
                     this.$patch({
                         event: response.data,
                     });
