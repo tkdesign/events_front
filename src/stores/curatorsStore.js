@@ -11,7 +11,8 @@ export const useCuratorsStore = defineStore('curatorsStore',
         },
         actions: {
             fetchCurators() {
-                axios.get('/curators.json').then(response => {
+                // axios.get('/curators.json').then(response => {
+                axios.get('http://localhost/events/backend/public/api/get-curators').then(response => {
                     this.$patch({
                         curators: this.setCurators(response.data.curators),
                     });
