@@ -11,7 +11,8 @@ export const useTestimonialsStore = defineStore('testimonialsStore',
         },
         actions: {
             fetchTestimonials() {
-                axios.get('/testimonials.json').then(response => {
+                // axios.get('/testimonials.json').then(response => {
+                axios.get('http://localhost/events/backend/public/api/get-testimonials').then(response => {
                     this.$patch({
                         testimonials: response.data.testimonials,
                     });

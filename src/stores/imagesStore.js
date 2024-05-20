@@ -13,7 +13,8 @@ export const useImagesStore = defineStore('imagesStore', {
     },
     actions: {
         fetchImages(galleryId) {
-            axios.get(`/galleries/${galleryId}/images.json`).then(response => {
+            // axios.get(`/galleries/${galleryId}/images.json`).then(response => {
+            axios.get(`http://localhost/events/backend/public/api/get-images/${galleryId}`).then(response => {
                 this.$patch({
                     images: (response.data.images ? response.data.images : []),
                 });

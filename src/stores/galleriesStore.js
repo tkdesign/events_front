@@ -19,7 +19,8 @@ export const useGalleriesStore = defineStore('galleriesStore', {
     },
     actions: {
         fetchGalleries() {
-            axios.get('/galleries.json').then(response => {
+            // axios.get('/galleries.json').then(response => {
+            axios.get('http://localhost/events/backend/public/api/get-galleries').then(response => {
                 this.$patch({
                     galleries: response.data.galleries,
                 });

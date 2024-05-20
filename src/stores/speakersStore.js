@@ -11,7 +11,8 @@ export const useSpeakersStore = defineStore('speakersStore',
         },
         actions: {
             fetchSpeakers() {
-                axios.get('/speakers.json').then(response => {
+                // axios.get('/speakers.json').then(response => {
+                axios.get('http://localhost/events/backend/public/api/get-speakers').then(response => {
                     this.$patch({
                         speakers: response.data.speakers,
                     });
