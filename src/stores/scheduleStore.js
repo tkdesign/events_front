@@ -18,7 +18,8 @@ export const useScheduleStore = defineStore('scheduleStore', {
     },
     actions: {
         fetchStages() {
-            axios.get('/schedule.json').then(response => {
+            // axios.get('/schedule.json').then(response => {
+            axios.get('http://localhost/events/backend/public/api/get-schedule').then(response => {
                 this.$patch({
                     stages: response.data.stages,
                     days: this.extractDays(response.data.stages),
