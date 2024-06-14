@@ -15,7 +15,7 @@
     <v-expansion-panel
     v-for="(slot, index) in filteredSlots"
     >
-      <v-expansion-panel-title v-slot="{ expanded }">
+      <v-expansion-panel-title v-slot="{ expanded }" :class="{'highlight-class': checkAuth() && !getUserCheckInStatus(slot.user)}">
         <v-row no-gutters>
           <v-col class="d-flex justify-start" cols="6">
             {{ slot.start_time + ' - ' + slot.end_time }}
@@ -33,7 +33,7 @@
           <v-spacer></v-spacer>
           <v-col cols="5">
             <v-img
-                :src="slot.lection.image"
+                :src="getImageFullUrl(slot.lection.image)"
                 height="200px"
                 cover
             />
@@ -61,19 +61,24 @@
                 {{ slot.lection.speaker.occupation }} at <span class="font-weight-bold">{{ slot.lection.speaker.company }}</span>
               </v-col>
             </v-row>
-<!--
+            <v-row>
               <v-col cols="12">
-                <v-card-subtitle>
-                  {{ makeFullName(slot.lection.speaker) }}
-                </v-card-subtitle>
-              </v-col>
-              <v-col cols="12">
-                <v-card-text>
-                  {{ slot.lection.desc }}
-                </v-card-text>
+                <v-btn
+                    color="primary"
+                    @click="checkin(slot)"
+                    v-if="checkAuth() && getUserCheckInStatus(slot.user)"
+                >
+                  Check in
+                </v-btn>
+                <v-btn
+                    color="secondary"
+                    @click="checkout(slot)"
+                    v-if="checkAuth() && !getUserCheckInStatus(slot.user)"
+                >
+                  Check out
+                </v-btn>
               </v-col>
             </v-row>
--->
           </v-col>
         </v-row>
 
@@ -83,10 +88,17 @@
 </template>
 
 <script>
+import {inject} from "vue";
+
 export default {
   props: {
+    stage_id: Number,
     slots: Object,
     day: String,
+  },
+  emits: {
+    checkin: null,
+    checkout: null,
   },
   computed: {
     filteredSlots() {
@@ -94,9 +106,11 @@ export default {
     },
   },
   data() {
+    const userStore = inject('userStore');
 //    const filteredSlots = this.slots.filter(slot => slot.day === this.day);
     return {
   //    filteredSlots: filteredSlots,
+      userStore,
     }
   },
   methods: {
@@ -106,10 +120,33 @@ export default {
       }
       return [speaker.titul, speaker.first_name, speaker.last_name].join(' ');
     },
+    checkAuth() {
+      return this.userStore.user && this.userStore.user.hasOwnProperty('id');
+    },
+    getUserCheckInStatus(user) {
+      if (this.userStore.user && this.userStore.user.hasOwnProperty('id') && user && user.hasOwnProperty('id')) {
+        return user.id !== this.userStore.user.id;
+      }
+      return true;
+    },
+    checkin(slot) {
+      this.$emit('checkin', [this.stage_id, slot, this.userStore.user]);
+    },
+    checkout(slot) {
+      this.$emit('checkout', [this.stage_id, slot]);
+    },
+    getImageFullUrl(value) {
+      if (/^(https?:)?\/\//i.test(value)) {
+        return value;
+      }
+      return `http://localhost/events/backend/public${value}`;
+    },
   },
 }
 </script>
 
 <style scoped>
-
+.highlight-class {
+  color: lightseagreen;
+}
 </style>

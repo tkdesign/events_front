@@ -17,7 +17,7 @@
         </template>
       </v-select>
       <h2 class="text-h2 mb-5">{{ dd }}</h2>
-      <ScheduleStages :day="day" :stages="stages" v-if="!!stages.length"/>
+      <ScheduleStages :day="day" :stages="stages" v-if="!!stages.length" @checkin="handleCheckin" @checkout="handleCheckout"/>
     </v-container>
   </v-main>
   <BaseFooter/>
@@ -36,6 +36,7 @@ export default {
     BaseHeader,
     BaseFooter,
   },
+  emits: ['checkin', 'checkout'],
   computed: {
     cols() {
       if (this.$vuetify.display.mobile) {
@@ -81,6 +82,12 @@ export default {
       this.dd = day;
       this.day = day;
     },
+    handleCheckin([stage_id, slot, user]) {
+      this.scheduleStore.checkin(stage_id, slot, user);
+    },
+    handleCheckout([stage_id, slot]) {
+      this.scheduleStore.checkout(stage_id, slot);
+    },
   },
   mounted() {
     if (!this.scheduleStore.stages.length) {
@@ -98,9 +105,11 @@ export default {
     if (!this.wasMounted) {
       this.scheduleStore.init();
     } else {
-      this.stages = this.scheduleStore.getStages();
-      this.dd = this.scheduleStore.getFirstDay().value;
-      this.day = this.dd;
+      if (this.scheduleStore.days.length > 0) {
+        this.stages = this.scheduleStore.getStages();
+        this.dd = this.scheduleStore.getFirstDay().value;
+        this.day = this.dd;
+      }
     }
   },
   created() {

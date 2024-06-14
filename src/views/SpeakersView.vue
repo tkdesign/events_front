@@ -13,7 +13,7 @@
           >
             <v-img
                 height="200px"
-                :src="speaker.image"
+                :src="getImageFullUrl(speaker.image)"
                 cover
             ></v-img>
             <v-card-title>
@@ -79,6 +79,12 @@ export default {
         return '';
       }
       return [speaker.titul, speaker.first_name, speaker.last_name].join(' ');
+    },
+    getImageFullUrl(value) {
+      if (/^(https?:)?\/\//i.test(value)) {
+        return value;
+      }
+      return `http://localhost/events/backend/public${value}`;
     },
   },
   created() {

@@ -4,7 +4,7 @@
     <PageHeader/>
     <v-container class="mt-15 mb-10">
       <v-select
-          :v-model="yy"
+          v-model="yy"
           :item-props="itemProps"
           :items="galleries"
           label="Year"
@@ -16,8 +16,8 @@
           ></v-list-item>
         </template>
       </v-select>
-      <h2 class="text-h2 mb-3">{{ gal?.title }}</h2>
-      <GalleryImages :gallery_id="gal?.gallery_id" v-if="galleryId"/>
+      <h2 class="text-h2 mb-3">{{ selectedGallery?.title }}</h2>
+      <GalleryImages :gallery_id="galleryId" v-if="galleryId"/>
     </v-container>
   </v-main>
   <BaseFooter/>
@@ -54,7 +54,7 @@ export default {
     galleries() {
       return this.galleriesStore.galleries;
     },
-    gal() {
+    selectedGallery() {
       return this.galleriesStore.getGalleryByYear(this.yy);
     },
   },
@@ -62,38 +62,19 @@ export default {
     const galleriesStore = useGalleriesStore();
     return {
       galleriesStore,
-      yy: 0,
-      galleryId: 0,
+      yy: null,
+      galleryId: null,
+      wasMounted: false,
+      wasCreated: false,
     }
   },
   watch: {
-    // yy: {
-    //   handler() {
-    //     if (this.yy) {
-    //       this.$router.push({name: 'gallery_year', params: {year: this.yy}});
-    //     }
-    //   },
-    //   deep: true,
-    // },
     galleriesStore: {
       handler() {
-        if (this.year) {
-          const gallery = this.galleriesStore.getGalleryByYear(this.year);
-          if (gallery) {
-            this.yy = parseInt(gallery.year);
-            this.galleryId = gallery.gallery_id;
-          } else {
-            // this.yy = 0;
-            // this.galleryId = 0;
-          }
-        } else {
-          const currentGallery = this.galleriesStore.getCurrentGallery();
-          if (currentGallery) {
-            this.$router.push({name: 'gallery_year', params: {year: currentGallery.year}});
-          } else {
-            // this.yy = 0;
-            // this.galleryId = 0;
-          }
+        const gallery = (this.year ? this.galleriesStore.getGalleryByYear(this.year) : this.galleriesStore.getCurrentGallery());
+        if (gallery) {
+          this.yy = gallery.year;
+          this.galleryId = gallery.gallery_id;
         }
       },
       deep: true,
@@ -112,46 +93,27 @@ export default {
     },
   },
   mounted() {
-    if (this.year) {
-      const gallery = this.galleriesStore.getGalleryByYear(this.year);
-      if (gallery) {
-        this.yy = parseInt(gallery.year);
-        this.galleryId = gallery.gallery_id;
-      } else {
-        const currentGallery = this.galleriesStore.getCurrentGallery();
-        if (currentGallery) {
-          this.yy = currentGallery.year;
-          this.galleryId = currentGallery.gallery_id;
-        } else {
-          // this.yy = 0;
-          // this.galleryId = 0;
-        }
+    if (!this.galleriesStore.galleries.length) {
+      if (!this.wasCreated) {
+        this.galleriesStore.init();
       }
     } else {
-      const currentGallery = this.galleriesStore.getCurrentGallery();
-      if (currentGallery) {
-        this.$router.push({name: 'gallery_year', params: {year: currentGallery.year}});
-      } else {
-        // this.yy = 0;
-        // this.galleryId = 0;
+      const gallery = (this.year ? this.galleriesStore.getGalleryByYear(this.year) : this.galleriesStore.getCurrentGallery());
+      if (gallery) {
+        this.yy = gallery.year;
+        this.galleryId = gallery.gallery_id;
       }
     }
+    this.wasMounted = true;
   },
   beforeUpdate() {
-    if (this.year) {
-      const gallery = this.galleriesStore.getGalleryByYear(this.year);
-      if (gallery) {
-        this.yy = parseInt(this.year);
-        this.galleryId = gallery.gallery_id;
-        document.title = `Gallery - ${gallery.title} - Web Dev 2024`;
-      }
+    if (!this.wasMounted) {
+      this.galleriesStore.init();
     } else {
-      const currentGallery = this.galleriesStore.getCurrentGallery();
-      if (currentGallery) {
-        this.$router.push({name: 'gallery_year', params: {year: currentGallery.year}});
-      } else {
-        // this.yy = 0;
-        // this.galleryId = 0;
+      const gallery = (this.year ? this.galleriesStore.getGalleryByYear(this.year) : this.galleriesStore.getCurrentGallery());
+      if (gallery) {
+        this.yy = gallery.year;
+        this.galleryId = gallery.gallery_id;
       }
     }
   },
@@ -159,6 +121,7 @@ export default {
     if (this.galleriesStore.galleries.length === 0) {
       this.galleriesStore.init();
     }
+    this.wasCreated = true;
   },
 };
 </script>

@@ -1,6 +1,9 @@
 import {defineStore} from 'pinia'
 import axios from 'axios';
 
+axios.defaults.withCredentials = true;
+axios.defaults.withXSRFToken = true;
+
 export const useGalleriesStore = defineStore('galleriesStore', {
     state: () => ({
         galleries: [],
@@ -14,7 +17,7 @@ export const useGalleriesStore = defineStore('galleriesStore', {
             return state.galleries.find((gallery) => gallery.year === parseInt(year));
         },
         getCurrentGallery: (state) => () => {
-            return state.galleries.find((gallery) => gallery.is_current === true);
+            return state.galleries.find((gallery) => gallery.is_current === 1);
         },
     },
     actions: {

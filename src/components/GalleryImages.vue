@@ -7,11 +7,11 @@
         :cols="cols"
     >
       <v-img
-          :lazy-src="image.thumbnail"
-          :src="image.image"
+          :lazy-src="getImageFullUrl(image.thumbnail)"
+          :src="getImageFullUrl(image.image)"
           :key="image.image_id"
           aspect-ratio="1"
-          class="bg-grey-lighten-2"
+          class="bg-grey-lighten-2 cursor-pointer"
           cover
           @click="openLightbox(image)"
       >
@@ -40,9 +40,9 @@
   >
     <v-container fluid>
         <v-img
-            :src="selectedImage.image"
+            :src="getImageFullUrl(selectedImage.image)"
             aspect-ratio="1"
-            class="bg-grey-lighten-2"
+            class="bg-grey-lighten-2 cursor-pointer"
             cover
         >
         </v-img>
@@ -73,7 +73,7 @@ export default {
     const imagesStore = useImagesStore();
     return {
       imagesStore,
-      images: [],
+      images: Object,
       wasMounted: false,
       wasCreated: false,
       lightbox: false,
@@ -83,11 +83,7 @@ export default {
   watch: {
     imagesStore: {
       handler() {
-        if (this.gallery_id) {
-          this.images = this.imagesStore.getImages();
-        } else {
-          this.images = [];
-        }
+        this.images = this.imagesStore.images;
       },
       deep: true,
     },
@@ -97,6 +93,12 @@ export default {
       this.selectedImage = image;
       this.lightbox = true;
     },
+    getImageFullUrl(value) {
+      if (/^(https?:)?\/\//i.test(value)) {
+        return value;
+      }
+      return `http://localhost/events/backend/public${value}`;
+    },
   },
   mounted() {
     if (!this.imagesStore.images.length) {
@@ -104,7 +106,7 @@ export default {
         this.imagesStore.init(this.gallery_id);
       }
     } else {
-      this.images = this.imagesStore.getImages();
+      this.images = this.imagesStore.images;
     }
     this.wasMounted = true;
   },
@@ -112,7 +114,7 @@ export default {
     if (!this.wasMounted) {
       this.imagesStore.init(this.gallery_id);
     } else {
-      this.images = this.imagesStore.getImages();
+      this.images = this.imagesStore.images;
     }
     this.wasMounted = false;
   },

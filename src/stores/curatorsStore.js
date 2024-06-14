@@ -1,6 +1,9 @@
 import {defineStore} from 'pinia'
 import axios from 'axios';
 
+axios.defaults.withCredentials = true;
+axios.defaults.withXSRFToken = true;
+
 export const useCuratorsStore = defineStore('curatorsStore',
     {
         state: () => ({
@@ -29,7 +32,7 @@ export const useCuratorsStore = defineStore('curatorsStore',
                         return item;
                     }
                     return {
-                        image: item.image,
+                        image: this.getImageFullUrl(item.image),
                         title: item.title,
                         role: item.role,
                         phone: item.phone,
@@ -38,7 +41,15 @@ export const useCuratorsStore = defineStore('curatorsStore',
                         subtitle: `<div class="text-primary pt-2 pb-2">${item.role}</div><div class="pb-2">${item.phone}</div><div class="pb-2"><a class="link-light" href="mailto:${item.email}">${item.email}</a></div>`,
                     };
                 });
-            }
-
+            },
+            getImageFullUrl(value) {
+                if (/^(https?:)?\/\//i.test(value)) {
+                    return value;
+                }
+                if (/^\/images\/curators\//i.test(value)) {
+                    return `http://localhost/events/backend/public${value}`;
+                }
+                return value;
+            },
         }
     });

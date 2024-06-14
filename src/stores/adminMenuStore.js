@@ -4,27 +4,27 @@ import axios from 'axios';
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
 
-export const useSpeakersStore = defineStore('speakersStore',
+export const useAdminMenuStore = defineStore('adminMenuStore',
     {
         state: () => ({
-            speakers: [],
+            adminMenu: [],
         }),
         getters: {
-            getSpeakers: (state) => state.speakers,
+            getAdminMenu: (state) => state.adminMenu,
         },
         actions: {
-            fetchSpeakers() {
-                // axios.get('/speakers.json').then(response => {
-                axios.get('http://localhost/events/backend/public/api/get-speakers').then(response => {
+            fetchAdminMenu() {
+                // axios.get('/admin-menu.json').then(response => {
+                axios.get('http://localhost/events/backend/public/api/admin/get-admin-menu').then(response => {
                     this.$patch({
-                        speakers: response.data.speakers,
+                        adminMenu: response.data,
                     });
                 }).catch(error => {
                     console.error("Can't load data.", error);
                 });
             },
             init() {
-                this.fetchSpeakers();
+                this.fetchAdminMenu();
             },
         }
     });
