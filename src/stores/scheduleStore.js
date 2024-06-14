@@ -1,6 +1,9 @@
 import {defineStore} from 'pinia'
 import axios from 'axios';
 
+axios.defaults.withCredentials = true;
+axios.defaults.withXSRFToken = true;
+
 export const useScheduleStore = defineStore('scheduleStore', {
     state: () => ({
         stages: [],
@@ -47,6 +50,42 @@ export const useScheduleStore = defineStore('scheduleStore', {
             // days.sort();
             days.sort((a, b) => a.value - b.value);
             return days;
+        },
+        checkin(stage_id, slot, user) {
+            if (stage_id && slot && slot.hasOwnProperty('lection') && slot.lection && slot.lection.hasOwnProperty('lection_id') && user && user.hasOwnProperty('id')) {
+                axios.post('http://localhost/events/backend/public/api/checkin', {lection_id: slot.lection.lection_id}).then(response => {
+                    console.log(response.data);
+                    if (response.data.success === true) {
+                        const stage = this.stages.find((stage) => stage.stage_id === stage_id);
+                        const slotIndex = stage.slots.findIndex((s) => s.slot_id === slot.slot_id);
+                        if (slotIndex >= 0) {
+                            stage.slots[slotIndex].user = user;
+                        }
+                    }
+                }).catch(error => {
+                    console.error("Can't checkin.", error);
+                });
+            } else {
+                console.error("Can't checkin. Slot or user is invalid.");
+            }
+        },
+        checkout(stage_id, slot) {
+            if (stage_id && slot && slot.hasOwnProperty('lection') && slot.lection && slot.lection.hasOwnProperty('lection_id') && slot.user && slot.user.hasOwnProperty('id')) {
+                axios.post('http://localhost/events/backend/public/api/checkout', {lection_id: slot.lection.lection_id}).then(response => {
+                    console.log(response.data);
+                    if(response.data.success === true) {
+                        const stage = this.stages.find((stage) => stage.stage_id === stage_id);
+                        const slotIndex = stage.slots.findIndex((s) => s.slot_id === slot.slot_id);
+                        if (slotIndex >= 0) {
+                            stage.slots[slotIndex].user = null;
+                        }
+                    }
+                }).catch(error => {
+                    console.error("Can't checkout.", error);
+                });
+            } else {
+                console.error("Can't checkout. Slot or user is invalid.");
+            }
         },
     }
 });

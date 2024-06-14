@@ -13,7 +13,7 @@
             <h1 class="text-h1 mb-5">
               <small class="d-block p-2 h1-small pl-1">CONFERENCE</small>
               WEB DEV 2024</h1>
-            <v-btn variant="outlined" class="mx-2" @click="goToSignUp">Register Now</v-btn>
+            <v-btn variant="outlined" class="mx-2" @click="goToSignUp" v-if="!checkAuth">Register Now</v-btn>
             <v-btn variant="outlined" class="mx-2" @click="goToEventDescription">Learn More</v-btn>
           </v-container>
         </div>
@@ -25,7 +25,7 @@
             <h1 class="text-h1 mb-5">
               <small class="d-block p-2 h1-small pl-1">MASTERCLASS</small>
               LARAVEL API + VUE</h1>
-            <v-btn variant="outlined" class="mx-2" @click="goToSignUp">Register Now</v-btn>
+            <v-btn variant="outlined" class="mx-2" @click="goToSignUp" v-if="!checkAuth">Register Now</v-btn>
             <v-btn variant="outlined" class="mx-2" @click="goToEventDescription">Learn More</v-btn>
           </v-container>
         </div>
@@ -35,9 +35,13 @@
 </template>
 
 <script>
+import {inject} from "vue";
 export default {
   data() {
-    return {}
+    const userStore = inject('userStore');
+    return {
+      userStore,
+    }
   },
   methods: {
     goToSignUp() {
@@ -48,6 +52,9 @@ export default {
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
       }
+    },
+    checkAuth() {
+      return this.userStore.user && this.userStore.user.hasOwnProperty('id');
     },
   },
 }

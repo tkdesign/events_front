@@ -17,7 +17,7 @@
         :key="index"
         :value="stage.stage_id"
     >
-      <ScheduleStagesSlots :day="day" :slots="stage.slots"/>
+      <ScheduleStagesSlots :day="day" :slots="stage.slots" :stage_id="stage.stage_id" @checkin="handleCheckin" @checkout="handleCheckout"/>
     </v-tabs-window-item>
   </v-tabs-window>
 </template>
@@ -31,10 +31,22 @@ export default {
     day: String,
     stages: [Array, Object],
   },
+  emits: {
+    checkin: null,
+    checkout: null,
+  },
   data() {
     return {
       tab: null,
     }
+  },
+  methods: {
+    handleCheckin([stage_id, slot, user]) {
+      this.$emit('checkin', [stage_id, slot, user]);
+    },
+    handleCheckout([stage_id, slot]) {
+      this.$emit('checkout', [stage_id, slot]);
+    },
   },
 }
 </script>

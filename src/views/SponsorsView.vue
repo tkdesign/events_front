@@ -13,7 +13,7 @@
           >
             <a :href="sponsor.url" target="_blank"><v-img
                 height="200px"
-                :src="sponsor.logo"
+                :src="getImageFullUrl(sponsor.logo)"
                 class="mx-5"
             ></v-img></a>
             <v-card-title>
@@ -79,6 +79,17 @@ export default {
       sponsorsStore,
       showCards: showCards,
     }
+  },
+  methods: {
+    getImageFullUrl(value) {
+      if (/^(https?:)?\/\//i.test(value)) {
+        return value;
+      }
+      if (/^\/images\/sponsors\//i.test(value)) {
+        return `http://localhost/events/backend/public${value}`;
+      }
+      return value;
+    },
   },
   created() {
     if (this.sponsorsStore.sponsors.length === 0) {

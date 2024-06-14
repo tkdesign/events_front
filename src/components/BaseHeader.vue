@@ -4,17 +4,18 @@
     <v-toolbar-title>{{ event.title }}</v-toolbar-title>
     <v-spacer></v-spacer>
     <template v-slot:append v-if="!isMobile">
-      <v-tabs>
-        <v-tab
+      <v-list variant="flat" class="horizontal-menu">
+        <v-list-item
+            variant="flat"
             v-for="(link, index) in visibleMenuItems"
             :key="index"
             :to="link.alias"
             :exact="true"
             :active="isActive(link.alias)"
         >
-          {{ link.title }}
-        </v-tab>
-      </v-tabs>
+          <v-list-item-title>{{ link.title }}</v-list-item-title>
+        </v-list-item>
+      </v-list>
     </template>
   </v-app-bar>
   <v-navigation-drawer v-model="drawer" app>
@@ -39,9 +40,11 @@ export default {
   data() {
     const topMenuStore = inject('topMenuStore');
     const eventStore = inject('eventStore');
+    const userStore = inject('userStore');
     return {
       topMenuStore,
       eventStore,
+      userStore,
       drawer: false,
     }
   },
@@ -50,11 +53,14 @@ export default {
       return this.$vuetify.display.mobile;
     },
     visibleMenuItems() {
-      return this.topMenuStore.menu.filter(item => item.visible !== false);
+      return this.topMenuStore.menu.filter(item => item.visible !== 0);
     },
     event() {
       return this.eventStore.event;
-    }
+    },
+    userName() {
+      return this.userStore.user ? this.userStore.user.name : '';
+    },
   },
   methods: {
     isActive(path) {
@@ -70,4 +76,8 @@ export default {
 </script>
 
 <style scoped>
+.horizontal-menu {
+  display: flex;
+  flex-direction: row;
+}
 </style>

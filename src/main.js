@@ -15,13 +15,18 @@ import { createMyRouter } from './router'
 
 import {useTopMenuStore} from "@/stores/topMenuStore.js";
 import {useEventStore} from "@/stores/eventStore.js";
+import {useUserStore} from "@/stores/userStore.js";
+
+import VueCookies from 'vue-cookies';
 
 const app = createApp(App);
 
+app.use(VueCookies);
 app.use(createVuetify({components, directives,  icons: {defaultSet: 'mdi',},}));
 app.use(createPinia());
 app.provide('topMenuStore', useTopMenuStore());
 app.provide('eventStore', useEventStore());
+app.provide('userStore', useUserStore());
 const router = createMyRouter();
 app.use(router);
 app.mount('#app')

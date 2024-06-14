@@ -13,9 +13,10 @@
           >
               <v-img
                   :lazy-src="testinonial.thumbnail"
-                  :src="testinonial.thumbnail"
+                  :src="getImageFullUrl(testinonial.thumbnail)"
                   aspect-ratio="1"
-                  :class="isSelected ? 'border-2' : ''"
+                  :class="{'border-2': isSelected}"
+                  class="cursor-pointer"
                   cover
                   @click="selectTestimonial(testimonials[n])"
               >
@@ -43,7 +44,7 @@
       <v-img
           cover
           height="418px"
-          :src="tm.image"
+          :src="getImageFullUrl(tm.image)"
           v-if="isSelected"
       >
       </v-img>
@@ -101,6 +102,12 @@ export default {
     selectTestimonial(testimonial) {
       this.tm = testimonial;
       this.isSelected = true;
+    },
+    getImageFullUrl(value) {
+      if (/^(https?:)?\/\//i.test(value)) {
+        return value;
+      }
+      return `http://localhost/events/backend/public${value}`;
     },
   },
   mounted() {

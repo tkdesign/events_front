@@ -1,6 +1,7 @@
 import {createRouter, createWebHistory} from 'vue-router';
 import {useTopMenuStore} from "@/stores/topMenuStore.js";
 import {useEventStore} from "@/stores/eventStore.js";
+import {useUserStore} from "@/stores/userStore.js";
 
 export function createMyRouter() {
 
@@ -9,9 +10,14 @@ export function createMyRouter() {
         topMenuStore.init();
     }
     const eventStore = useEventStore();
-    if (!eventStore.event || !!!eventStore.event.hasOwnProperty('event_id')) {
-      eventStore.init();
+    if (!eventStore.event || !eventStore.event.hasOwnProperty('event_id')) {
+        eventStore.init();
     }
+    const userStore = useUserStore();
+    if (!userStore.user || !userStore.user.hasOwnProperty('id')) {
+        userStore.init();
+    }
+
     function convertPathToComponentName(path) {
         path = path.replace(/^\/|\/$/g, '');
         const hasPathParams = /:/.test(path);
@@ -24,8 +30,18 @@ export function createMyRouter() {
     }
 
     const currentPath = window.location.pathname;
-    const defaultRoute = {name: "home", path: '/', component: () => import(`@/views/HomeView.vue`), meta: {title: 'Home'}};
-    const notFoundRoute = {path: '/:pathMatch(.*)*', name: 'not-found', component: () => import('@/views/NotFoundView.vue'), meta: {title: 'Not Found'}};
+    const defaultRoute = {
+        name: "home",
+        path: '/',
+        component: () => import(`@/views/HomeView.vue`),
+        meta: {title: 'Home'}
+    };
+    const notFoundRoute = {
+        path: '/:pathMatch(.*)*',
+        name: 'not-found',
+        component: () => import('@/views/NotFoundView.vue'),
+        meta: {title: 'Not Found'}
+    };
     let initialRoutes = [defaultRoute, notFoundRoute];
     if (currentPath !== '/') {
         const hasPathParams = /:/.test(currentPath);

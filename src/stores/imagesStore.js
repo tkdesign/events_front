@@ -1,6 +1,9 @@
 import {defineStore} from 'pinia'
 import axios from 'axios';
 
+axios.defaults.withCredentials = true;
+axios.defaults.withXSRFToken = true;
+
 export const useImagesStore = defineStore('imagesStore', {
     state: () => ({
         images: [],
