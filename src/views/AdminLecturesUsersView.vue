@@ -6,13 +6,13 @@
       :items-length="totalItems"
       :loading="loading"
       :search="search"
-      item-value="lection_id"
+      item-value="id"
       show-select
       @update:options="loadItems"
   >
     <template v-slot:top>
       <v-toolbar flat>
-        <v-toolbar-title>Lections table</v-toolbar-title>
+        <v-toolbar-title>Lectures/Users relations table</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
         <v-btn class="mb-2" color="primary" dark @click="createItem">New Item</v-btn>
@@ -24,21 +24,32 @@
             <v-card-text>
               <v-container>
                 <v-row>
-                  <input v-if="editedItem.lection_id" v-model="editedItem.lection_id" type="hidden">
-                  <v-col cols="12" md="6" sm="6">
-                    <v-text-field v-model="editedItem.title" label="Title"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" md="6" sm="6">
-                    <v-text-field v-model="editedItem.short_desc" label="Short description"></v-text-field>
+                  <input v-if="editedItem.id" v-model="editedItem.id" type="hidden">
+                  <v-col cols="12" md="12" sm="12">
+                    <v-autocomplete
+                        v-model="editedItem.lecture_id"
+                        :items="lectureItems"
+                        item-title="title"
+                        item-text="title"
+                        item-value="lecture_id"
+                        label="Lecture"
+                    ></v-autocomplete>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
-                    <v-textarea v-model="editedItem.desc" label="Description"></v-textarea>
+                    <v-autocomplete
+                        v-model="editedItem.user_id"
+                        :items="userItems"
+                        item-title="user_name"
+                        item-text="user_name"
+                        item-value="id"
+                        label="User"
+                    ></v-autocomplete>
                   </v-col>
                   <v-col cols="12" md="6" sm="6">
-                    <v-file-input v-model="editedItem.image" accept="image/*" label="Image"></v-file-input>
+                    <v-select v-model="editedItem.visible" :items="[1, 0]" label="Visible"></v-select>
                   </v-col>
                   <v-col cols="12" md="6" sm="6">
-                    <v-text-field v-model="editedItem.capacity" label="Capacity" type="number"></v-text-field>
+                    <v-text-field v-model="editedItem.position" label="Position" type="number"></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
@@ -71,21 +82,18 @@
     <template v-slot:no-data>
       <v-btn color="primary" @click="initialize">Reset</v-btn>
     </template>
-    <template v-slot:item.image="{ value }">
-      <v-img :src="getImageFullUrl(value)" height="100" width="100"/>
-    </template>
     <template v-slot:tfoot>
       <tr>
         <td colspan="2"></td>
         <td>
-          <v-text-field v-model="title" class="ma-2" density="compact" hide-details
-                        placeholder="Search title..."></v-text-field>
+          <v-text-field v-model="lectureTitle" class="ma-2" density="compact" hide-details
+                        placeholder="Search lecture..."></v-text-field>
         </td>
         <td>
-          <v-text-field v-model="capacity" class="ma-2" density="compact" hide-details
-                        placeholder="Search capacity..."></v-text-field>
+          <v-text-field v-model="userName" class="ma-2" density="compact" hide-details
+                        placeholder="Search user..."></v-text-field>
         </td>
-        <td colspan="2"></td>
+        <td colspan="3"></td>
       </tr>
     </template>
   </v-data-table-server>
@@ -93,68 +101,48 @@
 
 <script>
 import axios from 'axios';
-import dayjs from "dayjs";
-/*
--- auto-generated definition
-create table lections
-(
-    lection_id bigint unsigned auto_increment
-        primary key,
-    title      varchar(255) not null,
-    short_desc varchar(255) null,
-    `desc`     text         null,
-    image      varchar(255) null,
-    capacity   int          null,
-    created_at timestamp    null,
-    updated_at timestamp    null
-)
-    collate = utf8mb4_unicode_ci;
 
-create index lections_created_at_index
-    on lections (created_at);
- */
 export default {
   data: () => ({
     itemsPerPage: 10,
     headers: [
-      {title: 'ID', key: 'lection_id', align: 'start'},
-      {title: 'Title', key: 'title', align: 'start'},
-      {title: 'Capacity', key: 'capacity', align: 'start'},
-      {title: 'Image', key: 'image', align: 'start'},
+      {title: 'ID', key: 'id', align: 'start'},
+      {title: 'Lecture', key: 'lecture.title', align: 'start'},
+      {title: 'User', key: 'user.user_name', align: 'start'},
       {title: 'Actions', key: 'actions', sortable: false},
     ],
     serverItems: [],
+    lectureItems: [],
+    userItems: [],
     loading: true,
     totalItems: 0,
-    lection_id: 0,
-    title: '',
-    capacity: '',
+    id: 0,
+    lectureTitle: '',
+    userName: '',
     search: '',
     dialog: false,
     dialogDelete: false,
     editedIndex: -1,
     editedItem: {
-      lection_id: 0,
-      title: '',
-      short_desc: '',
-      desc: '',
-      image: null,
-      capacity: 0,
+      id: 0,
+      lecture_id: 0,
+      user_id: 0,
+      visible: 1,
+      position: 1,
     },
     defaultItem: {
-      lection_id: 0,
-      title: '',
-      short_desc: '',
-      desc: '',
-      image: null,
-      capacity: 0,
+      id: 0,
+      lecture_id: 0,
+      user_id: 0,
+      visible: 1,
+      position: 1,
     },
   }),
   watch: {
-    title() {
+    lectureTitle() {
       this.search = String(Date.now());
     },
-    capacity() {
+    userName() {
       this.search = String(Date.now());
     },
     dialog(val) {
@@ -178,11 +166,11 @@ export default {
         sortBy: sortBy.length ? sortBy[0].key : null,
         sortOrder: sortBy.length ? sortBy[0].order : null,
         search: {
-          title: this.title,
-          capacity: this.capacity,
+          lecture_title: this.lectureTitle,
+          user_name: this.userName,
         },
       };
-      axios.get('http://localhost/events/backend/public/api/admin/get-lections', {params}).then(response => {
+      axios.get('http://localhost/events/backend/public/api/admin/get-lectures-users', {params}).then(response => {
         this.serverItems = response.data.data;
         this.totalItems = response.data.total;
       }).catch(error => {
@@ -193,19 +181,15 @@ export default {
     },
 
     createItem() {
-      this.editedItem.lection_id = null;
-      this.editedItem.title = '';
-      this.editedItem.short_desc = '';
-      this.editedItem.desc = '';
-      this.editedItem.image = null;
-      this.editedItem.capacity = 0;
+      this.editedItem.id = null;
+      this.editedItem.lecture_id = null;
+      this.editedItem.user_id = null;
       this.dialog = true;
     },
 
     editItem(item) {
       this.editedIndex = this.serverItems.indexOf(item);
       this.editedItem = Object.assign({}, item);
-      this.editedItem.image = null;
       this.dialog = true;
     },
 
@@ -217,11 +201,15 @@ export default {
 
     async deleteItemConfirm() {
       try {
-        const response = await axios.delete(`http://localhost/events/backend/public/api/admin/delete-lection/${this.editedItem.lection_id}`);
+        const response = await axios.delete(`http://localhost/events/backend/public/api/admin/delete-lecture-user/${this.editedItem.id}`);
         if (response && response.status === 200 && response.statusText === 'OK') {
           this.serverItems.splice(this.editedIndex, 1);
         } else {
-          console.error('There was an error!');
+          if (response.data && response.data.hasOwnProperty('message')) {
+            alert(response.data.message);
+          } else {
+            alert('There was an error!');
+          }
         }
       } catch (error) {
         console.error('There was an error!', error);
@@ -252,53 +240,61 @@ export default {
 
     async saveForm() {
       const formData = new FormData();
-      formData.append('lection_id', this.editedItem.lection_id);
-      formData.append('title', this.editedItem.title);
-      formData.append('short_desc', this.editedItem.short_desc);
-      formData.append('desc', this.editedItem.desc);
-      formData.append('capacity', this.editedItem.capacity);
-      formData.append('image', this.editedItem.image);
+      formData.append('id', this.editedItem.id);
+      formData.append('lecture_id', this.editedItem.lecture_id);
+      formData.append('user_id', this.editedItem.user_id);
+      formData.append('visible', this.editedItem.visible);
+      formData.append('position', this.editedItem.position);
 
       try {
         const tableRowIndex = this.editedIndex;
         let response = null;
         if (tableRowIndex > -1) {
-          response = await axios.post(`http://localhost/events/backend/public/api/admin/update-lection`, formData, {
+          response = await axios.post(`http://localhost/events/backend/public/api/admin/update-lecture-user`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
               'X-HTTP-Method-Override': 'PUT'
             }
           });
         } else {
-          response = await axios.post(`http://localhost/events/backend/public/api/admin/create-lection`, formData, {
+          response = await axios.post(`http://localhost/events/backend/public/api/admin/create-lecture-user`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             }
           });
         }
-        if (response && response.data && response.data.hasOwnProperty('lection_id')) {
+        if (response && response.data && response.data.hasOwnProperty('id')) {
           if (tableRowIndex > -1) {
             Object.assign(this.serverItems[tableRowIndex], response.data);
           } else {
             this.serverItems.push(response.data);
           }
         } else {
-          console.error('There was an error!', response.data);
+          if (response.data && response.data.hasOwnProperty('message')) {
+            alert(response.data.message);
+          } else {
+            alert('There was an error!');
+          }
         }
       } catch (error) {
         console.error('There was an error!', error);
       }
     },
-    getImageFullUrl(value) {
-      if (/^(https?:)?\/\//i.test(value)) {
-        return value;
-      }
-      return `http://localhost/events/backend/public${value}`;
-    },
+  },
+  created() {
+    axios.get('http://localhost/events/backend/public/api/admin/get-lectures-all').then(response => {
+      this.lectureItems = response.data;
+    }).catch(error => {
+      console.error('Error fetching data:', error);
+    });
+    axios.get('http://localhost/events/backend/public/api/admin/get-users-all-concat').then(response => {
+      this.userItems = response.data;
+    }).catch(error => {
+      console.error('Error fetching data:', error);
+    });
   },
 }
 </script>
 
-<style scoped>
-
+<style>
 </style>

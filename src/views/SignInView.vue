@@ -57,7 +57,6 @@ export default {
     login() {
       axios.get('http://localhost/events/backend/public/sanctum/csrf-cookie').then((response) => {
         axios.post('http://localhost/events/backend/public/login', {
-
           email: this.email,
           password: this.password,
         }).then((response) => {

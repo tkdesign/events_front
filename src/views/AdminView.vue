@@ -37,7 +37,7 @@ import BaseHeader from "@/components/BaseHeader.vue";
 import BaseFooter from "@/components/BaseFooter.vue";
 import PageHeader from "@/components/PageHeader.vue";
 import {useAdminMenuStore} from "@/stores/adminMenuStore.js";
-import axios from "axios";
+
 export default {
   components: {PageHeader, BaseHeader, BaseFooter},
   watch: {

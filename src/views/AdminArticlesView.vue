@@ -26,7 +26,6 @@
                 <v-row>
                   <input v-if="editedItem.article_id" v-model="editedItem.article_id" type="hidden">
                   <v-col cols="12" md="6" sm="6">
-                    <!--                    <v-text-field v-model="editedItem.menu_item_id" label="Menu item ID"></v-text-field>-->
                     <v-autocomplete
                         v-model="editedItem.menu_item_id"
                         :items="menuItems"
@@ -106,30 +105,6 @@
 import axios from 'axios';
 import Editor from '@tinymce/tinymce-vue';
 
-/*
--- auto-generated definition
-create table articles
-(
-    article_id   bigint unsigned auto_increment
-        primary key,
-    menu_item_id bigint unsigned null,
-    title        varchar(255)    null,
-    short_desc   varchar(255)    null,
-    `desc`       text            null,
-    created_at   timestamp       null,
-    updated_at   timestamp       null,
-    constraint articles_menu_item_id_foreign
-        foreign key (menu_item_id) references menu_items (menu_item_id)
-            on delete set null
-)
-    collate = utf8mb4_unicode_ci;
-
-create index articles_created_at_index
-    on articles (created_at);
-
-create index articles_menu_item_id_index
-    on articles (menu_item_id);
- */
 export default {
   components: {
     Editor,
@@ -233,7 +208,11 @@ export default {
         if (response && response.status === 200 && response.statusText === 'OK') {
           this.serverItems.splice(this.editedIndex, 1);
         } else {
-          console.error('There was an error!');
+          if (response.data && response.data.hasOwnProperty('message')) {
+            alert(response.data.message);
+          } else {
+            alert('There was an error!');
+          }
         }
       } catch (error) {
         console.error('There was an error!', error);
@@ -294,7 +273,11 @@ export default {
             this.serverItems.push(response.data);
           }
         } else {
-          console.error('There was an error!', response.data);
+          if (response.data && response.data.hasOwnProperty('message')) {
+            alert(response.data.message);
+          } else {
+            alert('There was an error!');
+          }
         }
       } catch (error) {
         console.error('There was an error!', error);

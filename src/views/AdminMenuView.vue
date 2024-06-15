@@ -108,34 +108,7 @@
 
 <script>
 import axios from 'axios';
-/*
--- auto-generated definition
-create table menu_items
-(
-    menu_item_id        bigint unsigned auto_increment
-        primary key,
-    name                varchar(45)       null,
-    title               varchar(45)       not null,
-    page_title          varchar(255)      null,
-    path                varchar(255)      not null,
-    component           varchar(45)       not null,
-    visible             tinyint default 1 null,
-    position            int     default 1 null,
-    role                int     default 1 null,
-    is_article          tinyint           null,
-    created_at          timestamp         null,
-    updated_at          timestamp         null,
-    is_top_menu_item    tinyint default 1 null,
-    is_bottom_menu_item tinyint default 1 null
-)
-    collate = utf8mb4_unicode_ci;
 
-create index menu_items_created_at_index
-    on menu_items (created_at);
-
-create index menu_items_role_position_index
-    on menu_items (role, position);
- */
 export default {
   data: () => ({
     itemsPerPage: 10,
@@ -266,7 +239,11 @@ export default {
         if (response && response.status === 200 && response.statusText === 'OK') {
           this.serverItems.splice(this.editedIndex, 1);
         } else {
-          console.error('There was an error!');
+          if (response.data && response.data.hasOwnProperty('message')) {
+            alert(response.data.message);
+          } else {
+            alert('There was an error!');
+          }
         }
       } catch (error) {
         console.error('There was an error!', error);
@@ -334,7 +311,11 @@ export default {
             this.serverItems.push(response.data);
           }
         } else {
-          console.error('There was an error!', response.data);
+          if (response.data && response.data.hasOwnProperty('message')) {
+            alert(response.data.message);
+          } else {
+            alert('There was an error!');
+          }
         }
       } catch (error) {
         console.error('There was an error!', error);

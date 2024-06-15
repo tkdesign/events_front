@@ -17,7 +17,7 @@
         :key="index"
         :value="stage.stage_id"
     >
-      <ScheduleStagesSlots :day="day" :slots="stage.slots" :stage_id="stage.stage_id" @checkin="handleCheckin" @checkout="handleCheckout"/>
+      <ScheduleStagesSlots :day="day" :slots="stage.slots" :stage_id="stage.stage_id" :subscribed="$props.subscribed" @checkin="handleCheckin" @checkout="handleCheckout"/>
     </v-tabs-window-item>
   </v-tabs-window>
 </template>
@@ -30,6 +30,7 @@ export default {
   props: {
     day: String,
     stages: [Array, Object],
+    subscribed: Number,
   },
   emits: {
     checkin: null,

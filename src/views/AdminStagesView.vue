@@ -84,27 +84,7 @@
 
 <script>
 import axios from 'axios';
-import dayjs from "dayjs";
-/*
--- auto-generated definition
-create table stages
-(
-    stage_id     bigint unsigned auto_increment
-        primary key,
-    title        varchar(255) not null,
-    location     varchar(255) null,
-    max_capacity int          null,
-    created_at   timestamp    null,
-    updated_at   timestamp    null
-)
-    collate = utf8mb4_unicode_ci;
 
-create index stages_created_at_index
-    on stages (created_at);
-
-create index stages_title_index
-    on stages (title);
- */
 export default {
   data: () => ({
     itemsPerPage: 10,
@@ -206,7 +186,11 @@ export default {
         if (response && response.status === 200 && response.statusText === 'OK') {
           this.serverItems.splice(this.editedIndex, 1);
         } else {
-          console.error('There was an error!');
+          if (response.data && response.data.hasOwnProperty('message')) {
+            alert(response.data.message);
+          } else {
+            alert('There was an error!');
+          }
         }
       } catch (error) {
         console.error('There was an error!', error);
@@ -266,7 +250,11 @@ export default {
             this.serverItems.push(response.data);
           }
         } else {
-          console.error('There was an error!', response.data);
+          if (response.data && response.data.hasOwnProperty('message')) {
+            alert(response.data.message);
+          } else {
+            alert('There was an error!');
+          }
         }
       } catch (error) {
         console.error('There was an error!', error);

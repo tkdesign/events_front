@@ -25,6 +25,7 @@ import BaseHeader from '@/components/BaseHeader.vue';
 import BaseFooter from '@/components/BaseFooter.vue';
 import PageHeader from "@/components/PageHeader.vue";
 import {useArticlesStore} from "@/stores/articlesStore";
+
 export default {
   components: {
     PageHeader, BaseHeader, BaseFooter
@@ -54,9 +55,6 @@ export default {
       },
       deep: true,
     },
-    // $route(to, from) {
-    //   this.article = this.articlesStore.getArticleByMenuItemName(to.params.name);
-    // },
   },
   mounted() {
     if (this.articlesStore.article.length === 0) {

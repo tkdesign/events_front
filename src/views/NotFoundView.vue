@@ -1,13 +1,3 @@
-<script>
-import {defineComponent} from "vue";
-import BaseHeader from "@/components/BaseHeader.vue";
-import BaseFooter from "@/components/BaseFooter.vue";
-
-export default defineComponent({
-  components: {BaseFooter, BaseHeader}
-})
-</script>
-
 <template>
   <BaseHeader :currentPage="'/notfound'"/>
   <v-container class="mt-15 mb-10">
@@ -20,6 +10,16 @@ export default defineComponent({
   </v-container>
   <BaseFooter :currentPage="'/notfound'"/>
 </template>
+
+<script>
+import {defineComponent} from "vue";
+import BaseHeader from "@/components/BaseHeader.vue";
+import BaseFooter from "@/components/BaseFooter.vue";
+
+export default defineComponent({
+  components: {BaseFooter, BaseHeader}
+})
+</script>
 
 <style scoped>
 

@@ -120,37 +120,7 @@
 
 <script>
 import axios from 'axios';
-import dayjs from "dayjs";
-/*
--- auto-generated definition
-create table speakers
-(
-    speaker_id bigint unsigned auto_increment
-        primary key,
-    titul      varchar(45)  null,
-    first_name varchar(255) not null,
-    last_name  varchar(255) null,
-    company    varchar(255) null,
-    occupation varchar(255) null,
-    short_desc varchar(255) null,
-    `desc`     text         null,
-    email      varchar(255) not null,
-    phone      varchar(45)  null,
-    facebook   varchar(255) null,
-    instagram  varchar(255) null,
-    linkedin   varchar(255) null,
-    image      varchar(255) null,
-    thumbnail  varchar(255) null,
-    created_at timestamp    null,
-    updated_at timestamp    null,
-    constraint speakers_email_unique
-        unique (email)
-)
-    collate = utf8mb4_unicode_ci;
 
-create index speakers_created_at_index
-    on speakers (created_at);
- */
 export default {
   data: () => ({
     itemsPerPage: 10,
@@ -161,14 +131,8 @@ export default {
       {title: 'Last Name', key: 'last_name'},
       {title: 'Company', key: 'company'},
       {title: 'Occupation', key: 'occupation'},
-      // {title: 'Short description', key: 'short_desc'},
-      // {title: 'Description', key: 'desc'},
       {title: 'Email', key: 'email'},
       {title: 'Phone', key: 'phone'},
-      // {title: 'Facebook', key: 'facebook'},
-      // {title: 'Instagram', key: 'instagram'},
-      // {title: 'Linkedin', key: 'linkedin'},
-      // {title: 'Image', key: 'image'},
       {title: 'Thumbnail', key: 'thumbnail'},
       {title: 'Actions', key: 'actions', sortable: false},
     ],
@@ -298,7 +262,11 @@ export default {
         if (response && response.status === 200 && response.statusText === 'OK') {
           this.serverItems.splice(this.editedIndex, 1);
         } else {
-          console.error('There was an error!');
+          if (response.data && response.data.hasOwnProperty('message')) {
+            alert(response.data.message);
+          } else {
+            alert('There was an error!');
+          }
         }
       } catch (error) {
         console.error('There was an error!', error);
@@ -369,7 +337,11 @@ export default {
             this.serverItems.push(response.data);
           }
         } else {
-          console.error('There was an error!', response.data);
+          if (response.data && response.data.hasOwnProperty('message')) {
+            alert(response.data.message);
+          } else {
+            alert('There was an error!');
+          }
         }
       } catch (error) {
         console.error('There was an error!', error);

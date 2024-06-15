@@ -12,7 +12,7 @@
   >
     <template v-slot:top>
       <v-toolbar flat>
-        <v-toolbar-title>Lections/Speakers relations table</v-toolbar-title>
+        <v-toolbar-title>Lectures/Speakers relations table</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
         <v-btn class="mb-2" color="primary" dark @click="createItem">New Item</v-btn>
@@ -27,12 +27,12 @@
                   <input v-if="editedItem.id" v-model="editedItem.id" type="hidden">
                   <v-col cols="12" md="12" sm="12">
                     <v-autocomplete
-                        v-model="editedItem.lection_id"
-                        :items="lectionItems"
+                        v-model="editedItem.lecture_id"
+                        :items="lectureItems"
                         item-title="title"
                         item-text="title"
-                        item-value="lection_id"
-                        label="Lection"
+                        item-value="lecture_id"
+                        label="Lecture"
                     ></v-autocomplete>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
@@ -86,8 +86,8 @@
       <tr>
         <td colspan="2"></td>
         <td>
-          <v-text-field v-model="lectionTitle" class="ma-2" density="compact" hide-details
-                        placeholder="Search lection..."></v-text-field>
+          <v-text-field v-model="lectureTitle" class="ma-2" density="compact" hide-details
+                        placeholder="Search lecture..."></v-text-field>
         </td>
         <td>
           <v-text-field v-model="speakerName" class="ma-2" density="compact" hide-details
@@ -102,55 +102,22 @@
 <script>
 import axios from 'axios';
 
-/*
--- auto-generated definition
-create table lections_has_speakers
-(
-    id         bigint unsigned auto_increment
-        primary key,
-    lection_id bigint unsigned   not null,
-    speaker_id bigint unsigned   not null,
-    visible    tinyint default 1 null,
-    position   int     default 1 null,
-    created_at timestamp         null,
-    updated_at timestamp         null,
-    constraint lections_has_speakers_lection_id_foreign
-        foreign key (lection_id) references lections (lection_id)
-            on delete cascade,
-    constraint lections_has_speakers_speaker_id_foreign
-        foreign key (speaker_id) references speakers (speaker_id)
-            on delete cascade
-)
-    collate = utf8mb4_unicode_ci;
-
-create index lections_has_speakers_created_at_index
-    on lections_has_speakers (created_at);
-
-create index lections_has_speakers_lection_id_index
-    on lections_has_speakers (lection_id);
-
-create index lections_has_speakers_position_index
-    on lections_has_speakers (position);
-
-create index lections_has_speakers_speaker_id_index
-    on lections_has_speakers (speaker_id);
-*/
 export default {
   data: () => ({
     itemsPerPage: 10,
     headers: [
       {title: 'ID', key: 'id', align: 'start'},
-      {title: 'Lection', key: 'lection.title', align: 'start'},
+      {title: 'Lecture', key: 'lecture.title', align: 'start'},
       {title: 'Speaker', key: 'speaker.speaker_name', align: 'start'},
       {title: 'Actions', key: 'actions', sortable: false},
     ],
     serverItems: [],
-    lectionItems: [],
+    lectureItems: [],
     speakerItems: [],
     loading: true,
     totalItems: 0,
     id: 0,
-    lectionTitle: '',
+    lectureTitle: '',
     speakerName: '',
     search: '',
     dialog: false,
@@ -158,21 +125,21 @@ export default {
     editedIndex: -1,
     editedItem: {
       id: 0,
-      lection_id: 0,
+      lecture_id: 0,
       speaker_id: 0,
       visible: 1,
       position: 1,
     },
     defaultItem: {
       id: 0,
-      lection_id: 0,
+      lecture_id: 0,
       speaker_id: 0,
       visible: 1,
       position: 1,
     },
   }),
   watch: {
-    lectionTitle() {
+    lectureTitle() {
       this.search = String(Date.now());
     },
     speakerName() {
@@ -199,11 +166,11 @@ export default {
         sortBy: sortBy.length ? sortBy[0].key : null,
         sortOrder: sortBy.length ? sortBy[0].order : null,
         search: {
-          lection_title: this.lectionTitle,
+          lecture_title: this.lectureTitle,
           speaker_name: this.speakerName,
         },
       };
-      axios.get('http://localhost/events/backend/public/api/admin/get-lections-speakers', {params}).then(response => {
+      axios.get('http://localhost/events/backend/public/api/admin/get-lectures-speakers', {params}).then(response => {
         this.serverItems = response.data.data;
         this.totalItems = response.data.total;
       }).catch(error => {
@@ -215,7 +182,7 @@ export default {
 
     createItem() {
       this.editedItem.id = null;
-      this.editedItem.lection_id = null;
+      this.editedItem.lecture_id = null;
       this.dialog = true;
     },
 
@@ -233,11 +200,15 @@ export default {
 
     async deleteItemConfirm() {
       try {
-        const response = await axios.delete(`http://localhost/events/backend/public/api/admin/delete-lection-speaker/${this.editedItem.id}`);
+        const response = await axios.delete(`http://localhost/events/backend/public/api/admin/delete-lecture-speaker/${this.editedItem.id}`);
         if (response && response.status === 200 && response.statusText === 'OK') {
           this.serverItems.splice(this.editedIndex, 1);
         } else {
-          console.error('There was an error!');
+          if (response.data && response.data.hasOwnProperty('message')) {
+            alert(response.data.message);
+          } else {
+            alert('There was an error!');
+          }
         }
       } catch (error) {
         console.error('There was an error!', error);
@@ -269,7 +240,7 @@ export default {
     async saveForm() {
       const formData = new FormData();
       formData.append('id', this.editedItem.id);
-      formData.append('lection_id', this.editedItem.lection_id);
+      formData.append('lecture_id', this.editedItem.lecture_id);
       formData.append('speaker_id', this.editedItem.speaker_id);
       formData.append('visible', this.editedItem.visible);
       formData.append('position', this.editedItem.position);
@@ -278,14 +249,14 @@ export default {
         const tableRowIndex = this.editedIndex;
         let response = null;
         if (tableRowIndex > -1) {
-          response = await axios.post(`http://localhost/events/backend/public/api/admin/update-lection-speaker`, formData, {
+          response = await axios.post(`http://localhost/events/backend/public/api/admin/update-lecture-speaker`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
               'X-HTTP-Method-Override': 'PUT'
             }
           });
         } else {
-          response = await axios.post(`http://localhost/events/backend/public/api/admin/create-lection-speaker`, formData, {
+          response = await axios.post(`http://localhost/events/backend/public/api/admin/create-lecture-speaker`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             }
@@ -298,7 +269,11 @@ export default {
             this.serverItems.push(response.data);
           }
         } else {
-          console.error('There was an error!', response.data);
+          if (response.data && response.data.hasOwnProperty('message')) {
+            alert(response.data.message);
+          } else {
+            alert('There was an error!');
+          }
         }
       } catch (error) {
         console.error('There was an error!', error);
@@ -306,8 +281,8 @@ export default {
     },
   },
   created() {
-    axios.get('http://localhost/events/backend/public/api/admin/get-lections-all').then(response => {
-      this.lectionItems = response.data;
+    axios.get('http://localhost/events/backend/public/api/admin/get-lectures-all').then(response => {
+      this.lectureItems = response.data;
     }).catch(error => {
       console.error('Error fetching data:', error);
     });

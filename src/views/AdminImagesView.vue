@@ -98,36 +98,7 @@
 
 <script>
 import axios from 'axios';
-import dayjs from "dayjs";
-/*
--- auto-generated definition
-create table images
-(
-    image_id   bigint unsigned auto_increment
-        primary key,
-    gallery_id bigint unsigned   not null,
-    title      varchar(255)      not null,
-    image      varchar(255)      not null,
-    thumbnail  varchar(255)      not null,
-    visible    tinyint default 1 null,
-    position   int     default 1 null,
-    created_at timestamp         null,
-    updated_at timestamp         null,
-    constraint images_gallery_id_foreign
-        foreign key (gallery_id) references galleries (gallery_id)
-            on delete cascade
-)
-    collate = utf8mb4_unicode_ci;
 
-create index images_created_at_index
-    on images (created_at);
-
-create index images_gallery_id_index
-    on images (gallery_id);
-
-create index images_position_index
-    on images (position);
-*/
 export default {
   data: () => ({
     itemsPerPage: 10,
@@ -238,7 +209,11 @@ export default {
         if (response && response.status === 200 && response.statusText === 'OK') {
           this.serverItems.splice(this.editedIndex, 1);
         } else {
-          console.error('There was an error!');
+          if (response.data && response.data.hasOwnProperty('message')) {
+            alert(response.data.message);
+          } else {
+            alert('There was an error!');
+          }
         }
       } catch (error) {
         console.error('There was an error!', error);
@@ -301,7 +276,11 @@ export default {
             this.serverItems.push(response.data);
           }
         } else {
-          console.error('There was an error!', response.data);
+          if (response.data && response.data.hasOwnProperty('message')) {
+            alert(response.data.message);
+          } else {
+            alert('There was an error!');
+          }
         }
       } catch (error) {
         console.error('There was an error!', error);

@@ -47,12 +47,12 @@
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
                     <v-autocomplete
-                        v-model="editedItem.lection_id"
-                        :items="lectionItems"
+                        v-model="editedItem.lecture_id"
+                        :items="lectureItems"
                         item-title="title"
                         item-text="tittle"
-                        item-value="lection_id"
-                        label="Lection"
+                        item-value="lecture_id"
+                        label="Lecture"
                     ></v-autocomplete>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
@@ -116,8 +116,8 @@
                         placeholder="Search stage..."></v-text-field>
         </td>
         <td>
-          <v-text-field v-model="lectionTitle" class="ma-2" density="compact" hide-details
-                        placeholder="Search lection..."></v-text-field>
+          <v-text-field v-model="lectureTitle" class="ma-2" density="compact" hide-details
+                        placeholder="Search lecture..."></v-text-field>
         </td>
         <td colspan="4"></td>
       </tr>
@@ -129,41 +129,6 @@
 import axios from 'axios';
 import dayjs from "dayjs";
 
-/*
--- auto-generated definition
-create table slots
-(
-    slot_id     bigint unsigned auto_increment
-        primary key,
-    schedule_id bigint unsigned                       not null,
-    stage_id    bigint unsigned                       not null,
-    lection_id  bigint unsigned                       null,
-    day         date                                  not null,
-    start_time  time                                  not null,
-    end_time    time                                  not null,
-    created_at  timestamp default current_timestamp() not null,
-    updated_at  timestamp                             null,
-    constraint slots_lection_id_foreign
-        foreign key (lection_id) references lections (lection_id)
-            on delete set null,
-    constraint slots_schedule_id_foreign
-        foreign key (schedule_id) references schedules (schedule_id)
-            on delete cascade,
-    constraint slots_stage_id_foreign
-        foreign key (stage_id) references stages (stage_id)
-            on delete cascade
-)
-    collate = utf8mb4_unicode_ci;
-
-create index slots_lection_id_index
-    on slots (lection_id);
-
-create index slots_schedule_id_index
-    on slots (schedule_id);
-
-create index slots_stage_id_index
-    on slots (stage_id);
-*/
 export default {
   data: () => ({
     itemsPerPage: 10,
@@ -171,7 +136,7 @@ export default {
       {title: 'ID', key: 'slot_id', align: 'start'},
       {title: 'Schedule', key: 'schedule_id', align: 'start'},
       {title: 'Stage', key: 'stage.title', align: 'start'},
-      {title: 'Lection', key: 'lection.title', align: 'start'},
+      {title: 'Lecture', key: 'lecture.title', align: 'start'},
       {title: 'Day', key: 'day', align: 'start'},
       {title: 'Start Time', key: 'start_time', align: 'start'},
       {title: 'End Time', key: 'end_time', align: 'start'},
@@ -180,7 +145,7 @@ export default {
     serverItems: [],
     scheduleItems: [],
     stageItems: [],
-    lectionItems: [],
+    lectureItems: [],
     loading: true,
     totalItems: 0,
     slot_id: 0,
@@ -194,7 +159,7 @@ export default {
       slot_id: 0,
       schedule_id: 0,
       stage_id: 0,
-      lection_id: 0,
+      lecture_id: 0,
       day: '',
       start_time: '',
       end_time: '',
@@ -203,7 +168,7 @@ export default {
       slot_id: 0,
       schedule_id: 0,
       stage_id: 0,
-      lection_id: 0,
+      lecture_id: 0,
       day: '',
       start_time: '',
       end_time: '',
@@ -216,7 +181,7 @@ export default {
     stageTitle() {
       this.search = String(Date.now());
     },
-    lectionTitle() {
+    lectureTitle() {
       this.search = String(Date.now());
     },
     dialog(val) {
@@ -242,7 +207,7 @@ export default {
         search: {
           schedule_id: this.scheduleId,
           stage_title: this.stageTitle,
-          lection_title: this.lectionTitle,
+          lecture_title: this.lectureTitle,
         },
       };
       axios.get('http://localhost/events/backend/public/api/admin/get-slots', {params}).then(response => {
@@ -259,7 +224,7 @@ export default {
       this.editedItem.slot_id = null;
       this.editedItem.schedule_id = null;
       this.editedItem.stage_id = null;
-      this.editedItem.lection_id = null;
+      this.editedItem.lecture_id = null;
       this.day = dayjs().format('YYYY-MM-DD');
       this.start_time = dayjs().format('HH:mm');
       this.end_time = dayjs().format('HH:mm');
@@ -287,7 +252,11 @@ export default {
         if (response && response.status === 200 && response.statusText === 'OK') {
           this.serverItems.splice(this.editedIndex, 1);
         } else {
-          console.error('There was an error!');
+          if (response.data && response.data.hasOwnProperty('message')) {
+            alert(response.data.message);
+          } else {
+            alert('There was an error!');
+          }
         }
       } catch (error) {
         console.error('There was an error!', error);
@@ -321,7 +290,7 @@ export default {
       formData.append('slot_id', this.editedItem.slot_id);
       formData.append('schedule_id', this.editedItem.schedule_id);
       formData.append('stage_id', this.editedItem.stage_id);
-      formData.append('lection_id', this.editedItem.lection_id);
+      formData.append('lecture_id', this.editedItem.lecture_id);
       formData.append('day', this.editedItem.day);
       formData.append('start_time', this.editedItem.start_time);
       formData.append('end_time', this.editedItem.end_time);
@@ -350,7 +319,11 @@ export default {
             this.serverItems.push(response.data);
           }
         } else {
-          console.error('There was an error!', response.data);
+          if (response.data && response.data.hasOwnProperty('message')) {
+            alert(response.data.message);
+          } else {
+            alert('There was an error!');
+          }
         }
       } catch (error) {
         console.error('There was an error!', error);
@@ -371,8 +344,8 @@ export default {
     }).catch(error => {
       console.error('Error fetching data:', error);
     });
-    axios.get('http://localhost/events/backend/public/api/admin/get-lections-all').then(response => {
-      this.lectionItems = response.data;
+    axios.get('http://localhost/events/backend/public/api/admin/get-lectures-all').then(response => {
+      this.lectureItems = response.data;
     }).catch(error => {
       console.error('Error fetching data:', error);
     });

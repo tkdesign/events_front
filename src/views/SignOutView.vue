@@ -12,8 +12,6 @@ export default {
   created() {
     axios.post('http://localhost/events/backend/public/logout')
         .then(() => {
-          // const userStore = useUserStore();
-          // userStore.setUser(null);
           this.$cookies.keys().forEach(cookie => this.$cookies.remove(cookie));
           delete axios.defaults.headers.common['X-Xsrf-Token'];
 
