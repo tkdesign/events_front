@@ -102,39 +102,6 @@
 <script>
 import axios from 'axios';
 
-/*
--- auto-generated definition
-create table events_has_curators
-(
-    id         bigint unsigned auto_increment
-        primary key,
-    event_id   bigint unsigned   not null,
-    curator_id bigint unsigned   not null,
-    visible    tinyint default 1 null,
-    position   int     default 1 null,
-    created_at timestamp         null,
-    updated_at timestamp         null,
-    constraint events_has_curators_curator_id_foreign
-        foreign key (curator_id) references curators (curator_id)
-            on delete cascade,
-    constraint events_has_curators_event_id_foreign
-        foreign key (event_id) references events (event_id)
-            on delete cascade
-)
-    collate = utf8mb4_unicode_ci;
-
-create index events_has_curators_created_at_index
-    on events_has_curators (created_at);
-
-create index events_has_curators_curator_id_index
-    on events_has_curators (curator_id);
-
-create index events_has_curators_event_id_index
-    on events_has_curators (event_id);
-
-create index events_has_curators_position_index
-    on events_has_curators (position);
-*/
 export default {
   data: () => ({
     itemsPerPage: 10,
@@ -237,7 +204,11 @@ export default {
         if (response && response.status === 200 && response.statusText === 'OK') {
           this.serverItems.splice(this.editedIndex, 1);
         } else {
-          console.error('There was an error!');
+          if (response.data && response.data.hasOwnProperty('message')) {
+            alert(response.data.message);
+          } else {
+            alert('There was an error!');
+          }
         }
       } catch (error) {
         console.error('There was an error!', error);
@@ -298,7 +269,11 @@ export default {
             this.serverItems.push(response.data);
           }
         } else {
-          console.error('There was an error!', response.data);
+          if (response.data && response.data.hasOwnProperty('message')) {
+            alert(response.data.message);
+          } else {
+            alert('There was an error!');
+          }
         }
       } catch (error) {
         console.error('There was an error!', error);

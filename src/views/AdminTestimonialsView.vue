@@ -112,44 +112,7 @@
 
 <script>
 import axios from 'axios';
-import dayjs from "dayjs";
-/*
--- auto-generated definition
-create table testimonials
-(
-    testimonial_id bigint unsigned auto_increment
-        primary key,
-    user_id        bigint unsigned   not null,
-    event_id       bigint unsigned   not null,
-    `desc`         text              null,
-    image          varchar(255)      null,
-    thumbnail      varchar(255)      null,
-    rating         int               null,
-    visible        tinyint default 1 not null,
-    position       int     default 1 not null,
-    created_at     timestamp         null,
-    updated_at     timestamp         null,
-    constraint testimonials_event_id_foreign
-        foreign key (event_id) references events (event_id)
-            on delete cascade,
-    constraint testimonials_user_id_foreign
-        foreign key (user_id) references users (id)
-            on delete cascade
-)
-    collate = utf8mb4_unicode_ci;
 
-create index testimonials_created_at_index
-    on testimonials (created_at);
-
-create index testimonials_event_id_index
-    on testimonials (event_id);
-
-create index testimonials_position_index
-    on testimonials (position);
-
-create index testimonials_user_id_index
-    on testimonials (user_id);
-*/
 export default {
   data: () => ({
     itemsPerPage: 10,
@@ -268,7 +231,11 @@ export default {
         if (response && response.status === 200 && response.statusText === 'OK') {
           this.serverItems.splice(this.editedIndex, 1);
         } else {
-          console.error('There was an error!');
+          if (response.data && response.data.hasOwnProperty('message')) {
+            alert(response.data.message);
+          } else {
+            alert('There was an error!');
+          }
         }
       } catch (error) {
         console.error('There was an error!', error);
@@ -333,7 +300,11 @@ export default {
             this.serverItems.push(response.data);
           }
         } else {
-          console.error('There was an error!', response.data);
+          if (response.data && response.data.hasOwnProperty('message')) {
+            alert(response.data.message);
+          } else {
+            alert('There was an error!');
+          }
         }
       } catch (error) {
         console.error('There was an error!', error);

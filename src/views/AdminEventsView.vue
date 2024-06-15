@@ -17,11 +17,6 @@
         <v-spacer></v-spacer>
         <v-btn class="mb-2" color="primary" dark @click="createItem">New Item</v-btn>
         <v-dialog v-model="dialog" max-width="500px">
-          <!--
-                    <template v-slot:activator="{ props }">
-                      <v-btn class="mb-2" color="primary" dark v-bind="props">New Item</v-btn>
-                    </template>
-          -->
           <v-card>
             <v-card-title>
               <span class="text-h5">{{ formTitle }}</span>
@@ -260,7 +255,11 @@ export default {
         if (response && response.status === 200 && response.statusText === 'OK') {
           this.serverItems.splice(this.editedIndex, 1);
         } else {
-          console.error('There was an error!');
+          if (response.data && response.data.hasOwnProperty('message')) {
+            alert(response.data.message);
+          } else {
+            alert('There was an error!');
+          }
         }
       } catch (error) {
         console.error('There was an error!', error);
@@ -329,7 +328,11 @@ export default {
             this.serverItems.push(response.data);
           }
         } else {
-          console.error('There was an error!', response.data);
+          if (response.data && response.data.hasOwnProperty('message')) {
+            alert(response.data.message);
+          } else {
+            alert('There was an error!');
+          }
         }
       } catch (error) {
         console.error('There was an error!', error);

@@ -105,6 +105,8 @@ export default {
   },
   methods: {
     saveForm() {
+      axios.defaults.withCredentials = true;
+      axios.defaults.withXSRFToken = true;
       axios.post('http://localhost/events/backend/public/api/update-subscribe', {
         subscribe: this.subscribe,
       }, {
@@ -114,6 +116,7 @@ export default {
         }
       }).then((response) => {
         this.$router.push({ name: 'account' });
+        window.location.reload();
       }).catch((error) => {
         console.error('Error fetching data:', error);
         this.errorMsg = 'Error fetching data';

@@ -24,7 +24,7 @@
               class="text--secondary"
               cols="6"
           >
-            {{ slot.lection.title }}
+            {{ slot.lecture.title }}
           </v-col>
         </v-row>
       </v-expansion-panel-title>
@@ -33,7 +33,7 @@
           <v-spacer></v-spacer>
           <v-col cols="5">
             <v-img
-                :src="getImageFullUrl(slot.lection.image)"
+                :src="getImageFullUrl(slot.lecture.image)"
                 height="200px"
                 cover
             />
@@ -47,7 +47,7 @@
           <v-col cols="6">
             <v-row no-gutters>
               <v-col cols="12">
-                  {{ slot.lection.desc }}
+                  {{ slot.lecture.desc }}
               </v-col>
             </v-row>
             <v-row >
@@ -55,24 +55,24 @@
                 <span class="font-weight-bold">
                   Speaker:
                 </span>
-                  {{ makeFullName(slot.lection.speaker) }}
+                  {{ makeFullName(slot.lecture.speaker) }}
               </v-col>
               <v-col cols="auto">
-                {{ slot.lection.speaker.occupation }} at <span class="font-weight-bold">{{ slot.lection.speaker.company }}</span>
+                {{ slot.lecture.speaker.occupation }} at <span class="font-weight-bold">{{ slot.lecture.speaker.company }}</span>
               </v-col>
             </v-row>
             <v-row>
               <v-col cols="12">
                 <v-btn
                     color="primary"
-                    @click="checkin(slot)"
+                    @click.prevent="checkin(slot)"
                     v-if="checkAuth() && getUserCheckInStatus(slot.user)"
                 >
                   Check in
                 </v-btn>
                 <v-btn
                     color="secondary"
-                    @click="checkout(slot)"
+                    @click.prevent="checkout(slot)"
                     v-if="checkAuth() && !getUserCheckInStatus(slot.user)"
                 >
                   Check out
@@ -95,6 +95,7 @@ export default {
     stage_id: Number,
     slots: Object,
     day: String,
+    subscribed: Number,
   },
   emits: {
     checkin: null,
@@ -130,6 +131,11 @@ export default {
       return true;
     },
     checkin(slot) {
+
+      if (!this.subscribed) {
+        alert('You are not subscribed to current event');
+        return;
+      }
       this.$emit('checkin', [this.stage_id, slot, this.userStore.user]);
     },
     checkout(slot) {

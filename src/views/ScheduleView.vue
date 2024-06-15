@@ -17,7 +17,7 @@
         </template>
       </v-select>
       <h2 class="text-h2 mb-5">{{ dd }}</h2>
-      <ScheduleStages :day="day" :stages="stages" v-if="!!stages.length" @checkin="handleCheckin" @checkout="handleCheckout"/>
+      <ScheduleStages :day="day" :stages="stages" :subscribed="subscribed" v-if="!!stages.length" @checkin="handleCheckin" @checkout="handleCheckout"/>
     </v-container>
   </v-main>
   <BaseFooter/>
@@ -29,6 +29,7 @@ import BaseFooter from '@/components/BaseFooter.vue';
 import PageHeader from "@/components/PageHeader.vue";
 import {useScheduleStore} from "@/stores/scheduleStore";
 import ScheduleStages from "@/components/ScheduleStages.vue";
+
 export default {
   components: {
     ScheduleStages,
@@ -54,6 +55,7 @@ export default {
     return {
       scheduleStore,
       stages: [],
+      subscribed: 0,
       dd: null,
       day: null,
       wasMounted: false,
@@ -64,6 +66,7 @@ export default {
     scheduleStore: {
       handler() {
         this.stages = this.scheduleStore.getStages();
+        this.subscribed = this.scheduleStore.getSubscribed();
         this.dd = this.scheduleStore.getFirstDay().value;
         this.day = this.dd;
       },

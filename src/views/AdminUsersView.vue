@@ -97,38 +97,7 @@
 
 <script>
 import axios from 'axios';
-import dayjs from "dayjs";
-/*
--- auto-generated definition
-create table users
-(
-    id                        bigint unsigned auto_increment
-        primary key,
-    name                      varchar(255)  not null,
-    email                     varchar(255)  not null,
-    email_verified_at         timestamp     null,
-    password                  varchar(255)  not null,
-    two_factor_secret         text          null,
-    two_factor_recovery_codes text          null,
-    remember_token            varchar(100)  null,
-    created_at                timestamp     null,
-    updated_at                timestamp     null,
-    first_name                varchar(255)  not null,
-    last_name                 varchar(255)  not null,
-    role                      int default 1 not null,
-    constraint users_email_unique
-        unique (email),
-    constraint users_name_unique
-        unique (name)
-)
-    collate = utf8mb4_unicode_ci;
 
-create index users_created_at_index
-    on users (created_at);
-
-create index users_role_index
-    on users (role);
- */
 export default {
   data: () => ({
     itemsPerPage: 10,
@@ -246,7 +215,11 @@ export default {
         if (response && response.status === 200 && response.statusText === 'OK') {
           this.serverItems.splice(this.editedIndex, 1);
         } else {
-          console.error('There was an error!');
+          if (response.data && response.data.hasOwnProperty('message')) {
+            alert(response.data.message);
+          } else {
+            alert('There was an error!');
+          }
         }
       } catch (error) {
         console.error('There was an error!', error);
@@ -311,7 +284,11 @@ export default {
             this.serverItems.push(response.data);
           }
         } else {
-          console.error('There was an error!', response.data);
+          if (response.data && response.data.hasOwnProperty('message')) {
+            alert(response.data.message);
+          } else {
+            alert('There was an error!');
+          }
         }
       } catch (error) {
         console.error('There was an error!', error);

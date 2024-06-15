@@ -11,8 +11,8 @@
                "day":"2024-07-01",
                "start_time":"09:00:00",
                "end_time":"09:50:00",
-               "lection":{
-                  "lection_id":"1",
+               "lecture":{
+                  "lecture_id":"1",
                   "title":"The Future of Technology",
                   "short_desc":"The Future of Technology is a talk about the future of technology. This talk will cover the latest trends in technology and what we can expect to see in the future.",
                   "desc":"John Doe is a technology enthusiast. He has been working in the technology industry for over 10 years. He has worked with some of the biggest companies in the world. He is a well-known speaker and has spoken at many events around the world. He is known for his knowledge and passion for technology.",
@@ -42,8 +42,8 @@
                "day":"2024-07-01",
                "start_time":"10:00:00",
                "end_time":"10:50:00",
-               "lection":{
-                  "lection_id":"2",
+               "lecture":{
+                  "lecture_id":"2",
                   "title":"The Future of Business",
                   "short_desc":"The Future of Business is a talk about the future of business. This talk will cover the latest trends in business and what we can expect to see in the future.",
                   "desc":"Jane Doe is a business expert. She has been working in the business industry for over 10 years. She has worked with some of the biggest companies in the world. She is a well-known speaker and has spoken at many events around the world. She is known for her knowledge and passion for business.",
@@ -73,8 +73,8 @@
                "day":"2024-07-01",
                "start_time":"11:00:00",
                "end_time":"11:50:00",
-               "lection":{
-                  "lection_id":"3",
+               "lecture":{
+                  "lecture_id":"3",
                   "title":"The Future of Marketing",
                   "short_desc":"The Future of Marketing is a talk about the future of marketing. This talk will cover the latest trends in marketing and what we can expect to see in the future.",
                   "desc":"Jack Doe is a marketing expert. He has been working in the marketing industry for over 10 years. He has worked with some of the biggest companies in the world. He is a well-known speaker and has spoken at many events around the world. He is known for his knowledge and passion for marketing.",
@@ -112,8 +112,8 @@
                "day":"2024-07-01",
                "start_time":"09:00:00",
                "end_time":"09:50:00",
-               "lection":{
-                  "lection_id":"4",
+               "lecture":{
+                  "lecture_id":"4",
                   "title":"The Future of Technology",
                   "short_desc":"The Future of Technology is a talk about the future of technology. This talk will cover the latest trends in technology and what we can expect to see in the future.",
                   "desc":"John Doe is a technology enthusiast. He has been working in the technology industry for over 10 years. He has worked with some of the biggest companies in the world. He is a well-known speaker and has spoken at many events around the world. He is known for his knowledge and passion for technology.",
@@ -143,8 +143,8 @@
                "day":"2024-07-02",
                "start_time":"10:00:00",
                "end_time":"10:50:00",
-               "lection":{
-                  "lection_id":"5",
+               "lecture":{
+                  "lecture_id":"5",
                   "title":"The Future of Business",
                   "short_desc":"The Future of Business is a talk about the future of business. This talk will cover the latest trends in business and what we can expect to see in the future.",
                   "desc":"Jane Doe is a business expert. She has been working in the business industry for over 10 years. She has worked with some of the biggest companies in the world. She is a well-known speaker and has spoken at many events around the world. She is known for her knowledge and passion for business.",
@@ -174,8 +174,8 @@
                "day":"2024-07-02",
                "start_time":"11:00:00",
                "end_time":"11:50:00",
-               "lection":{
-                  "lection_id":"6",
+               "lecture":{
+                  "lecture_id":"6",
                   "title":"The Future of Marketing",
                   "short_desc":"The Future of Marketing is a talk about the future of marketing. This talk will cover the latest trends in marketing and what we can expect to see in the future.",
                   "desc":"Jack Doe is a marketing expert. He has been working in the marketing industry for over 10 years. He has worked with some of the biggest companies in the world. He is a well-known speaker and has spoken at many events around the world. He is known for his knowledge and passion for marketing.",

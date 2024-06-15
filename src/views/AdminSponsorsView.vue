@@ -98,37 +98,13 @@
 
 <script>
 import axios from 'axios';
-import dayjs from "dayjs";
-/*
-create table sponsors
-(
-    sponsor_id bigint unsigned auto_increment
-        primary key,
-    name       varchar(255) not null,
-    short_desc varchar(255) null,
-    `desc`     text         null,
-    logo       varchar(255) null,
-    url        varchar(255) null,
-    email      varchar(255) not null,
-    phone      varchar(255) null,
-    created_at timestamp    null,
-    updated_at timestamp    null,
-    constraint sponsors_name_unique
-        unique (name)
-)
-    collate = utf8mb4_unicode_ci;
 
-create index sponsors_created_at_index
-    on sponsors (created_at);
- */
 export default {
   data: () => ({
     itemsPerPage: 10,
     headers: [
       {title: 'ID', key: 'sponsor_id', align: 'start'},
       {title: 'Name', key: 'name', align: 'start'},
-      // {title: 'Short Description', key: 'short_desc', align: 'start'},
-      // {title: 'Description', key: 'desc', align: 'start'},
       {title: 'Logo', key: 'logo', align: 'start'},
       {title: 'URL', key: 'url', align: 'start'},
       {title: 'Email', key: 'email', align: 'start'},
@@ -234,7 +210,11 @@ export default {
         if (response && response.status === 200 && response.statusText === 'OK') {
           this.serverItems.splice(this.editedIndex, 1);
         } else {
-          console.error('There was an error!');
+          if (response.data && response.data.hasOwnProperty('message')) {
+            alert(response.data.message);
+          } else {
+            alert('There was an error!');
+          }
         }
       } catch (error) {
         console.error('There was an error!', error);
@@ -298,7 +278,11 @@ export default {
             this.serverItems.push(response.data);
           }
         } else {
-          console.error('There was an error!', response.data);
+          if (response.data && response.data.hasOwnProperty('message')) {
+            alert(response.data.message);
+          } else {
+            alert('There was an error!');
+          }
         }
       } catch (error) {
         console.error('There was an error!', error);
