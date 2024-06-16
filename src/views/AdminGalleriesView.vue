@@ -111,6 +111,7 @@ export default {
     totalItems: 0,
     gallery_id: 0,
     title: '',
+    name: '',
     search: '',
     dialog: false,
     dialogDelete: false,

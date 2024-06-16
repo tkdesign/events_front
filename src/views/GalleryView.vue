@@ -4,20 +4,20 @@
     <PageHeader/>
     <v-container class="mt-15 mb-10">
       <v-select
+          ref="gallerySelector"
           v-model="yy"
           :item-props="itemProps"
           :items="galleries"
           label="Year"
-          ref="gallerySelector"
           @update:model-value="changeGallery"
       >
         <template v-slot:item="{ props, item }">
-          <v-list-item v-bind="props" :subtitle="item.raw.title"
+          <v-list-item :subtitle="item.raw.title" v-bind="props"
           ></v-list-item>
         </template>
       </v-select>
       <h2 class="text-h2 mb-3">{{ selectedGallery?.title }}</h2>
-      <GalleryImages :gallery_id="galleryId" v-if="galleryId"/>
+      <GalleryImages v-if="galleryId" :gallery_id="galleryId"/>
     </v-container>
   </v-main>
   <BaseFooter/>
@@ -79,6 +79,11 @@ export default {
       },
       deep: true,
     },
+    yy(newYear) {
+      if (newYear) {
+        this.$router.push({name: 'gallery_year', params: {year: newYear.toString()}});
+      }
+    },
   },
   methods: {
     itemProps(item) {
@@ -89,7 +94,11 @@ export default {
       };
     },
     changeGallery(year) {
-      this.$router.push({name: 'gallery_year', params: {year: year}});
+      if (this.galleriesStore.galleries.length > 0) {
+        this.$nextTick(() => {
+          this.$router.push({name: 'gallery_year', params: {year: year.toString()}});
+        });
+      }
     },
   },
   mounted() {

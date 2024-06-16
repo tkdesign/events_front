@@ -240,6 +240,8 @@ export default {
       this.editedItem = Object.assign({}, item);
       this.editedItem.image = null;
       this.editedItem.thumbnail = null;
+      this.editedItem.start_date = dayjs(this.editedItem.start_date).format('YYYY-MM-DD');
+      this.editedItem.end_date = dayjs(this.editedItem.end_date).format('YYYY-MM-DD');
       this.dialog = true;
     },
 

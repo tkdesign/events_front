@@ -1,5 +1,6 @@
 <template>
-  <BaseHeader :currentPage="'/notfound'"/>
+<!--  <BaseHeader :currentPage="'/notfound'"/>-->
+  <BaseHeader/>
   <v-container class="mt-15 mb-10">
     <v-empty-state
         headline="Whoops, 404"
@@ -8,7 +9,8 @@
         image="https://vuetifyjs.b-cdn.net/docs/images/logos/v.png"
     ></v-empty-state>
   </v-container>
-  <BaseFooter :currentPage="'/notfound'"/>
+<!--  <BaseFooter :currentPage="'/notfound'"/>-->
+  <BaseFooter/>
 </template>
 
 <script>

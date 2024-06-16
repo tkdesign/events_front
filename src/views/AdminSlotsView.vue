@@ -151,6 +151,7 @@ export default {
     slot_id: 0,
     scheduleId: '',
     stageTitle: '',
+    lectureTitle: '',
     search: '',
     dialog: false,
     dialogDelete: false,
