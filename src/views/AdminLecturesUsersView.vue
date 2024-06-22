@@ -280,6 +280,9 @@ export default {
         console.error('There was an error!', error);
       }
     },
+    initialize() {
+      this.loadItems({page: 1, itemsPerPage: this.itemsPerPage, sortBy: []});
+    },
   },
   created() {
     axios.get('http://localhost/events/backend/public/api/admin/get-lectures-all').then(response => {

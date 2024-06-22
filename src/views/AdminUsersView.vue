@@ -300,6 +300,9 @@ export default {
       }
       return `http://localhost/events/backend/public${value}`;
     },
+    initialize() {
+      this.loadItems({page: 1, itemsPerPage: this.itemsPerPage, sortBy: []});
+    },
   },
 }
 </script>

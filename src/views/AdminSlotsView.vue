@@ -333,6 +333,9 @@ export default {
     formatTime(value) {
       return dayjs(value).format('HH:mm');
     },
+    initialize() {
+      this.loadItems({page: 1, itemsPerPage: this.itemsPerPage, sortBy: []});
+    },
   },
   created() {
     axios.get('http://localhost/events/backend/public/api/admin/get-schedules-all').then(response => {
