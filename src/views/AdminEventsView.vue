@@ -53,6 +53,9 @@
                     <v-file-input v-model="editedItem.thumbnail" accept="image/*" label="Thumbnail"></v-file-input>
                   </v-col>
                   <v-col cols="12" md="6" sm="6">
+                    <v-file-input v-model="editedItem.map" accept="image/*" label="Map"></v-file-input>
+                  </v-col>
+                  <v-col cols="12" md="6" sm="6">
                     <v-text-field v-model="editedItem.location" label="Location"></v-text-field>
                   </v-col>
                   <v-col cols="12" md="6" sm="6">
@@ -60,6 +63,24 @@
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
                     <v-text-field v-model="editedItem.address" label="Address"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="12" sm="12">
+                    <v-text-field v-model="editedItem.about_title" label="About title"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="12" sm="12">
+                    <v-textarea v-model="editedItem.about_text" label="About text"></v-textarea>
+                  </v-col>
+                  <v-col cols="12" md="12" sm="12">
+                    <v-text-field v-model="editedItem.left_block_title" label="Left block title"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="12" sm="12">
+                    <v-textarea v-model="editedItem.left_block_text" label="Left block text"></v-textarea>
+                  </v-col>
+                  <v-col cols="12" md="12" sm="12">
+                    <v-text-field v-model="editedItem.right_block_title" label="Right block title"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="12" sm="12">
+                    <v-textarea v-model="editedItem.right_block_text" label="Right block text"></v-textarea>
                   </v-col>
                 </v-row>
               </v-container>
@@ -153,11 +174,18 @@ export default {
       title: '',
       desc_short: '',
       desc: '',
+      about_title: '',
+      about_text: '',
+      left_block_title: '',
+      left_block_text: '',
+      right_block_title: '',
+      right_block_text: '',
       year: 0,
       start_date: '',
       end_date: '',
       image: null,
       thumbnail: null,
+      map: null,
       is_current: false,
       location: '',
       place: '',
@@ -168,11 +196,18 @@ export default {
       title: '',
       desc_short: '',
       desc: '',
+      about_title: '',
+      about_text: '',
+      left_block_title: '',
+      left_block_text: '',
+      right_block_title: '',
+      right_block_text: '',
       year: 0,
       start_date: '',
       end_date: '',
       image: null,
       thumbnail: null,
+      map: null,
       is_current: false,
       location: '',
       place: '',
@@ -226,12 +261,19 @@ export default {
       this.editedItem.title = '';
       this.editedItem.desc_short = '';
       this.editedItem.desc = '';
+      this.editedItem.about_title = '';
+      this.editedItem.about_text = '';
+      this.editedItem.left_block_title = '';
+      this.editedItem.left_block_text = '';
+      this.editedItem.right_block_title = '';
+      this.editedItem.right_block_text = '';
       this.editedItem.year = dayjs().year();
       this.editedItem.start_date = dayjs().format('YYYY-MM-DD');
       this.editedItem.end_date = dayjs().format('YYYY-MM-DD');
       this.editedItem.is_current = false;
       this.editedItem.image = null;
       this.editedItem.thumbnail = null;
+      this.editedItem.map = null;
       this.dialog = true;
     },
 
@@ -240,6 +282,7 @@ export default {
       this.editedItem = Object.assign({}, item);
       this.editedItem.image = null;
       this.editedItem.thumbnail = null;
+      this.editedItem.map = null;
       this.editedItem.start_date = dayjs(this.editedItem.start_date).format('YYYY-MM-DD');
       this.editedItem.end_date = dayjs(this.editedItem.end_date).format('YYYY-MM-DD');
       this.dialog = true;
@@ -296,11 +339,18 @@ export default {
       formData.append('title', this.editedItem.title);
       formData.append('desc_short', this.editedItem.desc_short);
       formData.append('desc', this.editedItem.desc);
+      formData.append('about_title', this.editedItem.about_title);
+      formData.append('about_text', this.editedItem.about_text);
+      formData.append('left_block_title', this.editedItem.left_block_title);
+      formData.append('left_block_text', this.editedItem.left_block_text);
+      formData.append('right_block_title', this.editedItem.right_block_title);
+      formData.append('right_block_text', this.editedItem.right_block_text);
       formData.append('year', this.editedItem.year);
       formData.append('start_date', this.editedItem.start_date);
       formData.append('end_date', this.editedItem.end_date);
       formData.append('image', this.editedItem.image);
       formData.append('thumbnail', this.editedItem.thumbnail);
+      formData.append('map', this.editedItem.map);
       formData.append('is_current', this.editedItem.is_current);
       formData.append('location', this.editedItem.location);
       formData.append('place', this.editedItem.place);

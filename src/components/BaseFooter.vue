@@ -4,7 +4,6 @@
       <v-container>
         <v-row class="bottom-menu-ribbon" :class="mobile_row">
           <div class="d-flex flex-column logo-container justify-center" :class="mobile_column">
-            <!--          Здесь нужно разместить блок с названием конференции (как бы логотипом в текстовом виде), кратким описанием конференции, иконки соцсетей -->
             <h5 class="text-h5 mb-2">{{ event?.title }}</h5>
             <div>{{ event?.desc }}</div>
             <div class="d-flex">
@@ -39,21 +38,6 @@
           </div>
         </v-row>
       </v-container>
-
-<!--
-      <v-btn
-          v-for="(link, index) in visibleMenuItems"
-          :key="index"
-          class="mx-2"
-          color="white"
-          rounded="xl"
-          variant="text"
-      >
-        <RouterLink :to="link.alias" :class="{ 'active': isActive(link.alias) }">
-          {{ link.title }}
-        </RouterLink>
-      </v-btn>
--->
 
     </v-row>
     <v-row justify="center" no-gutters class="bg-black">
@@ -116,11 +100,6 @@ export default {
       return this.visibleMenuItems.slice(index + 1, nextSubheaderIndex !== -1 ? nextSubheaderIndex : undefined);
     },
   },
-  created() {
-    // if (!this.eventStore.event || !!!this.eventStore.event.hasOwnProperty('event_id')) {
-    //   this.eventStore.init();
-    // }
-  },
 }
 </script>
 <style scoped>
@@ -139,11 +118,11 @@ export default {
   justify-content: flex-start;
   padding-top: 10px;
   padding-bottom: 10px;
-  height: 300px;
+  height: 330px;
 }
 
 .bottom-menu-ribbon div.menu-column {
-  margin: 0 10px; /* Добавляем немного отступа между колонками */
+  margin: 0 10px;
   width: 200px;
 }
 
@@ -153,12 +132,9 @@ export default {
 }
 
 .bottom-menu-ribbon .v-list {
-  margin: 0; /* Убираем отступы у списка */
+  margin: 0;
 }
 
-.bottom-menu-ribbon .v-list-item {
-  /*padding: 5px 0;*/ /* Добавляем немного отступа между элементами списка */
-}
 
 .mh-300 {
   min-height: 300px;

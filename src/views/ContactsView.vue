@@ -8,7 +8,7 @@
           <v-img
               max-height = "400"
               cover
-              src="../src/assets/images/contact/map.png"
+              :src="getImageFullUrl(event.map)"
               aspect-ratio="1"
               >
           </v-img>
@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import {inject} from "vue";
 import BaseHeader from '@/components/BaseHeader.vue';
 import BaseFooter from '@/components/BaseFooter.vue';
 import PageHeader from "@/components/PageHeader.vue";
@@ -43,6 +44,9 @@ export default {
     BaseFooter,
   },
   computed: {
+    event() {
+      return this.eventStore.event;
+    },
     curators() {
       return this.curatorsStore.curators;
     },
@@ -62,10 +66,20 @@ export default {
     },
   },
   data() {
+    const eventStore = inject('eventStore');
     const curatorsStore = useCuratorsStore();
     return {
+      eventStore,
       curatorsStore,
     }
+  },
+  methods: {
+    getImageFullUrl(value) {
+      if (/^(https?:)?\/\//i.test(value)) {
+        return value;
+      }
+      return `http://localhost/events/backend/public${value}`;
+    },
   },
   created() {
     if (this.curatorsStore.curators.length === 0) {

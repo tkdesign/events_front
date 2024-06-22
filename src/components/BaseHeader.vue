@@ -67,11 +67,6 @@ export default {
       return this.$route.path === path;
     },
   },
-  created() {
-    // if (!this.eventStore.event || !!!this.eventStore.event.hasOwnProperty('event_id')) {
-    //   this.eventStore.init();
-    // }
-  },
 }
 </script>
 
