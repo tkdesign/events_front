@@ -74,10 +74,9 @@ export default {
     return {
       imagesStore,
       images: Object,
-      wasMounted: false,
-      wasCreated: false,
       lightbox: false,
       selectedImage: null,
+      wasMounted: false,
     }
   },
   watch: {
@@ -100,30 +99,20 @@ export default {
       return `http://localhost/events/backend/public${value}`;
     },
   },
+  beforeUpdate() {
+    // if (!this.wasMounted) {
+      this.imagesStore.init(this.gallery_id);
+    // }
+  },
   mounted() {
-    if (!this.imagesStore.images.length) {
-      if (!this.wasCreated) {
-        this.imagesStore.init(this.gallery_id);
-      }
-    } else {
-      this.images = this.imagesStore.images;
-    }
+    this.imagesStore.init(this.gallery_id);
     this.wasMounted = true;
   },
-  beforeUpdate() {
-    if (!this.wasMounted) {
-      this.imagesStore.init(this.gallery_id);
-    } else {
-      this.images = this.imagesStore.images;
-    }
-    this.wasMounted = false;
-  },
-  created() {
-    if (this.imagesStore.images.length === 0) {
-      this.imagesStore.init(this.gallery_id);
-    }
-    this.wasCreated = true;
-  },
+  // created() {
+  //   if (this.imagesStore.images.length === 0) {
+  //     this.imagesStore.init(this.gallery_id);
+  //   }
+  // },
 }
 </script>
 
