@@ -85,7 +85,7 @@ export default {
       handler() {
         this.images = this.imagesStore.images;
       },
-      immediate: true,
+      deep: true,
     },
   },
   methods: {
