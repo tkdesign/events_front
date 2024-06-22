@@ -57,7 +57,7 @@
                     <v-select v-model="editedItem.visible" :items="[1, 0]" label="Visible"></v-select>
                   </v-col>
                   <v-col cols="12" md="6" sm="6">
-                    <v-text-field v-model="editedItem.position" label="Position"></v-text-field>
+                    <v-text-field v-model="editedItem.position" label="Position" type="number"></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>

@@ -32,10 +32,11 @@
                         item-text="title"
                         item-value="event_id"
                         label="Event"
+                        :rules="[v => !!v || 'Event is required']"
                     ></v-autocomplete>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
-                    <v-text-field v-model="editedItem.title" label="Title"></v-text-field>
+                    <v-text-field v-model="editedItem.title" label="Title" :rules="[v => !!v || 'Title is required']"></v-text-field>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
 <!--                    <v-textarea v-model="editedItem.content" label="Content"></v-textarea>-->
@@ -60,16 +61,16 @@
                     <v-file-input v-model="editedItem.thumbnail" accept="image/*" label="Thumbnail"></v-file-input>
                   </v-col>
                   <v-col cols="12" md="6" sm="6">
-                    <v-text-field v-model="editedItem.color" label="Background color"></v-text-field>
+                    <v-text-field v-model="editedItem.color" label="Background color" type="color"></v-text-field>
                   </v-col>
                   <v-col cols="12" md="6" sm="6">
-                    <v-text-field v-model="editedItem.text_color" label="Text color"></v-text-field>
+                    <v-text-field v-model="editedItem.text_color" label="Text color" type="color"></v-text-field>
                   </v-col>
                   <v-col cols="12" md="6" sm="6">
                     <v-select v-model="editedItem.visible" :items="[1, 0]" label="Visible"></v-select>
                   </v-col>
                   <v-col cols="12" md="6" sm="6">
-                    <v-text-field v-model="editedItem.position" label="Position"></v-text-field>
+                    <v-text-field v-model="editedItem.position" label="Position" type="number"></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>

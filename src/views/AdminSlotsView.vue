@@ -87,13 +87,13 @@
                     </v-autocomplete>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
-                    <v-text-field v-model="editedItem.day" label="Day" type="date"></v-text-field>
+                    <v-text-field v-model="editedItem.day" label="Day" type="date" :rules="[v => !!v || 'Day is required']"></v-text-field>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
-                    <v-text-field v-model="editedItem.start_time" label="Start Time" type="time"></v-text-field>
+                    <v-text-field v-model="editedItem.start_time" label="Start Time" type="time" :rules="[v => !!v || 'Start time is required']"></v-text-field>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
-                    <v-text-field v-model="editedItem.end_time" label="End Time" type="time"></v-text-field>
+                    <v-text-field v-model="editedItem.end_time" label="End Time" type="time" :rules="[v => !!v || 'End time is required']"></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>

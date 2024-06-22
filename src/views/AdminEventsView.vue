@@ -64,22 +64,22 @@
                     <v-text-field v-model="editedItem.address" label="Address"></v-text-field>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
-                    <v-text-field v-model="editedItem.about_title" label="About title"></v-text-field>
+                    <v-text-field v-model="editedItem.about_title" label="About title" :rules="[v => !!v || 'About title is required']"></v-text-field>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
-                    <v-textarea v-model="editedItem.about_text" label="About text"></v-textarea>
+                    <v-textarea v-model="editedItem.about_text" label="About text" :rules="[v => !!v || 'About text is required']"></v-textarea>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
-                    <v-text-field v-model="editedItem.left_block_title" label="Left block title"></v-text-field>
+                    <v-text-field v-model="editedItem.left_block_title" label="Left block title" :rules="[v => !!v || 'Left block title is required']"></v-text-field>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
-                    <v-textarea v-model="editedItem.left_block_text" label="Left block text"></v-textarea>
+                    <v-textarea v-model="editedItem.left_block_text" label="Left block text" :rules="[v => !!v || 'Left block text is required']"></v-textarea>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
-                    <v-text-field v-model="editedItem.right_block_title" label="Right block title"></v-text-field>
+                    <v-text-field v-model="editedItem.right_block_title" label="Right block title" :rules="[v => !!v || 'Right block title is required']"></v-text-field>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
-                    <v-textarea v-model="editedItem.right_block_text" label="Right block text"></v-textarea>
+                    <v-textarea v-model="editedItem.right_block_text" label="Right block text" :rules="[v => !!v || 'Right block text is required']"></v-textarea>
                   </v-col>
                 </v-row>
               </v-container>

@@ -33,6 +33,7 @@
                         item-value="event_id"
                         label="Event"
                         ref="eventSelector"
+                        :rules="[v => !!v || 'Event is required']"
                     >
                       <template v-slot:prepend-item>
                         <v-list-item
@@ -53,6 +54,7 @@
                         item-value="id"
                         label="User"
                         ref="userSelector"
+                        :rules="[v => !!v || 'User is required']"
                     >
                       <template v-slot:prepend-item>
                         <v-list-item

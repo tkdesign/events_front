@@ -33,6 +33,7 @@
                         item-value="event_id"
                         label="Event"
                         ref="eventSelector"
+                        :rules="[v => !!v || 'Event is required']"
                     >
                       <template v-slot:prepend-item>
                         <v-list-item
@@ -53,6 +54,7 @@
                         item-value="sponsor_id"
                         label="Sponsor"
                         ref="sponsorSelector"
+                        :rules="[v => !!v || 'Sponsor is required']"
                     >
                       <template v-slot:prepend-item>
                         <v-list-item

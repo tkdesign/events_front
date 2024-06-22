@@ -25,7 +25,7 @@
                 <v-row>
                   <input v-if="editedItem.schedule_id" v-model="editedItem.schedule_id" type="hidden">
                   <v-col cols="12" md="12" sm="12">
-                    <v-text-field v-model="editedItem.title" label="Title"></v-text-field>
+                    <v-text-field v-model="editedItem.title" label="Title" :rules="[v => !!v || 'Title is required']"></v-text-field>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
                     <v-autocomplete
