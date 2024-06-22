@@ -25,7 +25,7 @@
               <v-container>
                 <v-row>
                   <input v-if="editedItem.article_id" v-model="editedItem.article_id" type="hidden">
-                  <v-col cols="12" md="6" sm="6">
+                  <v-col cols="12" md="12" sm="12">
                     <v-autocomplete
                         v-model="editedItem.menu_item_id"
                         :items="menuItems"
@@ -35,7 +35,7 @@
                         label="Menu item"
                     ></v-autocomplete>
                   </v-col>
-                  <v-col cols="12" md="6" sm="6">
+                  <v-col cols="12" md="12" sm="12">
                     <v-text-field v-model="editedItem.title" label="Title"></v-text-field>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">

@@ -25,7 +25,7 @@
               <v-container>
                 <v-row>
                   <input v-if="editedItem.testimonial_id" v-model="editedItem.testimonial_id" type="hidden">
-                  <v-col cols="12" md="6" sm="6">
+                  <v-col cols="12" md="12" sm="12">
                     <v-autocomplete
                         v-model="editedItem.user_id"
                         :items="userItems"
@@ -35,7 +35,7 @@
                         label="User"
                     ></v-autocomplete>
                   </v-col>
-                  <v-col cols="12" md="6" sm="6">
+                  <v-col cols="12" md="12" sm="12">
                     <v-autocomplete
                         v-model="editedItem.event_id"
                         :items="eventItems"
@@ -48,10 +48,10 @@
                   <v-col cols="12" md="12" sm="12">
                     <v-textarea v-model="editedItem.desc" label="Description"></v-textarea>
                   </v-col>
-                  <v-col cols="12" md="6" sm="6">
+                  <v-col cols="12" md="12" sm="12">
                     <v-file-input v-model="editedItem.image" accept="image/*" label="Image"></v-file-input>
                   </v-col>
-                  <v-col cols="12" md="6" sm="6">
+                  <v-col cols="12" md="12" sm="12">
                     <v-file-input v-model="editedItem.thumbnail" accept="image/*" label="Thumbnail"></v-file-input>
                   </v-col>
                   <v-col cols="12" md="4" sm="6">

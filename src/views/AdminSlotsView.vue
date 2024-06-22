@@ -29,8 +29,8 @@
                     <v-autocomplete
                         v-model="editedItem.schedule_id"
                         :items="scheduleItems"
-                        item-title="schedule_id"
-                        item-text="schedule_id"
+                        item-title="title"
+                        item-text="title"
                         item-value="schedule_id"
                         label="Schedule"
                     ></v-autocomplete>
@@ -40,7 +40,7 @@
                         v-model="editedItem.stage_id"
                         :items="stageItems"
                         item-title="title"
-                        item-text="tittle"
+                        item-text="title"
                         item-value="stage_id"
                         label="Stage"
                     ></v-autocomplete>
@@ -50,7 +50,7 @@
                         v-model="editedItem.lecture_id"
                         :items="lectureItems"
                         item-title="title"
-                        item-text="tittle"
+                        item-text="title"
                         item-value="lecture_id"
                         label="Lecture"
                     ></v-autocomplete>
@@ -108,7 +108,7 @@
       <tr>
         <td colspan="2"></td>
         <td>
-          <v-text-field v-model="scheduleId" class="ma-2" density="compact" hide-details
+          <v-text-field v-model="scheduleTitle" class="ma-2" density="compact" hide-details
                         placeholder="Search schedule..."></v-text-field>
         </td>
         <td>
@@ -134,7 +134,7 @@ export default {
     itemsPerPage: 10,
     headers: [
       {title: 'ID', key: 'slot_id', align: 'start'},
-      {title: 'Schedule', key: 'schedule_id', align: 'start'},
+      {title: 'Schedule', key: 'schedule.title', align: 'start'},
       {title: 'Stage', key: 'stage.title', align: 'start'},
       {title: 'Lecture', key: 'lecture.title', align: 'start'},
       {title: 'Day', key: 'day', align: 'start'},
@@ -149,7 +149,7 @@ export default {
     loading: true,
     totalItems: 0,
     slot_id: 0,
-    scheduleId: '',
+    scheduleTitle: '',
     stageTitle: '',
     lectureTitle: '',
     search: '',
@@ -176,7 +176,7 @@ export default {
     },
   }),
   watch: {
-    scheduleId() {
+    scheduleTitle() {
       this.search = String(Date.now());
     },
     stageTitle() {
@@ -206,7 +206,7 @@ export default {
         sortBy: sortBy.length ? sortBy[0].key : null,
         sortOrder: sortBy.length ? sortBy[0].order : null,
         search: {
-          schedule_id: this.scheduleId,
+          schedule_title: this.scheduleTitle,
           stage_title: this.stageTitle,
           lecture_title: this.lectureTitle,
         },

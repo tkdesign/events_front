@@ -25,25 +25,25 @@
               <v-container>
                 <v-row>
                   <input v-if="editedItem.sponsor_id" v-model="editedItem.sponsor_id" type="hidden">
-                  <v-col cols="12" md="6" sm="6">
+                  <v-col cols="12" md="12" sm="12">
                     <v-text-field v-model="editedItem.name" label="Name"></v-text-field>
                   </v-col>
-                  <v-col cols="12" md="6" sm="6">
+                  <v-col cols="12" md="12" sm="12">
                     <v-text-field v-model="editedItem.desc_short" label="Short Description"></v-text-field>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
                     <v-textarea v-model="editedItem.desc" label="Description"></v-textarea>
                   </v-col>
-                  <v-col cols="12" md="6" sm="6">
+                  <v-col cols="12" md="12" sm="12">
                     <v-file-input v-model="editedItem.logo" accept="image/*" label="Logo"></v-file-input>
                   </v-col>
-                  <v-col cols="12" md="6" sm="6">
+                  <v-col cols="12" md="12" sm="12">
                     <v-text-field v-model="editedItem.url" label="URL"></v-text-field>
                   </v-col>
-                  <v-col cols="12" md="6" sm="6">
+                  <v-col cols="12" md="12" sm="12">
                     <v-text-field v-model="editedItem.email" label="Email"></v-text-field>
                   </v-col>
-                  <v-col cols="12" md="6" sm="6">
+                  <v-col cols="12" md="12" sm="12">
                     <v-text-field v-model="editedItem.phone" label="Phone"></v-text-field>
                   </v-col>
                 </v-row>

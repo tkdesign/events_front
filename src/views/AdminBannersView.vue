@@ -25,7 +25,7 @@
               <v-container>
                 <v-row>
                   <input v-if="editedItem.banner_id" v-model="editedItem.banner_id" type="hidden">
-                  <v-col cols="12" md="6" sm="6">
+                  <v-col cols="12" md="12" sm="12">
                     <v-autocomplete
                         v-model="editedItem.event_id"
                         :items="eventItems"
