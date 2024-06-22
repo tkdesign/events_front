@@ -247,6 +247,7 @@ export default {
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
+        this.initialize();
       })
     },
 
@@ -285,6 +286,7 @@ export default {
             Object.assign(this.serverItems[tableRowIndex], response.data);
           } else {
             this.serverItems.push(response.data);
+            this.initialize();
           }
         } else {
           if (response.data && response.data.hasOwnProperty('message')) {
