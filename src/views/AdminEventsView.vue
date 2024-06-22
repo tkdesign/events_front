@@ -326,6 +326,7 @@ export default {
         if (response && response.data && response.data.hasOwnProperty('event_id')) {
           if (tableRowIndex > -1) {
             Object.assign(this.serverItems[tableRowIndex], response.data);
+
           } else {
             this.serverItems.push(response.data);
           }

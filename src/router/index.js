@@ -67,10 +67,26 @@ export function createMyRouter() {
             });
             state.routes.forEach((route) => {
                 router.addRoute(route);
+                if (route.name === 'admin') {
+                    state.admin_menu.forEach((menu_item) => {
+                        if (!router.hasRoute(menu_item.path)) {
+                            const hasPathParams = /:/.test(menu_item.alias);
+                            const r = {
+                                name: menu_item.name,
+                                path: menu_item.router_link,
+                                component: () => import(`@/views/${menu_item.component}.vue`),
+                                props: hasPathParams,
+                                meta: {
+                                    title: menu_item.title,
+                                },
+                            };
+                            router.addRoute('admin', r);
+                        }
+                    });
+                }
             });
-            router.addRoute(notFoundRoute);
+            // router.addRoute(notFoundRoute);
             router.replace(currentRoute).then(() => {
-                console.log('Routes updated');
             });
         }
     });

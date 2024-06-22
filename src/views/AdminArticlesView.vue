@@ -181,6 +181,20 @@ export default {
       });
     },
 
+    updateTable() {
+      const sortBy = this.$refs.dataTable.options.sortBy;
+      if (sortBy.length) {
+        const sortKey = sortBy[0].key;
+        const sortOrder = sortBy[0].order === 'desc' ? -1 : 1;
+        this.serverItems.sort((a, b) => {
+          if (a[sortKey] < b[sortKey]) return -1 * sortOrder;
+          if (a[sortKey] > b[sortKey]) return 1 * sortOrder;
+          return 0;
+        });
+      }
+      this.serverItems = [...this.serverItems];
+    },
+
     createItem() {
       this.editedItem.article_id = null;
       this.editedItem.menu_item_id = null;
