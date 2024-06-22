@@ -29,16 +29,16 @@
                     <v-text-field v-model="editedItem.name" label="Name"></v-text-field>
                   </v-col>
                   <v-col cols="12" md="6" sm="6">
-                    <v-text-field v-model="editedItem.title" label="Title"></v-text-field>
+                    <v-text-field v-model="editedItem.title" label="Title" :rules="[v => !!v || 'Title is required']"></v-text-field>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
                     <v-text-field v-model="editedItem.page_title" label="Page title"></v-text-field>
                   </v-col>
                   <v-col cols="12" md="6" sm="6">
-                    <v-text-field v-model="editedItem.path" label="Path"></v-text-field>
+                    <v-text-field v-model="editedItem.path" label="Path" :rules="[v => !!v || 'Path is required', v => /^\/(?:[a-zA-Z0-9_-]+(?:\/[a-zA-Z0-9_-]+)*)?$/.test(v) || 'Path must start with / and contain only alphanumeric characters, underscores, and dashes']"></v-text-field>
                   </v-col>
                   <v-col cols="12" md="6" sm="6">
-                    <v-select v-model="editedItem.component" :items="['HomeView', 'SpeakersView', 'ScheduleView', 'SponsorsView', 'GalleryView', 'ContactsView', 'SignInView', 'SignUpView', 'SignOutView', 'AdminView', 'CustomPageView']" label="Component"></v-select>
+                    <v-select v-model="editedItem.component" :items="['HomeView', 'SpeakersView', 'ScheduleView', 'SponsorsView', 'GalleryView', 'ContactsView', 'SignInView', 'SignUpView', 'SignOutView', 'AdminView', 'CustomPageView']" label="Component" :rules="[v => !!v || 'Component is required']"></v-select>
                   </v-col>
                   <v-col cols="12" md="6" sm="6">
                     <v-select v-model="editedItem.visible" :items="[1, 0]" label="Visible"></v-select>

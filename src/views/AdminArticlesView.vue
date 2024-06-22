@@ -32,7 +32,17 @@
                         item-text="title"
                         item-value="menu_item_id"
                         label="Menu item"
-                    ></v-autocomplete>
+                        ref="menuItemSelector"
+                    >
+                      <template v-slot:prepend-item>
+                        <v-list-item
+                            title="None"
+                            @click="clearMenuItemAutocomplete"
+                        >
+                        </v-list-item>
+                        <v-divider class="mt-2"></v-divider>
+                      </template>
+                    </v-autocomplete>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
                     <v-text-field v-model="editedItem.title" label="Title"></v-text-field>
@@ -297,6 +307,10 @@ export default {
       } catch (error) {
         console.error('There was an error!', error);
       }
+    },
+    clearMenuItemAutocomplete() {
+      this.editedItem.menu_item_id = null;
+      this.$refs.menuItemSelector.blur();
     },
     initialize() {
       this.loadItems({page: 1, itemsPerPage: this.itemsPerPage, sortBy: []});

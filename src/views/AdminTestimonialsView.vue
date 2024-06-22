@@ -32,7 +32,18 @@
                         item-text="name"
                         item-value="id"
                         label="User"
-                    ></v-autocomplete>
+                        ref="userSelector"
+                        :rules="[v => !!v || 'User is required']"
+                    >
+                      <template v-slot:prepend-item>
+                        <v-list-item
+                            title="None"
+                            @click="clearUserAutocomplete"
+                        >
+                        </v-list-item>
+                        <v-divider class="mt-2"></v-divider>
+                      </template>
+                    </v-autocomplete>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
                     <v-autocomplete
@@ -42,7 +53,18 @@
                         item-text="title"
                         item-value="event_id"
                         label="Event"
-                    ></v-autocomplete>
+                        ref="eventSelector"
+                        :rules="[v => !!v || 'Event is required']"
+                    >
+                      <template v-slot:prepend-item>
+                        <v-list-item
+                            title="None"
+                            @click="clearEventAutocomplete"
+                        >
+                        </v-list-item>
+                        <v-divider class="mt-2"></v-divider>
+                      </template>
+                    </v-autocomplete>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
                     <v-textarea v-model="editedItem.desc" label="Description"></v-textarea>
@@ -310,6 +332,14 @@ export default {
       } catch (error) {
         console.error('There was an error!', error);
       }
+    },
+    clearUserAutocomplete() {
+      this.editedItem.user_id = null;
+      this.$refs.userSelector.blur();
+    },
+    clearEventAutocomplete() {
+      this.editedItem.event_id = null;
+      this.$refs.eventSelector.blur();
     },
     getImageFullUrl(value) {
       if (/^(https?:)?\/\//i.test(value)) {

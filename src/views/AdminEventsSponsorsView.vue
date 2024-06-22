@@ -32,7 +32,17 @@
                         item-text="title"
                         item-value="event_id"
                         label="Event"
-                    ></v-autocomplete>
+                        ref="eventSelector"
+                    >
+                      <template v-slot:prepend-item>
+                        <v-list-item
+                            title="None"
+                            @click="clearEventAutocomplete"
+                        >
+                        </v-list-item>
+                        <v-divider class="mt-2"></v-divider>
+                      </template>
+                    </v-autocomplete>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
                     <v-autocomplete
@@ -42,7 +52,17 @@
                         item-text="name"
                         item-value="sponsor_id"
                         label="Sponsor"
-                    ></v-autocomplete>
+                        ref="sponsorSelector"
+                    >
+                      <template v-slot:prepend-item>
+                        <v-list-item
+                            title="None"
+                            @click="clearSponsorAutocomplete"
+                        >
+                        </v-list-item>
+                        <v-divider class="mt-2"></v-divider>
+                      </template>
+                    </v-autocomplete>
                   </v-col>
                   <v-col cols="12" md="6" sm="6">
                     <v-select v-model="editedItem.visible" :items="[1, 0]" label="Visible"></v-select>
@@ -279,6 +299,14 @@ export default {
       } catch (error) {
         console.error('There was an error!', error);
       }
+    },
+    clearEventAutocomplete() {
+      this.editedItem.event_id = null;
+      this.$refs.eventSelector.blur();
+    },
+    clearSponsorAutocomplete() {
+      this.editedItem.sponsor_id = null;
+      this.$refs.sponsorSelector.blur();
     },
     initialize() {
       this.loadItems({page: 1, itemsPerPage: this.itemsPerPage, sortBy: []});

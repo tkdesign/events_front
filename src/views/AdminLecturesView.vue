@@ -25,7 +25,7 @@
                 <v-row>
                   <input v-if="editedItem.lecture_id" v-model="editedItem.lecture_id" type="hidden">
                   <v-col cols="12" md="12" sm="12">
-                    <v-text-field v-model="editedItem.title" label="Title"></v-text-field>
+                    <v-text-field v-model="editedItem.title" label="Title" :rules="[v => !!v || 'Title is required']"></v-text-field>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
                     <v-text-field v-model="editedItem.short_desc" label="Short description"></v-text-field>
@@ -37,7 +37,7 @@
                     <v-file-input v-model="editedItem.image" accept="image/*" label="Image"></v-file-input>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
-                    <v-text-field v-model="editedItem.capacity" label="Capacity" type="number"></v-text-field>
+                    <v-text-field v-model="editedItem.capacity" label="Capacity" type="number" :rules="[v => v > 0 || 'Capacity must be greater then 0']"></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>

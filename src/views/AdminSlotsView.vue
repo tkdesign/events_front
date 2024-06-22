@@ -32,7 +32,18 @@
                         item-text="title"
                         item-value="schedule_id"
                         label="Schedule"
-                    ></v-autocomplete>
+                        ref="scheduleSelector"
+                        :rules="[v => !!v || 'Schedule is required']"
+                    >
+                      <template v-slot:prepend-item>
+                        <v-list-item
+                            title="None"
+                            @click="clearScheduleAutocomplete"
+                        >
+                        </v-list-item>
+                        <v-divider class="mt-2"></v-divider>
+                      </template>
+                    </v-autocomplete>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
                     <v-autocomplete
@@ -42,7 +53,18 @@
                         item-text="title"
                         item-value="stage_id"
                         label="Stage"
-                    ></v-autocomplete>
+                        ref="stageSelector"
+                        :rules="[v => !!v || 'Stage is required']"
+                    >
+                      <template v-slot:prepend-item>
+                        <v-list-item
+                            title="None"
+                            @click="clearStageAutocomplete"
+                        >
+                        </v-list-item>
+                        <v-divider class="mt-2"></v-divider>
+                      </template>
+                    </v-autocomplete>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
                     <v-autocomplete
@@ -52,7 +74,17 @@
                         item-text="title"
                         item-value="lecture_id"
                         label="Lecture"
-                    ></v-autocomplete>
+                        ref="lectureSelector"
+                    >
+                      <template v-slot:prepend-item>
+                        <v-list-item
+                            title="None"
+                            @click="clearLectureAutocomplete"
+                        >
+                        </v-list-item>
+                        <v-divider class="mt-2"></v-divider>
+                      </template>
+                    </v-autocomplete>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
                     <v-text-field v-model="editedItem.day" label="Day" type="date"></v-text-field>
@@ -330,6 +362,18 @@ export default {
       } catch (error) {
         console.error('There was an error!', error);
       }
+    },
+    clearLectureAutocomplete() {
+      this.editedItem.lecture_id = null;
+      this.$refs.lectureSelector.blur();
+    },
+    clearStageAutocomplete() {
+      this.editedItem.stage_id = null;
+      this.$refs.stageSelector.blur();
+    },
+    clearScheduleAutocomplete() {
+      this.editedItem.schedule_id = null;
+      this.$refs.scheduleSelector.blur();
     },
     formatTime(value) {
       return dayjs(value).format('HH:mm');

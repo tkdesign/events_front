@@ -25,13 +25,13 @@
                 <v-row>
                   <input v-if="editedItem.stage_id" v-model="editedItem.stage_id" type="hidden">
                   <v-col cols="12" md="12" sm="12">
-                    <v-text-field v-model="editedItem.title" label="Title"></v-text-field>
+                    <v-text-field v-model="editedItem.title" label="Title" :rules="[v => !!v || 'Title is required']"></v-text-field>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
                     <v-text-field v-model="editedItem.location" label="Location"></v-text-field>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
-                    <v-text-field v-model="editedItem.max_capacity" label="Max capacity"></v-text-field>
+                    <v-text-field v-model="editedItem.max_capacity" label="Max capacity" type="number" :rules="[v => v > 0 || 'Capacity must be greater than 0']"></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>

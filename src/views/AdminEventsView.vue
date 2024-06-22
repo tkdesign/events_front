@@ -25,7 +25,7 @@
                 <v-row>
                   <input v-if="editedItem.event_id" v-model="editedItem.event_id" type="hidden">
                   <v-col cols="12" md="12" sm="12">
-                    <v-text-field v-model="editedItem.title" label="Title"></v-text-field>
+                    <v-text-field v-model="editedItem.title" label="Title" :rules="[v => !!v || 'Title is required']"></v-text-field>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
                     <v-text-field v-model="editedItem.desc_short" label="Short description"></v-text-field>
@@ -34,7 +34,7 @@
                     <v-textarea v-model="editedItem.desc" label="Description"></v-textarea>
                   </v-col>
                   <v-col cols="12" md="6" sm="6">
-                    <v-text-field v-model="editedItem.year" label="Year" type="number"></v-text-field>
+                    <v-text-field v-model="editedItem.year" label="Year" type="number" :rules="[v => !!v || 'Year is required']"></v-text-field>
                   </v-col>
                   <v-col cols="12" md="6" sm="6">
                     <v-checkbox v-model="editedItem.is_current" label="Current"></v-checkbox>

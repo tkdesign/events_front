@@ -31,10 +31,21 @@
                         item-text="title"
                         item-value="event_id"
                         label="Event"
-                    ></v-autocomplete>
+                        ref="eventSelector"
+                        :rules="[v => !!v || 'Event is required']"
+                    >
+                      <template v-slot:prepend-item>
+                        <v-list-item
+                            title="None"
+                            @click="clearEventAutocomplete"
+                        >
+                        </v-list-item>
+                        <v-divider class="mt-2"></v-divider>
+                      </template>
+                    </v-autocomplete>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
-                    <v-text-field v-model="editedItem.title" label="Title"></v-text-field>
+                    <v-text-field v-model="editedItem.title" label="Title" :rules="[v => !!v || 'Title is required']"></v-text-field>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
                     <v-text-field v-model="editedItem.short_desc" label="Short Description"></v-text-field>
@@ -271,6 +282,10 @@ export default {
       } catch (error) {
         console.error('There was an error!', error);
       }
+    },
+    clearEventAutocomplete() {
+      this.editedItem.event_id = null;
+      this.$refs.eventSelector.blur();
     },
     initialize() {
       this.loadItems({page: 1, itemsPerPage: this.itemsPerPage, sortBy: []});

@@ -28,7 +28,7 @@
                     <v-text-field v-model="editedItem.titul" label="Titul"></v-text-field>
                   </v-col>
                   <v-col cols="12" md="4" sm="6">
-                    <v-text-field v-model="editedItem.first_name" label="First Name"></v-text-field>
+                    <v-text-field v-model="editedItem.first_name" label="First Name" :rules="[v => !!v || 'First Name is required']"></v-text-field>
                   </v-col>
                   <v-col cols="12" md="4" sm="6">
                     <v-text-field v-model="editedItem.last_name" label="Last Name"></v-text-field>
@@ -46,7 +46,7 @@
                     <v-textarea v-model="editedItem.desc" label="Description"></v-textarea>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
-                    <v-text-field v-model="editedItem.email" label="Email"></v-text-field>
+                    <v-text-field v-model="editedItem.email" label="Email" :rules="[rules.email]"></v-text-field>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
                     <v-text-field v-model="editedItem.phone" label="Phone"></v-text-field>
@@ -178,6 +178,12 @@ export default {
       linkedin: '',
       image: null,
       thumbnail: null,
+    },
+    rules: {
+      email: value => {
+        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        return pattern.test(value) || 'Invalid e-mail.'
+      },
     },
   }),
   watch: {

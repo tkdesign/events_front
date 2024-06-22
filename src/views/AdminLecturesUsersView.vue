@@ -32,7 +32,18 @@
                         item-text="title"
                         item-value="lecture_id"
                         label="Lecture"
-                    ></v-autocomplete>
+                        ref="lectureSelector"
+                        :rules="[v => !!v || 'Lecture is required']"
+                    >
+                      <template v-slot:prepend-item>
+                        <v-list-item
+                            title="None"
+                            @click="clearLectureAutocomplete"
+                        >
+                        </v-list-item>
+                        <v-divider class="mt-2"></v-divider>
+                      </template>
+                    </v-autocomplete>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
                     <v-autocomplete
@@ -42,7 +53,18 @@
                         item-text="user_name"
                         item-value="id"
                         label="User"
-                    ></v-autocomplete>
+                        ref="userSelector"
+                        :rules="[v => !!v || 'User is required']"
+                    >
+                      <template v-slot:prepend-item>
+                        <v-list-item
+                            title="None"
+                            @click="clearUserAutocomplete"
+                        >
+                        </v-list-item>
+                        <v-divider class="mt-2"></v-divider>
+                      </template>
+                    </v-autocomplete>
                   </v-col>
                   <v-col cols="12" md="6" sm="6">
                     <v-select v-model="editedItem.visible" :items="[1, 0]" label="Visible"></v-select>
@@ -280,6 +302,14 @@ export default {
       } catch (error) {
         console.error('There was an error!', error);
       }
+    },
+    clearLectureAutocomplete() {
+      this.editedItem.lecture_id = null;
+      this.$refs.lectureSelector.blur();
+    },
+    clearUserAutocomplete() {
+      this.editedItem.user_id = null;
+      this.$refs.userSelector.blur();
     },
     initialize() {
       this.loadItems({page: 1, itemsPerPage: this.itemsPerPage, sortBy: []});

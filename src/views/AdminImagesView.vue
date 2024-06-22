@@ -31,16 +31,27 @@
                         item-text="title"
                         item-value="gallery_id"
                         label="Gallery"
-                    ></v-autocomplete>
+                        ref="gallerySelector"
+                        :rules="[v => !!v || 'Gallery is required']"
+                    >
+                      <template v-slot:prepend-item>
+                        <v-list-item
+                            title="None"
+                            @click="clearGalleryAutocomplete"
+                        >
+                        </v-list-item>
+                        <v-divider class="mt-2"></v-divider>
+                      </template>
+                    </v-autocomplete>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
-                    <v-text-field v-model="editedItem.title" label="Title"></v-text-field>
+                    <v-text-field v-model="editedItem.title" label="Title" :rules="[v => !!v || 'Title is required']"></v-text-field>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
-                    <v-file-input v-model="editedItem.image" accept="image/*" label="Image"></v-file-input>
+                    <v-file-input v-model="editedItem.image" accept="image/*" label="Image" :rules="[v => !!v || 'Image is required']"></v-file-input>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
-                    <v-file-input v-model="editedItem.thumbnail" accept="image/*" label="Thumbnail"></v-file-input>
+                    <v-file-input v-model="editedItem.thumbnail" accept="image/*" label="Thumbnail" :rules="[v => !!v || 'Thumbnail is required']"></v-file-input>
                   </v-col>
                   <v-col cols="12" md="6" sm="6">
                     <v-select v-model="editedItem.visible" :items="[1, 0]" label="Visible"></v-select>
@@ -286,6 +297,10 @@ export default {
       } catch (error) {
         console.error('There was an error!', error);
       }
+    },
+    clearGalleryAutocomplete() {
+      this.editedItem.gallery_id = null;
+      this.$refs.gallerySelector.blur();
     },
     getImageFullUrl(value) {
       if (/^(https?:)?\/\//i.test(value)) {

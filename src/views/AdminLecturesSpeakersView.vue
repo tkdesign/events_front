@@ -32,7 +32,18 @@
                         item-text="title"
                         item-value="lecture_id"
                         label="Lecture"
-                    ></v-autocomplete>
+                        ref="lectureSelector"
+                        :rules="[v => !!v || 'Lecture is required']"
+                    >
+                      <template v-slot:prepend-item>
+                        <v-list-item
+                            title="None"
+                            @click="clearLectureAutocomplete"
+                        >
+                        </v-list-item>
+                        <v-divider class="mt-2"></v-divider>
+                      </template>
+                    </v-autocomplete>
                   </v-col>
                   <v-col cols="12" md="12" sm="12">
                     <v-autocomplete
@@ -42,7 +53,18 @@
                         item-text="speaker_name"
                         item-value="speaker_id"
                         label="Speaker"
-                    ></v-autocomplete>
+                        ref="speakerSelector"
+                        :rules="[v => !!v || 'Speaker is required']"
+                    >
+                      <template v-slot:prepend-item>
+                        <v-list-item
+                            title="None"
+                            @click="clearSpeakerAutocomplete"
+                        >
+                        </v-list-item>
+                        <v-divider class="mt-2"></v-divider>
+                      </template>
+                    </v-autocomplete>
                   </v-col>
                   <v-col cols="12" md="6" sm="6">
                     <v-select v-model="editedItem.visible" :items="[1, 0]" label="Visible"></v-select>
@@ -240,6 +262,10 @@ export default {
     async saveForm() {
       const formData = new FormData();
       formData.append('id', this.editedItem.id);
+      if (this.editedItem.lecture_id === null || this.editedItem.speaker_id === null) {
+        alert('Please select Lecture and Speaker!');
+        return;
+      }
       formData.append('lecture_id', this.editedItem.lecture_id);
       formData.append('speaker_id', this.editedItem.speaker_id);
       formData.append('visible', this.editedItem.visible);
@@ -279,6 +305,14 @@ export default {
       } catch (error) {
         console.error('There was an error!', error);
       }
+    },
+    clearLectureAutocomplete() {
+      this.editedItem.lecture_id = null;
+      this.$refs.lectureSelector.blur();
+    },
+    clearSpeakerAutocomplete() {
+      this.editedItem.speaker_id = null;
+      this.$refs.speakerSelector.blur();
     },
     initialize() {
       this.loadItems({page: 1, itemsPerPage: this.itemsPerPage, sortBy: []});
