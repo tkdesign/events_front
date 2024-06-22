@@ -43,10 +43,11 @@
               readonly
           ></v-text-field>
 
-          <hr>
+<!--          <hr>-->
 
-          <v-select v-model="subscribe" :items="[1, 0]" label="Subscribe to current event"></v-select>
-
+<!--          <v-select v-model="subscribe" :items="[1, 0]" label="Subscribe to current event"></v-select>-->
+          <v-label>Subscribe to current event: {{ subscribe_bool }}</v-label>
+          <v-switch v-model="subscribe_bool"></v-switch>
           <v-row v-if="errorMsg">
             {{ errorMsg }}
           </v-row>
@@ -92,6 +93,16 @@ export default {
       errorMsg: null,
     }
   },
+  computed: {
+    subscribe_bool: {
+      get() {
+        return this.subscribe === 1;
+      },
+      set(value) {
+        this.subscribe = value ? 1 : 0;
+      }
+    }
+  },
   watch: {
     userStore: {
       handler() {
@@ -108,14 +119,14 @@ export default {
       axios.defaults.withCredentials = true;
       axios.defaults.withXSRFToken = true;
       axios.post('http://localhost/events/backend/public/api/update-subscribe', {
-        subscribe: this.subscribe,
+        subscribe: Number(this.subscribe),
       }, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'X-HTTP-Method-Override': 'PUT'
         }
       }).then((response) => {
-        this.$router.push({ name: 'account' });
+        // this.$router.push({ name: 'account' });
         window.location.reload();
       }).catch((error) => {
         console.error('Error fetching data:', error);
