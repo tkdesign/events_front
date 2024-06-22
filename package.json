@@ -12,6 +12,7 @@
   "dependencies": {
     "@tinymce/tinymce-vue": "^5.1.1",
     "axios": "^1.6.8",
+    "cors": "^2.8.5",
     "dayjs": "^1.11.11",
     "pinia": "^2.1.7",
     "tinymce": "^7.1.2",

@@ -26,6 +26,9 @@
                 <v-row>
                   <input v-if="editedItem.schedule_id" v-model="editedItem.schedule_id" type="hidden">
                   <v-col cols="12" md="12" sm="12">
+                    <v-text-field v-model="editedItem.title" label="Title"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" md="12" sm="12">
                     <v-autocomplete
                         v-model="editedItem.event_id"
                         :items="eventItems"
@@ -87,6 +90,7 @@ export default {
     itemsPerPage: 10,
     headers: [
       {title: 'ID', key: 'schedule_id', align: 'start'},
+      {title: 'Title', key: 'title', align: 'start'},
       {title: 'Event', key: 'event.title', align: 'start'},
       {title: 'Actions', key: 'actions', sortable: false},
     ],
@@ -101,10 +105,12 @@ export default {
     dialogDelete: false,
     editedIndex: -1,
     editedItem: {
+      title: 0,
       schedule_id: 0,
       event_id: 0,
     },
     defaultItem: {
+      title: 0,
       schedule_id: 0,
       event_id: 0,
     },
@@ -206,6 +212,7 @@ export default {
 
     async saveForm() {
       const formData = new FormData();
+      formData.append('title', this.editedItem.title);
       formData.append('schedule_id', this.editedItem.schedule_id);
       formData.append('event_id', this.editedItem.event_id);
       formData.append('desc', this.editedItem.desc);

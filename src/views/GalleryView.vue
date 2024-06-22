@@ -81,7 +81,7 @@ export default {
     },
     yy(newYear) {
       if (newYear) {
-        this.$router.push({name: 'gallery_year', params: {year: newYear.toString()}});
+        this.$router.push({name: 'gallery', params: {year: newYear.toString()}});
       }
     },
   },
@@ -96,7 +96,7 @@ export default {
     changeGallery(year) {
       if (this.galleriesStore.galleries.length > 0) {
         this.$nextTick(() => {
-          this.$router.push({name: 'gallery_year', params: {year: year.toString()}});
+          this.$router.push({name: 'gallery', params: {year: year.toString()}});
         });
       }
     },

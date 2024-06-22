@@ -40,28 +40,28 @@ import {useAdminMenuStore} from "@/stores/adminMenuStore.js";
 
 export default {
   components: {PageHeader, BaseHeader, BaseFooter},
-  watch: {
-    adminMenuStore: {
-      handler() {
-        this.adminMenuStore.adminMenu.forEach((menu_item) => {
-          if (!this.$router.hasRoute(menu_item.path)) {
-            const hasPathParams = /:/.test(menu_item.alias);
-            const route = {
-              name: menu_item.name,
-              path: menu_item.router_link,
-              component: () => import(/* @vite-ignore */ `./${menu_item.component}.vue`),
-              props: hasPathParams,
-              meta: {
-                title: menu_item.title,
-              },
-            };
-            this.$router.addRoute('admin', route);
-          }
-        });
-      },
-      deep: true,
-    },
-  },
+  // watch: {
+  //   adminMenuStore: {
+  //     handler() {
+  //       this.adminMenuStore.adminMenu.forEach((menu_item) => {
+  //         if (!this.$router.hasRoute(menu_item.path)) {
+  //           const hasPathParams = /:/.test(menu_item.alias);
+  //           const route = {
+  //             name: menu_item.name,
+  //             path: menu_item.router_link,
+  //             component: () => import(/* @vite-ignore */ `./${menu_item.component}.vue`),
+  //             props: hasPathParams,
+  //             meta: {
+  //               title: menu_item.title,
+  //             },
+  //           };
+  //           this.$router.addRoute('admin', route);
+  //         }
+  //       });
+  //     },
+  //     deep: true,
+  //   },
+  // },
   computed: {
     visibleMenuItems() {
       return this.adminMenuStore.adminMenu.filter(item => item.visible !== false);

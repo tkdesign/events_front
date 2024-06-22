@@ -9,7 +9,9 @@ export const useTopMenuStore = defineStore('topMenuStore',
         state: () => ({
             menu: [],
             bottom_menu: [],
+            admin_menu: [],
             routes: [],
+            admin_routes: [],
         }),
         getters: {
             getMenu: (state) => state.menu,
@@ -21,8 +23,9 @@ export const useTopMenuStore = defineStore('topMenuStore',
                 // axios.get('/menu.json').then(response => {
                 axios.get('http://localhost/events/backend/public/api/get-menu').then(response => {
                     this.$patch({
-                        menu: response.data.menu,
+                        menu: this.setMenu(response.data.menu, response.data.year),
                         bottom_menu: response.data.bottom_menu,
+                        admin_menu: (response.data.hasOwnProperty('admin') ? response.data.admin : []),
                         routes: this.setRoutes(response.data),
                     });
                 }).catch(error => {
@@ -32,8 +35,20 @@ export const useTopMenuStore = defineStore('topMenuStore',
             init() {
                 this.fetchMenu();
             },
-            setMenu(menu) {
-                this.menu = menu;
+            setMenu(menu, year) {
+                // this.menu = menu;
+
+                return menu.map(item => {
+                    if (item.name === 'gallery') {
+                        item.alias = `/gallery/${year}`;
+                    }
+                    return {
+                        name: item.name,
+                        title: item.title,
+                        alias: item.alias.replace(/:.*/, ''),
+                        type: item.type,
+                    };
+                });
             },
             setRoutes(data) {
                 const allItems = [...data.menu, ...data.bottom_menu];
@@ -52,6 +67,6 @@ export const useTopMenuStore = defineStore('topMenuStore',
                         },
                     };
                 });
-            }
+            },
         }
     });
