@@ -7,7 +7,6 @@
       :loading="loading"
       :search="search"
       item-value="testimonial_id"
-      show-select
       @update:options="loadItems"
   >
     <template v-slot:top>
@@ -99,7 +98,7 @@
     </template>
     <template v-slot:tfoot>
       <tr>
-        <td colspan="4"></td>
+        <td colspan="3"></td>
         <td>
           <v-text-field v-model="rating" class="ma-2" density="compact" hide-details
                         placeholder="Search rating..."></v-text-field>

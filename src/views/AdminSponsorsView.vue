@@ -7,7 +7,6 @@
       :loading="loading"
       :search="search"
       item-value="sponsor_id"
-      show-select
       @update:options="loadItems"
   >
     <template v-slot:top>
@@ -85,7 +84,7 @@
     </template>
     <template v-slot:tfoot>
       <tr>
-        <td colspan="2"></td>
+        <td></td>
         <td>
           <v-text-field v-model="name" class="ma-2" density="compact" hide-details
                         placeholder="Search name..."></v-text-field>

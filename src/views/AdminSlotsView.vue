@@ -7,7 +7,6 @@
       :loading="loading"
       :search="search"
       item-value="slot_id"
-      show-select
       @update:options="loadItems"
   >
     <template v-slot:top>
@@ -106,7 +105,7 @@
     </template>
     <template v-slot:tfoot>
       <tr>
-        <td colspan="2"></td>
+        <td></td>
         <td>
           <v-text-field v-model="scheduleTitle" class="ma-2" density="compact" hide-details
                         placeholder="Search schedule..."></v-text-field>
