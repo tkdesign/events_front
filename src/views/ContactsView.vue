@@ -19,9 +19,15 @@
               lines="three"
               item-props
           >
+            <template v-for="(curator, index) in curators" v-slot:prepend="{ item }">
+              <v-avatar :key="index">
+                <v-img :src="item.image"></v-img>
+              </v-avatar>
+            </template>
             <template v-slot:subtitle="{ subtitle }">
               <div v-html="subtitle"></div>
             </template>
+
           </v-list>
         </v-col>
       </v-row>
