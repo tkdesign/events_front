@@ -109,10 +109,10 @@ export default {
         this.errorMsg = 'Please agree to the terms and conditions';
         return;
       }
+      axios.defaults.withCredentials = true;
+      axios.defaults.withXSRFToken = true;
       axios.get('http://localhost/events/backend/public/sanctum/csrf-cookie').then(
           (response) => {
-            axios.defaults.withCredentials = true;
-            axios.defaults.withXSRFToken = true;
             axios.post('http://localhost/events/backend/public/api/register', {
               name: this.name,
               first_name: this.first_name,
@@ -121,7 +121,9 @@ export default {
               password: this.password,
             }).then((response) => {
               if (response.status === 200) {
+                this.$router.push('/sign-in');
                 window.location.href = '/sign-in';
+
               } else {
                 this.errorMsg = 'Invalid email or password';
               }
