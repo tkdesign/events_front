@@ -83,8 +83,6 @@ export default {
       testimonialsStore,
       tm: Object,
       isSelected: false,
-      wasMounted: false,
-      wasCreated: false,
     }
   },
   watch: {
@@ -111,29 +109,10 @@ export default {
     },
   },
   mounted() {
-    if(this.testimonialsStore.testimonials.length === 0) {
-      if(!this.wasCreated) {
         this.testimonialsStore.init();
-      }
-    } else {
-      this.tm = this.testimonialsStore.testimonials[0];
-      this.isSelected = true;
-    }
-    this.wasMounted = true;
   },
   beforeUpdate() {
-    if (!this.wasMounted && this.testimonialsStore.testimonials.length === 0) {
       this.testimonialsStore.init();
-    } else {
-      this.tm = this.testimonialsStore.testimonials[0];
-      this.isSelected = true;
-    }
-  },
-  created() {
-    if (this.testimonialsStore.testimonials.length === 0) {
-      this.testimonialsStore.init();
-      this.wasCreated = true;
-    }
   },
 }
 </script>

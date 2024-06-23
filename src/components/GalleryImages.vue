@@ -76,7 +76,6 @@ export default {
       images: Object,
       lightbox: false,
       selectedImage: null,
-      wasMounted: false,
     }
   },
   watch: {
@@ -100,19 +99,11 @@ export default {
     },
   },
   beforeUpdate() {
-    // if (!this.wasMounted) {
-      this.imagesStore.init(this.gallery_id);
-    // }
+    this.imagesStore.init(this.gallery_id);
   },
   mounted() {
     this.imagesStore.init(this.gallery_id);
-    this.wasMounted = true;
   },
-  // created() {
-  //   if (this.imagesStore.images.length === 0) {
-  //     this.imagesStore.init(this.gallery_id);
-  //   }
-  // },
 }
 </script>
 

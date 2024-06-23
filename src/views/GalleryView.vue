@@ -64,8 +64,6 @@ export default {
       galleriesStore,
       yy: null,
       galleryId: null,
-      wasMounted: false,
-      wasCreated: false,
     }
   },
   watch: {
@@ -102,35 +100,10 @@ export default {
     },
   },
   mounted() {
-    if (!this.galleriesStore.galleries.length) {
-      if (!this.wasCreated) {
-        this.galleriesStore.init();
-      }
-    } else {
-      const gallery = (this.year ? this.galleriesStore.getGalleryByYear(this.year) : this.galleriesStore.getCurrentGallery());
-      if (gallery) {
-        this.yy = gallery.year;
-        this.galleryId = gallery.gallery_id;
-      }
-    }
-    this.wasMounted = true;
+      this.galleriesStore.init();
   },
   beforeUpdate() {
-    if (!this.wasMounted) {
       this.galleriesStore.init();
-    } else {
-      const gallery = (this.year ? this.galleriesStore.getGalleryByYear(this.year) : this.galleriesStore.getCurrentGallery());
-      if (gallery) {
-        this.yy = gallery.year;
-        this.galleryId = gallery.gallery_id;
-      }
-    }
-  },
-  created() {
-    if (this.galleriesStore.galleries.length === 0) {
-      this.galleriesStore.init();
-    }
-    this.wasCreated = true;
   },
 };
 </script>
