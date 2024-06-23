@@ -90,6 +90,16 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+
+.text-h2 {
+  margin-top: 20pt;
+  margin-bottom: 5pt;
+}
+
+.text-h4 {
+  margin-top: 10pt;
+  margin-bottom: 3pt;
+}
 
 </style>
