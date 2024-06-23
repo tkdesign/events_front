@@ -15,6 +15,7 @@
               color="primary"
               label="User name"
               variant="underlined"
+              :rules="[v => !!v || 'User Name is required']"
           ></v-text-field>
 
           <v-text-field
@@ -22,6 +23,7 @@
               color="primary"
               label="First name"
               variant="underlined"
+              :rules="[v => !!v || 'First Name is required']"
           ></v-text-field>
 
           <v-text-field
@@ -29,6 +31,7 @@
               color="primary"
               label="Last name"
               variant="underlined"
+              :rules="[v => !!v || 'Last Name is required']"
           ></v-text-field>
 
           <v-text-field
@@ -37,6 +40,7 @@
               label="Email"
               variant="underlined"
               type="email"
+              :rules="[v => !!v || 'Email is required', rules.email]"
           ></v-text-field>
 
           <v-text-field
@@ -46,12 +50,14 @@
               placeholder="Enter your password"
               variant="underlined"
               type="password"
+              :rules="[v => !!v || 'Password is required']"
           ></v-text-field>
 
           <v-checkbox
               v-model="terms"
               color="secondary"
               label="I agree to site terms and conditions"
+              :rules="[v => !!v || 'You must agree to the terms and conditions']"
           ></v-checkbox>
           <v-row v-if="errorMsg">
             {{ errorMsg }}
@@ -96,6 +102,12 @@ export default {
       password: null,
       terms: false,
       errorMsg: null,
+      rules: {
+        email: value => {
+          const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+          return pattern.test(value) || 'Invalid e-mail.'
+        },
+      },
     }
   },
   methods: {

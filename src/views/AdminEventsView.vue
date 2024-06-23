@@ -324,6 +324,7 @@ export default {
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
+        this.totalItems = 0;
         this.initialize();
       })
     },
@@ -378,6 +379,7 @@ export default {
             Object.assign(this.serverItems[tableRowIndex], response.data);
           } else {
             this.serverItems.push(response.data);
+            this.totalItems = 0;
             this.initialize();
           }
         } else {
