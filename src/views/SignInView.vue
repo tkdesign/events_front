@@ -49,13 +49,17 @@ export default {
   },
   methods: {
     login() {
+      axios.defaults.withCredentials = true;
+      axios.defaults.withXSRFToken = true;
+
       axios.get('http://localhost/events/backend/public/sanctum/csrf-cookie').then((response) => {
         axios.post('http://localhost/events/backend/public/login', {
           email: this.email,
           password: this.password,
         }).then((response) => {
           if (response.status === 200) {
-            window.location.href = '/';
+            this.$router.push('/account');
+            window.location.href = '/account';
           } else {
             this.errorMsg = 'Invalid email or password';
           }
