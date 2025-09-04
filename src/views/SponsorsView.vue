@@ -54,6 +54,9 @@ import BaseHeader from '@/components/BaseHeader.vue';
 import BaseFooter from '@/components/BaseFooter.vue';
 import PageHeader from "@/components/PageHeader.vue";
 import {useSponsorsStore} from "@/stores/sponsorsStore";
+
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
 export default {
   components: {
     PageHeader,
@@ -86,7 +89,7 @@ export default {
         return value;
       }
       if (/^\/images\/sponsors\//i.test(value)) {
-        return `http://localhost/events/backend/public${value}`;
+        return `${apiBaseUrl}${value}`;
       }
       return value;
     },

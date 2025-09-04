@@ -3,6 +3,7 @@ import axios from 'axios';
 
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 
 export const useScheduleStore = defineStore('scheduleStore', {
     state: () => ({
@@ -23,8 +24,7 @@ export const useScheduleStore = defineStore('scheduleStore', {
     },
     actions: {
         fetchStages() {
-            // axios.get('/schedule.json').then(response => {
-            axios.get('http://localhost/events/backend/public/api/get-schedule').then(response => {
+            axios.get('/api/get-schedule').then(response => {
                 this.$patch({
                     stages: response.data.stages,
                     subscribed: response.data.subscribed,
@@ -56,7 +56,7 @@ export const useScheduleStore = defineStore('scheduleStore', {
         },
         checkin(stage_id, slot, user) {
             if (stage_id && slot && slot.hasOwnProperty('lecture') && slot.lecture && slot.lecture.hasOwnProperty('lecture_id') && user && user.hasOwnProperty('id')) {
-                axios.post('http://localhost/events/backend/public/api/checkin', {lecture_id: slot.lecture.lecture_id, slot_id: slot.slot_id}).then(response => {
+                axios.post('/api/checkin', {lecture_id: slot.lecture.lecture_id, slot_id: slot.slot_id}).then(response => {
                     if (response.data.success === true) {
                         const stage = this.stages.find((stage) => stage.stage_id === stage_id);
                         const slotIndex = stage.slots.findIndex((s) => s.slot_id === slot.slot_id);
@@ -68,16 +68,14 @@ export const useScheduleStore = defineStore('scheduleStore', {
                     }
                 }).catch(error => {
                     alert("Can't checkin. " + error);
-                    // console.error("Can't checkin.", error);
                 });
             } else {
                 alert("Can't checkin. Slot or user is invalid.");
-                // console.error("Can't checkin. Slot or user is invalid.");
             }
         },
         checkout(stage_id, slot) {
             if (stage_id && slot && slot.hasOwnProperty('lecture') && slot.lecture && slot.lecture.hasOwnProperty('lecture_id') && slot.user && slot.user.hasOwnProperty('id')) {
-                axios.post('http://localhost/events/backend/public/api/checkout', {lecture_id: slot.lecture.lecture_id}).then(response => {
+                axios.post('/api/checkout', {lecture_id: slot.lecture.lecture_id}).then(response => {
                     console.log(response.data);
                     if(response.data.success === true) {
                         const stage = this.stages.find((stage) => stage.stage_id === stage_id);
@@ -90,11 +88,9 @@ export const useScheduleStore = defineStore('scheduleStore', {
                     }
                 }).catch(error => {
                     alert("Can't checkout. " + error);
-                    // console.error("Can't checkout.", error);
                 });
             } else {
                 alert("Can't checkout. Slot or user is invalid.");
-                // console.error("Can't checkout. Slot or user is invalid.");
             }
         },
     }

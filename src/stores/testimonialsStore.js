@@ -3,6 +3,7 @@ import axios from 'axios';
 
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 
 export const useTestimonialsStore = defineStore('testimonialsStore',
     {
@@ -14,8 +15,7 @@ export const useTestimonialsStore = defineStore('testimonialsStore',
         },
         actions: {
             fetchTestimonials() {
-                // axios.get('/testimonials.json').then(response => {
-                axios.get('http://localhost/events/backend/public/api/get-testimonials').then(response => {
+                axios.get('/api/get-testimonials').then(response => {
                     this.$patch({
                         testimonials: response.data.testimonials,
                     });

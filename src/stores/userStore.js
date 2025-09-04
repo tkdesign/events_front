@@ -3,6 +3,7 @@ import axios from 'axios';
 
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 
 export const useUserStore = defineStore('userStore',
     {
@@ -15,7 +16,7 @@ export const useUserStore = defineStore('userStore',
         },
         actions: {
             fetchUser() {
-                axios.get('http://localhost/events/backend/public/api/user').then(response => {
+                axios.get('/api/user').then(response => {
                     this.$patch({
                         user: (response.data.hasOwnProperty('user') ? response.data.user : []),
                         status: (response.data.hasOwnProperty('status') && !!response.data.status)

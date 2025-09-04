@@ -123,6 +123,8 @@
 <script>
 import axios from 'axios';
 
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
+
 export default {
   data: () => ({
     itemsPerPage: 10,
@@ -191,7 +193,7 @@ export default {
           curator_name: this.curatorName,
         },
       };
-      axios.get('http://localhost/events/backend/public/api/admin/get-events-curators', {params}).then(response => {
+      axios.get('/api/admin/get-events-curators', {params}).then(response => {
         this.serverItems = response.data.data;
         this.totalItems = response.data.total;
       }).catch(error => {
@@ -221,7 +223,7 @@ export default {
 
     async deleteItemConfirm() {
       try {
-        const response = await axios.delete(`http://localhost/events/backend/public/api/admin/delete-event-curator/${this.editedItem.id}`);
+        const response = await axios.delete(`/api/admin/delete-event-curator/${this.editedItem.id}`);
         if (response && response.status === 200 && response.statusText === 'OK') {
           this.serverItems.splice(this.editedIndex, 1);
         } else {
@@ -272,14 +274,14 @@ export default {
         const tableRowIndex = this.editedIndex;
         let response = null;
         if (tableRowIndex > -1) {
-          response = await axios.post(`http://localhost/events/backend/public/api/admin/update-event-curator`, formData, {
+          response = await axios.post(`/api/admin/update-event-curator`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
               'X-HTTP-Method-Override': 'PUT'
             }
           });
         } else {
-          response = await axios.post(`http://localhost/events/backend/public/api/admin/create-event-curator`, formData, {
+          response = await axios.post(`/api/admin/create-event-curator`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             }
@@ -317,12 +319,12 @@ export default {
     },
   },
   created() {
-    axios.get('http://localhost/events/backend/public/api/admin/get-events-all').then(response => {
+    axios.get('/api/admin/get-events-all').then(response => {
       this.eventItems = response.data;
     }).catch(error => {
       console.error('Error fetching data:', error);
     });
-    axios.get('http://localhost/events/backend/public/api/admin/get-contacts-all').then(response => {
+    axios.get('/api/admin/get-contacts-all').then(response => {
       this.curatorItems = response.data;
     }).catch(error => {
       console.error('Error fetching data:', error);

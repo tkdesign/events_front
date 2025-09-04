@@ -14,6 +14,8 @@ export default defineConfig({
     }
   },
   server: {
+    allowedHosts: ['.events.local', 'localhost'],
+    host: '0.0.0.0',
     port: 3000,
   }
 })

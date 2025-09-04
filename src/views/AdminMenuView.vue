@@ -109,6 +109,8 @@
 <script>
 import axios from 'axios';
 
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
+
 export default {
   data: () => ({
     itemsPerPage: 10,
@@ -196,7 +198,7 @@ export default {
           component: this.component,
         },
       };
-      axios.get('http://localhost/events/backend/public/api/admin/get-menu', {params}).then(response => {
+      axios.get('/api/admin/get-menu', {params}).then(response => {
         this.serverItems = response.data.data;
         this.totalItems = response.data.total;
       }).catch(error => {
@@ -236,7 +238,7 @@ export default {
 
     async deleteItemConfirm() {
       try {
-        const response = await axios.delete(`http://localhost/events/backend/public/api/admin/delete-menu-item/${this.editedItem.menu_item_id}`);
+        const response = await axios.delete(`/api/admin/delete-menu-item/${this.editedItem.menu_item_id}`);
         if (response && response.status === 200 && response.statusText === 'OK') {
           this.serverItems.splice(this.editedIndex, 1);
         } else {
@@ -294,14 +296,14 @@ export default {
         const tableRowIndex = this.editedIndex;
         let response = null;
         if (tableRowIndex > -1) {
-          response = await axios.post(`http://localhost/events/backend/public/api/admin/update-menu-item`, formData, {
+          response = await axios.post(`/api/admin/update-menu-item`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
               'X-HTTP-Method-Override': 'PUT'
             }
           });
         } else {
-          response = await axios.post(`http://localhost/events/backend/public/api/admin/create-menu-item`, formData, {
+          response = await axios.post(`/api/admin/create-menu-item`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             }
@@ -330,7 +332,7 @@ export default {
       if (/^(https?:)?\/\//i.test(value)) {
         return value;
       }
-      return `http://localhost/events/backend/public${value}`;
+      return `${axios.defaults.baseURL}${value}`;
     },
     initialize() {
       this.loadItems({page: 1, itemsPerPage: this.itemsPerPage, sortBy: []});

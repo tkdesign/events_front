@@ -3,6 +3,7 @@ import axios from 'axios';
 
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 
 export const useArticlesStore = defineStore('articlesStore',
     {
@@ -14,8 +15,7 @@ export const useArticlesStore = defineStore('articlesStore',
         },
         actions: {
             fetchArticle(menuItemName) {
-                // axios.get('/articles.json').then(response => {
-                axios.get(`http://localhost/events/backend/public/api/get-article/${menuItemName}`).then(response => {
+                axios.get(`/api/get-article/${menuItemName}`).then(response => {
                     this.$patch({
                         article: response.data,
                     });

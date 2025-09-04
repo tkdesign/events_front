@@ -33,6 +33,11 @@ import BaseHeader from '@/components/BaseHeader.vue';
 import BaseFooter from '@/components/BaseFooter.vue';
 import PageHeader from "@/components/PageHeader.vue";
 import axios from "axios";
+
+axios.defaults.withCredentials = true;
+axios.defaults.withXSRFToken = true;
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
+
 export default {
   components: {
     PageHeader,
@@ -52,10 +57,14 @@ export default {
       axios.defaults.withCredentials = true;
       axios.defaults.withXSRFToken = true;
 
-      axios.get('http://localhost/events/backend/public/sanctum/csrf-cookie').then((response) => {
-        axios.post('http://localhost/events/backend/public/login', {
+      axios.get('/sanctum/csrf-cookie').then((response) => {
+        axios.post('/login', {
           email: this.email,
           password: this.password,
+        }, {
+          headers: {
+            Accept: 'application/json'
+          }
         }).then((response) => {
           if (response.status === 200) {
             this.$router.push('/account');

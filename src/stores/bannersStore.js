@@ -3,6 +3,7 @@ import axios from 'axios';
 
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 
 export const useBannersStore = defineStore('bannersStore',
     {
@@ -14,7 +15,7 @@ export const useBannersStore = defineStore('bannersStore',
         },
         actions: {
             fetchBanners() {
-                axios.get('http://localhost/events/backend/public/api/get-banners').then(response => {
+                axios.get('/api/get-banners').then(response => {
                     this.$patch({
                         banners: response.data.banners,
                     });

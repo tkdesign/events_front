@@ -56,6 +56,8 @@
 import MainPageTestimonialsReview from "@/components/MainPageTestimonialsReview.vue";
 import {useTestimonialsStore} from "@/stores/testimonialsStore.js";
 
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
 export default {
   components: {MainPageTestimonialsReview},
   computed: {
@@ -105,7 +107,7 @@ export default {
       if (/^(https?:)?\/\//i.test(value)) {
         return value;
       }
-      return `http://localhost/events/backend/public${value}`;
+      return `${apiBaseUrl}${value}`;
     },
   },
   mounted() {

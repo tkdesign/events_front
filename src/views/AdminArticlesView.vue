@@ -54,7 +54,7 @@
 <!--                    <v-textarea v-model="editedItem.desc" label="Description"></v-textarea>-->
                     <Editor
                         v-model="editedItem.desc"
-                        api-key="stmbmzzs7q0ut01pz6zjd9ht0o8dqoa2guc8g47keojqgayb"
+                        :api-key="tinymceApiKey"
                         :init="{
                           plugins: 'lists link image table code help wordcount'
                         }"
@@ -114,6 +114,8 @@
 import axios from 'axios';
 import Editor from '@tinymce/tinymce-vue';
 
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
+
 export default {
   components: {
     Editor,
@@ -151,6 +153,7 @@ export default {
       short_desc: '',
       desc: '',
     },
+    tinymceApiKey: import.meta.env.VITE_TINY_MCE_API_KEY,
   }),
   watch: {
     title() {
@@ -180,7 +183,7 @@ export default {
           title: this.title,
         },
       };
-      axios.get('http://localhost/events/backend/public/api/admin/get-articles', {params}).then(response => {
+      axios.get('/api/admin/get-articles', {params}).then(response => {
         this.serverItems = response.data.data;
         this.totalItems = response.data.total;
       }).catch(error => {
@@ -227,7 +230,7 @@ export default {
 
     async deleteItemConfirm() {
       try {
-        const response = await axios.delete(`http://localhost/events/backend/public/api/admin/delete-article/${this.editedItem.article_id}`);
+        const response = await axios.delete(`/api/admin/delete-article/${this.editedItem.article_id}`);
         if (response && response.status === 200 && response.statusText === 'OK') {
           this.serverItems.splice(this.editedIndex, 1);
         } else {
@@ -278,14 +281,14 @@ export default {
         const tableRowIndex = this.editedIndex;
         let response = null;
         if (tableRowIndex > -1) {
-          response = await axios.post(`http://localhost/events/backend/public/api/admin/update-article`, formData, {
+          response = await axios.post(`/api/admin/update-article`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
               'X-HTTP-Method-Override': 'PUT'
             }
           });
         } else {
-          response = await axios.post(`http://localhost/events/backend/public/api/admin/create-article`, formData, {
+          response = await axios.post(`/api/admin/create-article`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             }
@@ -319,7 +322,7 @@ export default {
     },
   },
   created() {
-    axios.get('http://localhost/events/backend/public/api/admin/get-menu-all').then(response => {
+    axios.get('/api/admin/get-menu-all').then(response => {
       this.menuItems = response.data;
     }).catch(error => {
       console.error('Error fetching data:', error);

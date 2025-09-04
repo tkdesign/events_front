@@ -87,6 +87,10 @@ import BaseFooter from '@/components/BaseFooter.vue';
 import PageHeader from "@/components/PageHeader.vue";
 import axios from "axios";
 
+axios.defaults.withCredentials = true;
+axios.defaults.withXSRFToken = true;
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
+
 export default {
   components: {
     PageHeader,
@@ -121,11 +125,9 @@ export default {
         this.errorMsg = 'Please agree to the terms and conditions';
         return;
       }
-      axios.defaults.withCredentials = true;
-      axios.defaults.withXSRFToken = true;
-      axios.get('http://localhost/events/backend/public/sanctum/csrf-cookie').then(
+      axios.get('/sanctum/csrf-cookie').then(
           (response) => {
-            axios.post('http://localhost/events/backend/public/api/register', {
+            axios.post('/api/register', {
               name: this.name,
               first_name: this.first_name,
               last_name: this.last_name,

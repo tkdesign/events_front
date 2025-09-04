@@ -3,6 +3,7 @@ import axios from 'axios';
 
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 
 export const useGalleriesStore = defineStore('galleriesStore', {
     state: () => ({
@@ -22,8 +23,7 @@ export const useGalleriesStore = defineStore('galleriesStore', {
     },
     actions: {
         fetchGalleries() {
-            // axios.get('/galleries.json').then(response => {
-            axios.get('http://localhost/events/backend/public/api/get-galleries').then(response => {
+            axios.get('/api/get-galleries').then(response => {
                 this.$patch({
                     galleries: response.data.galleries,
                 });

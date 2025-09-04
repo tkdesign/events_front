@@ -42,7 +42,7 @@
 <!--                    <v-textarea v-model="editedItem.content" label="Content"></v-textarea>-->
                     <Editor
                         v-model="editedItem.content"
-                        api-key="stmbmzzs7q0ut01pz6zjd9ht0o8dqoa2guc8g47keojqgayb"
+                        :api-key="tinymceApiKey"
                         :init="{
                           plugins: 'lists link image table code help wordcount'
                         }"
@@ -67,7 +67,7 @@
                     <v-text-field v-model="editedItem.text_color" label="Text color" type="color"></v-text-field>
                   </v-col>
                   <v-col cols="12" md="6" sm="6">
-                    <v-select v-model="editedItem.visible" :items="[1, 0]" label="Visible"></v-select>
+                    <v-switch v-model="editedItem.visible" color="primary" :label="`Visible: ${editedItem.visible ? 'on' : 'off'}`"></v-switch>
                   </v-col>
                   <v-col cols="12" md="6" sm="6">
                     <v-text-field v-model="editedItem.position" label="Position" type="number"></v-text-field>
@@ -106,6 +106,9 @@
     <template v-slot:item.thumbnail="{ value }">
       <v-img :src="getImageFullUrl(value)" height="100" width="100"/>
     </template>
+    <template v-slot:item.visible="{ value }">
+      <span>{{ value ? 'on' : 'off' }}</span>
+    </template>
     <template v-slot:tfoot>
       <tr>
         <td colspan="2"></td>
@@ -122,6 +125,8 @@
 <script>
 import axios from 'axios';
 import Editor from "@tinymce/tinymce-vue";
+
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 
 export default {
   components: {Editor},
@@ -154,7 +159,7 @@ export default {
       thumbnail: null,
       color: '',
       text_color: '',
-      visible: 1,
+      visible: true,
       position: 1,
     },
     defaultItem: {
@@ -165,9 +170,10 @@ export default {
       thumbnail: null,
       color: '',
       text_color: '',
-      visible: 1,
+      visible: true,
       position: 1,
     },
+    tinymceApiKey: import.meta.env.VITE_TINY_MCE_API_KEY,
   }),
   watch: {
     title() {
@@ -197,7 +203,7 @@ export default {
           title: this.title,
         },
       };
-      axios.get('http://localhost/events/backend/public/api/admin/get-banners', {params}).then(response => {
+      axios.get('/api/admin/get-banners', {params}).then(response => {
         this.serverItems = response.data.data;
         this.totalItems = response.data.total;
       }).catch(error => {
@@ -216,7 +222,7 @@ export default {
       this.editedItem.thumbnail = null;
       this.editedItem.color = '';
       this.editedItem.text_color = '';
-      this.editedItem.visible = 1;
+      this.editedItem.visible = true;
       this.editedItem.position = 1;
       this.dialog = true;
     },
@@ -224,6 +230,7 @@ export default {
     editItem(item) {
       this.editedIndex = this.serverItems.indexOf(item);
       this.editedItem = Object.assign({}, item);
+      this.editedItem.visible = !!this.editedItem.visible;
       this.editedItem.image = null;
       this.editedItem.thumbnail = null;
       this.dialog = true;
@@ -237,7 +244,7 @@ export default {
 
     async deleteItemConfirm() {
       try {
-        const response = await axios.delete(`http://localhost/events/backend/public/api/admin/delete-banner/${this.editedItem.banner_id}`);
+        const response = await axios.delete(`/api/admin/delete-banner/${this.editedItem.banner_id}`);
         if (response && response.status === 200 && response.statusText === 'OK') {
           this.serverItems.splice(this.editedIndex, 1);
         } else {
@@ -286,21 +293,21 @@ export default {
       formData.append('thumbnail', this.editedItem.thumbnail);
       formData.append('color', this.editedItem.color);
       formData.append('text_color', this.editedItem.text_color);
-      formData.append('visible', this.editedItem.visible);
+      formData.append('visible', (this.editedItem.visible ? 1 : 0));
       formData.append('position', this.editedItem.position);
 
       try {
         const tableRowIndex = this.editedIndex;
         let response = null;
         if (tableRowIndex > -1) {
-          response = await axios.post(`http://localhost/events/backend/public/api/admin/update-banner`, formData, {
+          response = await axios.post(`/api/admin/update-banner`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
               'X-HTTP-Method-Override': 'PUT'
             }
           });
         } else {
-          response = await axios.post(`http://localhost/events/backend/public/api/admin/create-banner`, formData, {
+          response = await axios.post(`/api/admin/create-banner`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             }
@@ -329,14 +336,14 @@ export default {
       if (/^(https?:)?\/\//i.test(value)) {
         return value;
       }
-      return `http://localhost/events/backend/public${value}`;
+      return `${axios.defaults.baseURL}${value}`;
     },
     initialize() {
       this.loadItems({page: 1, itemsPerPage: this.itemsPerPage, sortBy: []});
     },
   },
   created() {
-    axios.get('http://localhost/events/backend/public/api/admin/get-events-all').then(response => {
+    axios.get('/api/admin/get-events-all').then(response => {
       this.eventItems = response.data;
     }).catch(error => {
       console.error('Error fetching data:', error);

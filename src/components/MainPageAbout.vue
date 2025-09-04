@@ -34,6 +34,9 @@
 
 <script>
 import {inject} from "vue";
+
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
 export default {
   data() {
     const eventStore = inject('eventStore');
@@ -58,7 +61,7 @@ export default {
       if (/^(https?:)?\/\//i.test(value)) {
         return value;
       }
-      return `http://localhost/events/backend/public${value}`;
+      return `${apiBaseUrl}${value}`;
     },
   },
 }

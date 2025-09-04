@@ -46,8 +46,8 @@
 <!--          <hr>-->
 
 <!--          <v-select v-model="subscribe" :items="[1, 0]" label="Subscribe to current event"></v-select>-->
-          <v-label>Subscribe to current event: {{ subscribe_bool }}</v-label>
-          <v-switch v-model="subscribe_bool"></v-switch>
+          <v-label>Subscribe to current event:</v-label>
+          <v-switch v-model="subscribe_bool" color="primary" :label="`${subscribe_bool ? 'on' : 'off'}`"></v-switch>
           <v-row v-if="errorMsg">
             {{ errorMsg }}
           </v-row>
@@ -72,6 +72,10 @@ import BaseFooter from '@/components/BaseFooter.vue';
 import PageHeader from "@/components/PageHeader.vue";
 import axios from "axios";
 import {inject} from "vue";
+
+axios.defaults.withCredentials = true;
+axios.defaults.withXSRFToken = true;
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 
 export default {
   components: {
@@ -116,9 +120,7 @@ export default {
   },
   methods: {
     saveForm() {
-      axios.defaults.withCredentials = true;
-      axios.defaults.withXSRFToken = true;
-      axios.post('http://localhost/events/backend/public/api/update-subscribe', {
+      axios.post('/api/update-subscribe', {
         subscribe: Number(this.subscribe),
       }, {
         headers: {
@@ -143,7 +145,7 @@ export default {
     }
   },
   created() {
-    axios.get(`http://localhost/events/backend/public/api/get-subscribe`).then(response => {
+    axios.get(`/api/get-subscribe`).then(response => {
       if (response.data.hasOwnProperty('subscribe') && response.data.subscribe === 1) {
         this.subscribe = 1;
       }

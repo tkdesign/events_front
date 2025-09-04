@@ -79,7 +79,7 @@
                     <v-select v-model="editedItem.rating" :items="[1, 2, 3, 4, 5]" label="Rating"></v-select>
                   </v-col>
                   <v-col cols="12" md="4" sm="6">
-                    <v-select v-model="editedItem.visible" :items="[1, 0]" label="Visible"></v-select>
+                    <v-switch v-model="editedItem.visible" color="primary" :label="`Visible: ${editedItem.visible ? 'on' : 'off'}`"></v-switch>
                   </v-col>
                   <v-col cols="12" md="4" sm="6">
                     <v-text-field v-model="editedItem.position" label="Position" type="number"></v-text-field>
@@ -118,6 +118,9 @@
     <template v-slot:item.thumbnail="{ value }">
       <v-img :src="getImageFullUrl(value)" height="100" width="100"/>
     </template>
+    <template v-slot:item.visible="{ value }">
+      <span>{{ value ? 'on' : 'off' }}</span>
+    </template>
     <template v-slot:tfoot>
       <tr>
         <td colspan="3"></td>
@@ -133,6 +136,8 @@
 
 <script>
 import axios from 'axios';
+
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 
 export default {
   data: () => ({
@@ -166,7 +171,7 @@ export default {
       image: null,
       thumbnail: null,
       rating: 0,
-      visible: 1,
+      visible: true,
       position: 1,
     },
     defaultItem: {
@@ -177,7 +182,7 @@ export default {
       image: null,
       thumbnail: null,
       rating: 0,
-      visible: 1,
+      visible: true,
       position: 1,
     },
   }),
@@ -209,7 +214,7 @@ export default {
           rating: this.rating,
         },
       };
-      axios.get('http://localhost/events/backend/public/api/admin/get-testimonials', {params}).then(response => {
+      axios.get('/api/admin/get-testimonials', {params}).then(response => {
         this.serverItems = response.data.data;
         this.totalItems = response.data.total;
       }).catch(error => {
@@ -227,7 +232,7 @@ export default {
       this.editedItem.image = null;
       this.editedItem.thumbnail = null;
       this.editedItem.rating = 0;
-      this.editedItem.visible = 1;
+      this.editedItem.visible = true;
       this.editedItem.position = 1;
       this.dialog = true;
     },
@@ -235,6 +240,7 @@ export default {
     editItem(item) {
       this.editedIndex = this.serverItems.indexOf(item);
       this.editedItem = Object.assign({}, item);
+      this.editedItem.visible = !!this.editedItem.visible;
       this.editedItem.image = null;
       this.editedItem.thumbnail = null;
       this.dialog = true;
@@ -248,7 +254,7 @@ export default {
 
     async deleteItemConfirm() {
       try {
-        const response = await axios.delete(`http://localhost/events/backend/public/api/admin/delete-testimonial/${this.editedItem.testimonial_id}`);
+        const response = await axios.delete(`/api/admin/delete-testimonial/${this.editedItem.testimonial_id}`);
         if (response && response.status === 200 && response.statusText === 'OK') {
           this.serverItems.splice(this.editedIndex, 1);
         } else {
@@ -296,21 +302,21 @@ export default {
       formData.append('image', this.editedItem.image);
       formData.append('thumbnail', this.editedItem.thumbnail);
       formData.append('rating', this.editedItem.rating);
-      formData.append('visible', this.editedItem.visible);
+      formData.append('visible', (this.editedItem.visible ? 1 : 0));
       formData.append('position', this.editedItem.position);
 
       try {
         const tableRowIndex = this.editedIndex;
         let response = null;
         if (tableRowIndex > -1) {
-          response = await axios.post(`http://localhost/events/backend/public/api/admin/update-testimonial`, formData, {
+          response = await axios.post(`/api/admin/update-testimonial`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
               'X-HTTP-Method-Override': 'PUT'
             }
           });
         } else {
-          response = await axios.post(`http://localhost/events/backend/public/api/admin/create-testimonial`, formData, {
+          response = await axios.post(`/api/admin/create-testimonial`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             }
@@ -347,19 +353,19 @@ export default {
       if (/^(https?:)?\/\//i.test(value)) {
         return value;
       }
-      return `http://localhost/events/backend/public${value}`;
+      return `${axios.defaults.baseURL}${value}`;
     },
     initialize() {
       this.loadItems({page: 1, itemsPerPage: this.itemsPerPage, sortBy: []});
     },
   },
   created() {
-    axios.get('http://localhost/events/backend/public/api/admin/get-users-all').then(response => {
+    axios.get('/api/admin/get-users-all').then(response => {
       this.userItems = response.data;
     }).catch(error => {
       console.error('Error fetching data:', error);
     });
-    axios.get('http://localhost/events/backend/public/api/admin/get-events-all').then(response => {
+    axios.get('/api/admin/get-events-all').then(response => {
       this.eventItems = response.data;
     }).catch(error => {
       console.error('Error fetching data:', error);

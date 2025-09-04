@@ -3,6 +3,7 @@ import axios from 'axios';
 
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 
 export const useAdminMenuStore = defineStore('adminMenuStore',
     {
@@ -14,8 +15,7 @@ export const useAdminMenuStore = defineStore('adminMenuStore',
         },
         actions: {
             fetchAdminMenu() {
-                // axios.get('/admin-menu.json').then(response => {
-                axios.get('http://localhost/events/backend/public/api/admin/get-admin-menu').then(response => {
+                axios.get('/api/admin/get-admin-menu').then(response => {
                     this.$patch({
                         adminMenu: response.data,
                     });

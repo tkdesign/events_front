@@ -1,8 +1,8 @@
 import {defineStore} from 'pinia'
 import axios from 'axios';
-
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 
 export const useCuratorsStore = defineStore('curatorsStore',
     {
@@ -14,8 +14,7 @@ export const useCuratorsStore = defineStore('curatorsStore',
         },
         actions: {
             fetchCurators() {
-                // axios.get('/curators.json').then(response => {
-                axios.get('http://localhost/events/backend/public/api/get-curators').then(response => {
+                axios.get('/api/get-curators').then(response => {
                     this.$patch({
                         curators: this.setCurators(response.data.curators),
                     });
@@ -47,7 +46,7 @@ export const useCuratorsStore = defineStore('curatorsStore',
                     return value;
                 }
                 if (/^\/images\/curators\//i.test(value)) {
-                    return `http://localhost/events/backend/public${value}`;
+                    return `${axios.defaults.baseURL}${value}`;
                 }
                 return value;
             },

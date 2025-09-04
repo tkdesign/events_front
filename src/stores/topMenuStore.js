@@ -3,6 +3,7 @@ import axios from 'axios';
 
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 
 export const useTopMenuStore = defineStore('topMenuStore',
     {
@@ -20,8 +21,7 @@ export const useTopMenuStore = defineStore('topMenuStore',
         },
         actions: {
             fetchMenu() {
-                // axios.get('/menu.json').then(response => {
-                axios.get('http://localhost/events/backend/public/api/get-menu').then(response => {
+                axios.get('/api/get-menu').then(response => {
                     this.$patch({
                         menu: this.setMenu(response.data.menu, response.data.year),
                         bottom_menu: response.data.bottom_menu,

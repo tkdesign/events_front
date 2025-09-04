@@ -93,6 +93,8 @@
 <script>
 import axios from 'axios';
 
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
+
 export default {
   data: () => ({
     itemsPerPage: 10,
@@ -162,7 +164,7 @@ export default {
           capacity: this.capacity,
         },
       };
-      axios.get('http://localhost/events/backend/public/api/admin/get-lectures', {params}).then(response => {
+      axios.get('/api/admin/get-lectures', {params}).then(response => {
         this.serverItems = response.data.data;
         this.totalItems = response.data.total;
       }).catch(error => {
@@ -197,7 +199,7 @@ export default {
 
     async deleteItemConfirm() {
       try {
-        const response = await axios.delete(`http://localhost/events/backend/public/api/admin/delete-lecture/${this.editedItem.lecture_id}`);
+        const response = await axios.delete(`/api/admin/delete-lecture/${this.editedItem.lecture_id}`);
         if (response && response.status === 200 && response.statusText === 'OK') {
           this.serverItems.splice(this.editedIndex, 1);
         } else {
@@ -249,14 +251,14 @@ export default {
         const tableRowIndex = this.editedIndex;
         let response = null;
         if (tableRowIndex > -1) {
-          response = await axios.post(`http://localhost/events/backend/public/api/admin/update-lecture`, formData, {
+          response = await axios.post(`/api/admin/update-lecture`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
               'X-HTTP-Method-Override': 'PUT'
             }
           });
         } else {
-          response = await axios.post(`http://localhost/events/backend/public/api/admin/create-lecture`, formData, {
+          response = await axios.post(`/api/admin/create-lecture`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             }
@@ -285,7 +287,7 @@ export default {
       if (/^(https?:)?\/\//i.test(value)) {
         return value;
       }
-      return `http://localhost/events/backend/public${value}`;
+      return `${axios.defaults.baseURL}${value}`;
     },
     initialize() {
       this.loadItems({page: 1, itemsPerPage: this.itemsPerPage, sortBy: []});

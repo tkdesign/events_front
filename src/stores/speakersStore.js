@@ -3,6 +3,7 @@ import axios from 'axios';
 
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 
 export const useSpeakersStore = defineStore('speakersStore',
     {
@@ -14,8 +15,7 @@ export const useSpeakersStore = defineStore('speakersStore',
         },
         actions: {
             fetchSpeakers() {
-                // axios.get('/speakers.json').then(response => {
-                axios.get('http://localhost/events/backend/public/api/get-speakers').then(response => {
+                axios.get('/api/get-speakers').then(response => {
                     this.$patch({
                         speakers: response.data.speakers,
                     });

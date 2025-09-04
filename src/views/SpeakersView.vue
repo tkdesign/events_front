@@ -54,6 +54,9 @@ import BaseHeader from '@/components/BaseHeader.vue';
 import BaseFooter from '@/components/BaseFooter.vue';
 import PageHeader from "@/components/PageHeader.vue";
 import {useSpeakersStore} from "@/stores/speakersStore";
+
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
 export default {
   components: {
     PageHeader,
@@ -84,7 +87,7 @@ export default {
       if (/^(https?:)?\/\//i.test(value)) {
         return value;
       }
-      return `http://localhost/events/backend/public${value}`;
+      return `${apiBaseUrl}${value}`;
     },
   },
   created() {

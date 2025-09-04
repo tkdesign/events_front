@@ -3,6 +3,7 @@ import axios from 'axios';
 
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 
 export const useEventStore = defineStore('eventStore',
     {
@@ -14,8 +15,7 @@ export const useEventStore = defineStore('eventStore',
         },
         actions: {
             fetchEvent() {
-                // axios.get('/event.json').then(response => {
-                axios.get('http://localhost/events/backend/public/api/get-current-event').then(response => {
+                axios.get('/api/get-current-event').then(response => {
                     this.$patch({
                         event: response.data,
                     });

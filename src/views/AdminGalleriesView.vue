@@ -106,6 +106,8 @@
 <script>
 import axios from 'axios';
 
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
+
 export default {
   data: () => ({
     itemsPerPage: 10,
@@ -169,7 +171,7 @@ export default {
           title: this.title,
         },
       };
-      axios.get('http://localhost/events/backend/public/api/admin/get-galleries', {params}).then(response => {
+      axios.get('/api/admin/get-galleries', {params}).then(response => {
         this.serverItems = response.data.data;
         this.totalItems = response.data.total;
       }).catch(error => {
@@ -202,7 +204,7 @@ export default {
 
     async deleteItemConfirm() {
       try {
-        const response = await axios.delete(`http://localhost/events/backend/public/api/admin/delete-gallery/${this.editedItem.gallery_id}`);
+        const response = await axios.delete(`/api/admin/delete-gallery/${this.editedItem.gallery_id}`);
         if (response && response.status === 200 && response.statusText === 'OK') {
           this.serverItems.splice(this.editedIndex, 1);
         } else {
@@ -253,14 +255,14 @@ export default {
         const tableRowIndex = this.editedIndex;
         let response = null;
         if (tableRowIndex > -1) {
-          response = await axios.post(`http://localhost/events/backend/public/api/admin/update-gallery`, formData, {
+          response = await axios.post(`/api/admin/update-gallery`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
               'X-HTTP-Method-Override': 'PUT'
             }
           });
         } else {
-          response = await axios.post(`http://localhost/events/backend/public/api/admin/create-gallery`, formData, {
+          response = await axios.post(`/api/admin/create-gallery`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             }
@@ -294,7 +296,7 @@ export default {
     },
   },
   created() {
-    axios.get('http://localhost/events/backend/public/api/admin/get-events-all').then(response => {
+    axios.get('/api/admin/get-events-all').then(response => {
       this.eventItems = response.data;
     }).catch(error => {
       console.error('Error fetching data:', error);

@@ -37,7 +37,7 @@
                     <v-text-field v-model="editedItem.year" label="Year" type="number" :rules="[v => !!v || 'Year is required']"></v-text-field>
                   </v-col>
                   <v-col cols="12" md="6" sm="6">
-                    <v-checkbox v-model="editedItem.is_current" label="Current"></v-checkbox>
+                    <v-switch v-model="editedItem.is_current" color="primary" :label="`Current: ${editedItem.is_current ? 'on' : 'off'}`"></v-switch>
                   </v-col>
                   <v-col cols="12" md="6" sm="6">
                     <v-text-field v-model="editedItem.start_date" label="Start Date" type="date"></v-text-field>
@@ -121,8 +121,8 @@
     <template v-slot:item.thumbnail="{ value }">
       <v-img :src="getImageFullUrl(value)" height="100" width="100"/>
     </template>
-    <template v-slot:item.is_current="{ item }">
-      <v-checkbox v-model="item.is_current" readonly></v-checkbox>
+    <template v-slot:item.is_current="{ value }">
+      <span :class="`${value ? 'accent_item' : ''}`">{{ value ? 'on' : 'off' }}</span>
     </template>
     <template v-slot:tfoot>
       <tr>
@@ -144,6 +144,8 @@
 <script>
 import axios from 'axios';
 import dayjs from "dayjs";
+
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 
 export default {
   data: () => ({
@@ -245,7 +247,7 @@ export default {
           year: this.year,
         },
       };
-      axios.get('http://localhost/events/backend/public/api/admin/get-events', {params}).then(response => {
+      axios.get('/api/admin/get-events', {params}).then(response => {
         this.serverItems = response.data.data;
         this.totalItems = response.data.total;
       }).catch(error => {
@@ -279,6 +281,7 @@ export default {
     editItem(item) {
       this.editedIndex = this.serverItems.indexOf(item);
       this.editedItem = Object.assign({}, item);
+      this.editedItem.is_current = !!this.editedItem.is_current;
       this.editedItem.image = null;
       this.editedItem.thumbnail = null;
       this.editedItem.map = null;
@@ -295,7 +298,7 @@ export default {
 
     async deleteItemConfirm() {
       try {
-        const response = await axios.delete(`http://localhost/events/backend/public/api/admin/delete-event/${this.editedItem.event_id}`);
+        const response = await axios.delete(`/api/admin/delete-event/${this.editedItem.event_id}`);
         if (response && response.status === 200 && response.statusText === 'OK') {
           this.serverItems.splice(this.editedIndex, 1);
         } else {
@@ -352,7 +355,7 @@ export default {
       formData.append('image', this.editedItem.image);
       formData.append('thumbnail', this.editedItem.thumbnail);
       formData.append('map', this.editedItem.map);
-      formData.append('is_current', this.editedItem.is_current);
+      formData.append('is_current', (this.editedItem.is_current ? 1 : 0));
       formData.append('location', this.editedItem.location);
       formData.append('place', this.editedItem.place);
       formData.append('address', this.editedItem.address);
@@ -361,14 +364,14 @@ export default {
         const tableRowIndex = this.editedIndex;
         let response = null;
         if (tableRowIndex > -1) {
-          response = await axios.post(`http://localhost/events/backend/public/api/admin/update-event`, formData, {
+          response = await axios.post(`/api/admin/update-event`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
               'X-HTTP-Method-Override': 'PUT'
             }
           });
         } else {
-          response = await axios.post(`http://localhost/events/backend/public/api/admin/create-event`, formData, {
+          response = await axios.post(`/api/admin/create-event`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             }
@@ -381,6 +384,13 @@ export default {
             this.serverItems.push(response.data);
             this.totalItems = 0;
             this.initialize();
+          }
+          if (response.data.is_current == 1) {
+            this.serverItems.forEach((item, idx) => {
+              if (item.event_id !== response.data.event_id) {
+                item.is_current = 0;
+              }
+            });
           }
         } else {
           if (response.data && response.data.hasOwnProperty('message')) {
@@ -397,7 +407,7 @@ export default {
       if (/^(https?:)?\/\//i.test(value)) {
         return value;
       }
-      return `http://localhost/events/backend/public${value}`;
+      return `${axios.defaults.baseURL}${value}`;
     },
   },
   initialize() {
@@ -407,5 +417,7 @@ export default {
 </script>
 
 <style scoped>
-
+.accent_item {
+  color: #1976d2;
+}
 </style>
