@@ -5,28 +5,31 @@ axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
 axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 
-export const useUserStore = defineStore('userStore',
-    {
-        state: () => ({
-            user: [],
-            status: false
-        }),
-        getters: {
-            getUser: (state) => state.user,
-        },
-        actions: {
-            fetchUser() {
-                axios.get('/api/user').then(response => {
-                    this.$patch({
-                        user: (response.data.hasOwnProperty('user') ? response.data.user : []),
-                        status: (response.data.hasOwnProperty('status') && !!response.data.status)
-                    });
-                }).catch(error => {
-                    console.error("Can't load data.", error);
-                });
-            },
-            init() {
-                this.fetchUser();
-            },
-        }
-    });
+export const useUserStore = defineStore('userStore', {
+  state: () => ({
+    user: null,      // было []
+    status: false
+  }),
+  getters: {
+    getUser: (state) => state.user,
+  },
+  actions: {
+    async fetchUser() {
+      try {
+        const { data } = await axios.get('/api/user');
+        this.$patch({
+          user: (data && 'user' in data) ? data.user : null,
+          status: !!(data && data.status)
+        });
+        return data;
+      } catch (e) {
+        console.error("Can't load user.", e);
+        this.$patch({ user: null, status: false });
+        throw e;
+      }
+    },
+    init() {
+      return this.fetchUser(); // ВАЖНО: вернуть промис
+    },
+  }
+});

@@ -91,16 +91,38 @@ export function createMyRouter() {
         }
     });
 
-    router.beforeEach((to, from, next) => {
-        if (to.meta?.title) {
-            if (!to.path.startsWith('/gallery')) {
-                document.title = to.meta.title + ' - WEB DEV 2024';
-            }
-        } else {
-            document.title = 'WEB DEV 2024';
-        }
-        next();
-    });
+// index.js (фрагмент beforeEach)
+router.beforeEach(async (to, from, next) => {
+  const protectedNames = ['admin', 'account'];
+  const needsAuth =
+    protectedNames.includes(to.name) ||
+    (to.matched && to.matched.some(r => protectedNames.includes(r.name)));
+
+  if (needsAuth) {
+    if (!userStore.status || !userStore?.user?.id) {
+      try {
+        await userStore.init();
+      } catch (_) {
+      }
+    }
+
+    if (!userStore.status || !userStore.user?.id) {
+      return next({ name: 'home' });
+    }
+
+    if (to.name === 'admin' && userStore.user?.role !== 2) {
+      return next({ name: 'home' });
+    }
+  }
+
+  if (to.meta?.title && !to.path.startsWith('/gallery')) {
+    document.title = to.meta.title + ' - WEB DEV 2024';
+  } else {
+    document.title = 'WEB DEV 2024';
+  }
+  next();
+});
+
 
     return router;
 }

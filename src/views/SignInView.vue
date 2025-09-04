@@ -65,9 +65,9 @@ export default {
           headers: {
             Accept: 'application/json'
           }
-        }).then((response) => {
+        }).then(async (response) => {
           if (response.status === 200) {
-            this.$router.push('/account');
+            // this.$router.push('/account');
             window.location.href = '/account';
           } else {
             this.errorMsg = 'Invalid email or password';
