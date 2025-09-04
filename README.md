@@ -1,6 +1,6 @@
-# nConnect Conference Website – Frontend
+# Conference Website – Frontend
 
-This repository contains the **frontend application** of the offline conference platform.  
+This repository contains the **frontend application** of the offline conference website.  
 The project is built with **Vue 3** and provides a modern single-page application (SPA) interface.
 
 The related backend API is implemented in **Laravel 10** and can be found here:  
@@ -11,7 +11,7 @@ The related backend API is implemented in **Laravel 10** and can be found here:
 ## Overview
 
 This application is a part of complete web solution for managing and presenting the annual conference.  
-The solution provides:
+The website provides:
 
 - General information about the conference
 - Promotional banners for upcoming events
