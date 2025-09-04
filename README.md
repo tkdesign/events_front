@@ -1,7 +1,7 @@
 # nConnect Conference Website – Frontend
 
-This repository contains the **frontend application** of the nConnect Conference platform.  
-The project is built with **Vue 3** and provides a modern single-page application (SPA) interface for the annual nConnect conference in Nitra, Slovakia.
+This repository contains the **frontend application** of the offline conference platform.  
+The project is built with **Vue 3** and provides a modern single-page application (SPA) interface.
 
 The related backend API is implemented in **Laravel 10** and can be found here:  
 [events_api](https://github.com/tkdesign/events_api)
@@ -10,8 +10,8 @@ The related backend API is implemented in **Laravel 10** and can be found here:
 
 ## Overview
 
-The nConnect platform is a complete web solution for managing and presenting the annual conference.  
-The website provides:
+This application is a part of complete web solution for managing and presenting the annual conference.  
+The solution provides:
 
 - General information about the conference
 - Promotional banners for upcoming events
@@ -46,7 +46,7 @@ The site works in **three modes**, depending on the user role:
 - Can edit any site content
 - Full content management:
     - Users, sponsors, curators, speakers
-    - Conferences (schedules), locations (stages), time slots, lectures
+    - Conferences, schedules, locations (stages), time slots, lectures
     - Assigning speakers to lectures and sponsors to conferences
     - Creating and editing articles via a WYSIWYG editor (TinyMCE), banners, reviews, galleries, and menus
     - Loading images
@@ -65,8 +65,8 @@ The site works in **three modes**, depending on the user role:
     - User data persisted in Pinia stores
 - **User Roles:**
     - Guest (unauthenticated)
-    - Participant (authenticated user)
-    - Administrator (extended CMS rights)
+    - Participant (1 - authenticated user)
+    - Administrator (2 - extended CMS rights)
 
 ---
 
