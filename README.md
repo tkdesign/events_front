@@ -19,7 +19,7 @@ The website provides:
 - Photo galleries
 - Logos and information about sponsors
 - Photos and bios of curators
-- Interactive map and contacts
+- Map and contacts
 - Speaker information and profiles
 - Full conference schedule (locations → days → time slots → lectures)
 - Informational articles
