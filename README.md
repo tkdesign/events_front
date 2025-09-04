@@ -1,6 +1,6 @@
 # nConnect Conference Website – Frontend
 
-This repository contains the **frontend application** of the [nConnect Conference](https://nconnect.sk) platform.  
+This repository contains the **frontend application** of the nConnect Conference platform.  
 The project is built with **Vue 3** and provides a modern single-page application (SPA) interface for the annual nConnect conference in Nitra, Slovakia.
 
 The related backend API is implemented in **Laravel 10** and can be found here:  
