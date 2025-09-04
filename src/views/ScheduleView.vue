@@ -99,6 +99,7 @@ export default {
       }
     } else {
       this.stages = this.scheduleStore.getStages();
+      this.subscribed = this.scheduleStore.getSubscribed();
       this.dd = this.scheduleStore.getFirstDay().value;
       this.day = this.dd;
     }
@@ -110,6 +111,7 @@ export default {
     } else {
       if (this.scheduleStore.days.length > 0) {
         this.stages = this.scheduleStore.getStages();
+        this.subscribed = this.scheduleStore.getSubscribed();
         this.dd = this.scheduleStore.getFirstDay().value;
         this.day = this.dd;
       }

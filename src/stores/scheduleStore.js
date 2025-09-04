@@ -23,19 +23,23 @@ export const useScheduleStore = defineStore('scheduleStore', {
         },
     },
     actions: {
-        fetchStages() {
-            axios.get('/api/get-schedule').then(response => {
+        async fetchStages() {
+            try {
+                const { data } = await axios.get('/api/get-schedule');
                 this.$patch({
-                    stages: response.data.stages,
-                    subscribed: response.data.subscribed,
-                    days: this.extractDays(response.data.stages),
+                    stages: (data && 'stages' in data) ? data.stages : [],
+                    subscribed: (data && 'subscribed' in data) ? data.subscribed : 0,
+                    days: (data && 'stages' in data) ? this.extractDays(data.stages) : [],
                 });
-            }).catch(error => {
-                console.error("Can't load data.", error);
-            });
+                return data;
+            } catch (e) {
+                console.error("Can't load data.", e);
+                this.$patch({ stages: [], subscribed: 0, days: [] });
+                throw e;
+            }
         },
         init() {
-            this.fetchStages();
+            return this.fetchStages();
         },
         extractDays(stages) {
             const days = [];
@@ -54,8 +58,22 @@ export const useScheduleStore = defineStore('scheduleStore', {
             days.sort((a, b) => a.value - b.value);
             return days;
         },
-        checkin(stage_id, slot, user) {
+        async checkin(stage_id, slot, user) {
             if (stage_id && slot && slot.hasOwnProperty('lecture') && slot.lecture && slot.lecture.hasOwnProperty('lecture_id') && user && user.hasOwnProperty('id')) {
+                const { data } = await axios.post('/api/checkin', {lecture_id: slot.lecture.lecture_id, slot_id: slot.slot_id});
+
+                if (data.success === true) {
+                    const stage = this.stages.find((stage) => stage.stage_id === stage_id);
+                    const slotIndex = stage.slots.findIndex((s) => s.slot_id === slot.slot_id);
+                    if (slotIndex >= 0) {
+                        stage.slots[slotIndex].user = user;
+                    }
+                } else {
+                    alert("Can't checkin. " + data.message);
+                }
+
+                return data;
+/*
                 axios.post('/api/checkin', {lecture_id: slot.lecture.lecture_id, slot_id: slot.slot_id}).then(response => {
                     if (response.data.success === true) {
                         const stage = this.stages.find((stage) => stage.stage_id === stage_id);
@@ -69,12 +87,25 @@ export const useScheduleStore = defineStore('scheduleStore', {
                 }).catch(error => {
                     alert("Can't checkin. " + error);
                 });
+*/
             } else {
                 alert("Can't checkin. Slot or user is invalid.");
             }
         },
-        checkout(stage_id, slot) {
+        async checkout(stage_id, slot) {
             if (stage_id && slot && slot.hasOwnProperty('lecture') && slot.lecture && slot.lecture.hasOwnProperty('lecture_id') && slot.user && slot.user.hasOwnProperty('id')) {
+                const { data } = await axios.post('/api/checkout', {lecture_id: slot.lecture.lecture_id});
+
+                if (data.success === true) {
+                    const stage = this.stages.find((stage) => stage.stage_id === stage_id);
+                    const slotIndex = stage.slots.findIndex((s) => s.slot_id === slot.slot_id);
+                    if (slotIndex >= 0) {
+                        stage.slots[slotIndex].user = null;
+                    }
+                } else {
+                    alert("Can't checkout. " + data.message);
+                }
+/*
                 axios.post('/api/checkout', {lecture_id: slot.lecture.lecture_id}).then(response => {
                     console.log(response.data);
                     if(response.data.success === true) {
@@ -89,6 +120,7 @@ export const useScheduleStore = defineStore('scheduleStore', {
                 }).catch(error => {
                     alert("Can't checkout. " + error);
                 });
+*/
             } else {
                 alert("Can't checkout. Slot or user is invalid.");
             }

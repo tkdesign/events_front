@@ -29,7 +29,7 @@ export const useUserStore = defineStore('userStore', {
       }
     },
     init() {
-      return this.fetchUser(); // ВАЖНО: вернуть промис
+      return this.fetchUser();
     },
   }
 });
