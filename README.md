@@ -1,4 +1,4 @@
-# Conference Website – Frontend
+# Conference Website - Frontend
 
 This repository contains the **frontend application** of the offline conference website.  
 The project is built with **Vue 3** and provides a modern single-page application (SPA) interface.
