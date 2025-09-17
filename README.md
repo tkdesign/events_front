@@ -55,7 +55,8 @@ The site works in **three modes**, depending on the user role:
 
 ## Technical Stack
 
-- **Framework:** Vue 3
+- **Framework:** Vue 3 (Options API)
+- **Language:** JavaScript (ES6+)
 - **UI Library:** Vuetify 3
 - **State Management:** Pinia (multiple stores)
 - **Routing:** Vue Router (SPA)
