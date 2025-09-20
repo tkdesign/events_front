@@ -17,7 +17,7 @@
           <v-list
               :items="curators"
               lines="three"
-              item-props
+              item-props="true"
           >
             <template v-for="(curator, index) in curators" v-slot:prepend="{ item }">
               <v-avatar :key="index">

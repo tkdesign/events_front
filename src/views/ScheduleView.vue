@@ -67,8 +67,13 @@ export default {
       handler() {
         this.stages = this.scheduleStore.getStages();
         this.subscribed = this.scheduleStore.getSubscribed();
-        this.dd = this.scheduleStore.getFirstDay().value;
-        this.day = this.dd;
+        if (!this.dd) {
+          this.dd = this.scheduleStore.getFirstDay().value;
+          this.day = this.dd;
+        }
+        else {
+          this.day = this.dd;
+        }
       },
       deep: true,
     },

@@ -15,18 +15,25 @@ export function createMyRouter() {
     }
     const userStore = useUserStore();
     if (!userStore.user || !userStore.user.hasOwnProperty('id')) {
-        userStore.init();
+        userStore.init().catch((error) => {
+            console.error('Error initializing user store:', error);
+        });
     }
 
     function convertPathToComponentName(path) {
-        path = path.replace(/^\/|\/$/g, '');
-        const hasPathParams = /:/.test(path);
-        if (hasPathParams) {
-            path = path.replace(/\/:.*$/g, '');
+        try {
+            path = path.replace(/^\/|\/$/g, '');
+            const hasPathParams = /:/.test(path);
+            if (hasPathParams) {
+                path = path.replace(/\/:.*$/g, '');
+            }
+            let parts = path.split(/[-\/]/);
+            parts = parts.map(part => part.charAt(0).toUpperCase() + part.slice(1));
+            return parts.join('') + 'View';
+        } catch (error) {
+            console.error('Error converting path to component name:', error);
+            return 'NotFoundView';
         }
-        let parts = path.split(/[-\/]/);
-        parts = parts.map(part => part.charAt(0).toUpperCase() + part.slice(1));
-        return parts.join('') + 'View';
     }
 
     const currentPath = window.location.pathname;
@@ -50,6 +57,7 @@ export function createMyRouter() {
             path: currentPath,
             props: hasPathParams,
             component: () => import(`@/views/${convertPathToComponentName(currentPath.slice(1))}.vue`).catch(() => import('@/views/NotFoundView.vue')),
+            meta: {title: 'Dynamic'},
         };
         initialRoutes.unshift(dynamicRoute);
     }
@@ -85,8 +93,9 @@ export function createMyRouter() {
                     });
                 }
             });
-            // router.addRoute(notFoundRoute);
-            router.replace(currentRoute).then(() => {
+            router.addRoute(notFoundRoute);
+            router.replace(currentRoute).catch((error) => {
+                console.error('Error during route replacement:', error);
             });
         }
     });
@@ -102,7 +111,8 @@ router.beforeEach(async (to, from, next) => {
     if (!userStore.status || !userStore?.user?.id) {
       try {
         await userStore.init();
-      } catch (_) {
+      } catch (error) {
+          console.error('Error initializing user store:', error);
       }
     }
 

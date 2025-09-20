@@ -110,9 +110,7 @@ export default {
   },
   data() {
     const userStore = inject('userStore');
-//    const filteredSlots = this.slots.filter(slot => slot.day === this.day);
     return {
-  //    filteredSlots: filteredSlots,
       userStore,
     }
   },
