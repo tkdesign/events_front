@@ -100,7 +100,6 @@ export function createMyRouter() {
         }
     });
 
-// index.js (фрагмент beforeEach)
 router.beforeEach(async (to, from, next) => {
   const protectedNames = ['admin', 'account'];
   const needsAuth =
